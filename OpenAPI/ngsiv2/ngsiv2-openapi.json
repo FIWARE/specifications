@@ -206,6 +206,24 @@
               "values",
               "unique"
             ],
+            "x-enum-elements": [
+              {
+                "name": "count",
+                "description": ""
+              },
+              {
+                "name": "keyValues",
+                "description": ""
+              },
+              {
+                "name": "values",
+                "description": ""
+              },
+              {
+                "name": "unique",
+                "description": ""
+              }
+            ],
             "type": "string",
             "description": "Options dictionary"
           }
@@ -318,6 +336,12 @@
             "enum": [
               "keyValues"
             ],
+            "x-enum-elements": [
+              {
+                "name": "keyValues",
+                "description": ""
+              }
+            ],
             "type": "string",
             "description": "Options dictionary"
           }
@@ -409,6 +433,20 @@
               "keyValues",
               "values",
               "unique"
+            ],
+            "x-enum-elements": [
+              {
+                "name": "keyValues",
+                "description": ""
+              },
+              {
+                "name": "values",
+                "description": ""
+              },
+              {
+                "name": "unique",
+                "description": ""
+              }
             ],
             "type": "string",
             "description": "Options dictionary"
@@ -543,6 +581,20 @@
               "values",
               "unique"
             ],
+            "x-enum-elements": [
+              {
+                "name": "keyValues",
+                "description": ""
+              },
+              {
+                "name": "values",
+                "description": ""
+              },
+              {
+                "name": "unique",
+                "description": ""
+              }
+            ],
             "type": "string",
             "description": "Options dictionary"
           }
@@ -626,6 +678,12 @@
             "enum": [
               "keyValues"
             ],
+            "x-enum-elements": [
+              {
+                "name": "keyValues",
+                "description": ""
+              }
+            ],
             "type": "string",
             "description": "Operations options"
           }
@@ -685,6 +743,16 @@
               "append",
               "keyValues"
             ],
+            "x-enum-elements": [
+              {
+                "name": "append",
+                "description": ""
+              },
+              {
+                "name": "keyValues",
+                "description": ""
+              }
+            ],
             "type": "string",
             "description": "Operations options"
           }
@@ -742,6 +810,12 @@
             "required": false,
             "enum": [
               "keyValues"
+            ],
+            "x-enum-elements": [
+              {
+                "name": "keyValues",
+                "description": ""
+              }
             ],
             "type": "string",
             "description": "Operations options"
@@ -1190,6 +1264,16 @@
               "count",
               "values"
             ],
+            "x-enum-elements": [
+              {
+                "name": "count",
+                "description": ""
+              },
+              {
+                "name": "values",
+                "description": ""
+              }
+            ],
             "type": "string",
             "description": "Options dictionary."
           }
@@ -1402,6 +1486,12 @@
             "required": false,
             "enum": [
               "count"
+            ],
+            "x-enum-elements": [
+              {
+                "name": "count",
+                "description": ""
+              }
             ],
             "type": "string",
             "description": "Options dictionary"
@@ -1743,6 +1833,12 @@
             "required": false,
             "enum": [
               "count"
+            ],
+            "x-enum-elements": [
+              {
+                "name": "count",
+                "description": ""
+              }
             ],
             "type": "string",
             "description": "Options dictionary"
@@ -2113,6 +2209,12 @@
             "enum": [
               "keyValues"
             ],
+            "x-enum-elements": [
+              {
+                "name": "keyValues",
+                "description": ""
+              }
+            ],
             "type": "string",
             "description": "Options dictionary"
           }
@@ -2211,6 +2313,24 @@
               "keyValues",
               "values",
               "unique"
+            ],
+            "x-enum-elements": [
+              {
+                "name": "count",
+                "description": ""
+              },
+              {
+                "name": "keyValues",
+                "description": ""
+              },
+              {
+                "name": "values",
+                "description": ""
+              },
+              {
+                "name": "unique",
+                "description": ""
+              }
             ],
             "type": "string",
             "description": "Options dictionary"
@@ -2414,6 +2534,12 @@
             "required": false,
             "enum": [
               "count"
+            ],
+            "x-enum-elements": [
+              {
+                "name": "count",
+                "description": ""
+              }
             ],
             "type": "string",
             "description": "Options dictionary."
@@ -2904,6 +3030,24 @@
     "Options": {
       "title": "options",
       "example": "count",
+      "x-enum-elements": [
+        {
+          "name": "count",
+          "description": ""
+        },
+        {
+          "name": "keyValues",
+          "description": ""
+        },
+        {
+          "name": "values",
+          "description": ""
+        },
+        {
+          "name": "unique",
+          "description": ""
+        }
+      ],
       "type": "string",
       "enum": [
         "count",
@@ -2971,6 +3115,12 @@
     "Options3": {
       "title": "options3",
       "example": "keyValues",
+      "x-enum-elements": [
+        {
+          "name": "keyValues",
+          "description": ""
+        }
+      ],
       "type": "string",
       "enum": [
         "keyValues"
@@ -3048,6 +3198,20 @@
     "Options5": {
       "title": "options5",
       "example": "keyValues",
+      "x-enum-elements": [
+        {
+          "name": "keyValues",
+          "description": ""
+        },
+        {
+          "name": "values",
+          "description": ""
+        },
+        {
+          "name": "unique",
+          "description": ""
+        }
+      ],
       "type": "string",
       "enum": [
         "keyValues",
@@ -3194,6 +3358,16 @@
     "Options9": {
       "title": "options9",
       "example": "append",
+      "x-enum-elements": [
+        {
+          "name": "append",
+          "description": ""
+        },
+        {
+          "name": "keyValues",
+          "description": ""
+        }
+      ],
       "type": "string",
       "enum": [
         "append",
@@ -3410,6 +3584,16 @@
     "Options19": {
       "title": "options19",
       "example": "count",
+      "x-enum-elements": [
+        {
+          "name": "count",
+          "description": ""
+        },
+        {
+          "name": "values",
+          "description": ""
+        }
+      ],
       "type": "string",
       "enum": [
         "count",
@@ -3542,6 +3726,12 @@
     "Options22": {
       "title": "options22",
       "example": "count",
+      "x-enum-elements": [
+        {
+          "name": "count",
+          "description": ""
+        }
+      ],
       "type": "string",
       "enum": [
         "count"
