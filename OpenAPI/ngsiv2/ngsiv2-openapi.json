@@ -3,11 +3,7 @@
   "info": {
     "version": "1.0",
     "title": "FIWARE-NGSI v2 Specification",
-    "description": "TODO: Add a description",
-    "license": {
-      "name": "MIT",
-      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
-    }
+    "description": "TODO: Add a description"
   },
   "host": "orion.lab.fiware.org",
   "basePath": "/",
