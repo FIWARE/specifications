@@ -317,6 +317,13 @@
         ],
         "parameters": [
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -347,32 +354,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/v2/entities",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"type\": \"Room\",  \"id\": \"Bcn-Welt\",  \"temperature\": {    \"value\": 21.7  },  \"humidity\": {    \"value\": 60  },  \"location\": {    \"value\": \"41.3763726, 2.1864475\",    \"type\": \"geo:point\",    \"metadata\": {      \"crs\": {        \"value\": \"WGS84\"      }    }  }}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {
-                "Location": "/v2/entities/Bcn-Welt?type=Room"
-              }
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Create entity1",
-            "x-testDescription": "The payload is an object representing the entity to be created. The object follows\nthe JSON entity representation format (described in a \"JSON Entity Representation\" section).\nResponse:\n* Successful operation uses 201 Created. Reponse includes a `Location` header with the URL of the\n  created entity.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -652,6 +634,13 @@
             "description": "Id of the entity in question."
           },
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -714,6 +703,13 @@
             "required": true,
             "type": "string",
             "description": "Entity id to be updated"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
           },
           {
             "name": "body",
@@ -783,6 +779,13 @@
             "required": true,
             "type": "string",
             "description": "Id of the entity to be updated"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
           },
           {
             "name": "body",
@@ -943,6 +946,13 @@
             "description": "Attribute name"
           },
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -964,30 +974,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "PUT",
-              "uri": "/v2/entities/Bcn_Welt/attrs/temperature",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"value\": 25.0,  \"metadata\": {    \"unitCode\": {      \"value\": \"CEL\"    }  }}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Update attribute data1",
-            "x-testDescription": "The request payload is an object representing the new attribute data. Previous attribute data\nis replaced by the one in the request. The object follows the JSON representation for attributes\n(described in \"JSON Attribute Representation\" section).\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -1167,6 +1154,13 @@
             "description": "Attribute name."
           },
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -1188,30 +1182,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "PUT",
-              "uri": "/v2/entities/Bcn_Welt/attrs/address/value",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"address\": \"Ronda de la Comunicacion s/n\",  \"zipCode\": 28050,  \"city\": \"Madrid\",  \"country\": \"Spain\"}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Update attribute value1",
-            "x-testDescription": "The request payload is the new attribute value.\n* If the request payload MIME type is `application/json`, then the value of the attribute is set to\n  the JSON object or array coded in the payload (if the payload is not a valid JSON document,\n  then an error is returned).\n* If the request payload MIME type is `text/plain`, then the following algorithm is applied to the\n  payload:\n  * If the payload starts and ends with citation-marks (`\"`), the value is taken as a string\n    (the citation marks themselves are not considered part of the string)\n  * If `true` or `false`, the value is taken as a boolean.\n  * If `null`, the value is taken as null.\n  * If these first three tests 'fail', the text is interpreted as a number.\n  * If not a valid number, then an error is returned and the attribute's value is unchanged.\nThe payload MIME type in the request is specified in the `Content-Type` HTTP header.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -1590,6 +1561,13 @@
         ],
         "parameters": [
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -1604,32 +1582,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/v2/subscriptions",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"description\": \"One subscription to rule them all\",  \"subject\": {    \"entities\": [      {        \"idPattern\": \".*\",        \"type\": \"Room\"      }    ],    \"condition\": {      \"attrs\": [ \"temperature\" ],      \"expression\": {        \"q\": \"temperature>40\"      }    }  },  \"notification\": {    \"http\": {      \"url\": \"http://localhost:1234\"    },    \"attrs\": [\"temperature\", \"humidity\"]  },              \"expires\": \"2016-04-05T14:00:00.00Z\",  \"throttling\": 5}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {
-                "Location": "/v2/subscriptions/abcde98765"
-              }
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Create a new subscription1",
-            "x-testDescription": "Creates a new subscription.\nThe subscription is represented by a JSON object as described at the beginning of this section.\nResponse:\n* Successful operation uses 201 Created\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -1745,6 +1698,13 @@
             "description": "subscription Id."
           },
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -1759,30 +1719,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "PATCH",
-              "uri": "/v2/subscriptions/abcdef",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"expires\": \"2016-04-05T14:00:00.00Z\"}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Update subscription1",
-            "x-testDescription": "Only the fields included in the request are updated in the subscription.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -1924,6 +1861,13 @@
         ],
         "parameters": [
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -1938,32 +1882,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/v2/registrations",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"description\": \"Relative Humidity Context Source\",  \"dataProvided\": {    \"entities\": [      {        \"id\": \"room2\",        \"type\": \"Room\"      }    ],    \"attrs\": [      \"relativeHumidity\"    ]  },  \"provider\": {    \"http\":{       \"url\": \"http://localhost:1234\"    }  }}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {
-                "Location": "/v2/registrations/abcde98765"
-              }
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Create a new context provider registration1",
-            "x-testDescription": "Creates a new registration. This is typically used for binding context sources\nas providers of certain data.\nThe registration is represented by a JSON object as described at the beginning of this section.\nResponse:\n* Successful operation uses 201 Created\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -2131,6 +2050,13 @@
             "description": "registration Id."
           },
           {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
             "name": "body",
             "in": "body",
             "required": true,
@@ -2145,30 +2071,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "PATCH",
-              "uri": "/v2/registrations/abcdef",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{    \"expires\": \"2017-10-04T00:00:00\"}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Update context provider registration1",
-            "x-testDescription": "Only the fields included in the request are updated in the registration.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -2189,6 +2092,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
           {
             "name": "body",
             "in": "body",
@@ -2220,30 +2130,7 @@
             "description": ""
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/v2/op/update",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"actionType\": \"APPEND\",  \"entities\": [    {      \"type\": \"Room\",      \"id\": \"Bcn-Welt\",      \"temperature\": {        \"value\": 21.7       },      \"humidity\": {        \"value\": 60      }    },    {      \"type\": \"Room\",      \"id\": \"Mad_Aud\",      \"temperature\": {        \"value\": 22.9      },      \"humidity\": {        \"value\": 85      }    }  ]}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Update1",
-            "x-testDescription": "This operation allows to create, update and/or delete several entities in a single batch operation.\nThe payload is an object with two properties:\n+ `actionType`, to specify the kind of update action to do: either APPEND, APPEND_STRICT, UPDATE,\n  DELETE, or REPLACE.\n+ `entities`, an array of entities, each entity specified using the JSON entity representation format\n  (described in the section \"JSON Entity Representation\").\nThis operation is split in as many individual operations as entities in the `entities` vector, so\nthe `actionType` is executed for each one of them. Depending on the `actionType`, a mapping with\nregular non-batch operations can be done:\n* APPEND: maps to `POST /v2/entities` (if the entity does not already exist) or `POST /v2/entities/<id>/attrs`\n  (if the entity already exists).\n* APPEND_STRICT: maps to `POST /v2/entities` (if the entity does not already exist) or\n  `POST /v2/entities/<id>/attrs?options=append` (if the entity already exists).\n* UPDATE: maps to `PATCH /v2/entities/<id>/attrs`.\n* DELETE: maps to `DELETE /v2/entities/<id>/attrs/<attrName>` on every attribute included in the entity or\n  to `DELETE /v2/entities/<id>` if no attribute were included in the entity.\n* REPLACE: maps to `PUT /v2/entities/<id>/attrs`.\nResponse:\n* Successful operation uses 204 No Content.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -2264,6 +2151,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
           {
             "name": "body",
             "in": "body",
@@ -2376,33 +2270,7 @@
             }
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/v2/op/query?limit=10&offset=20&orderBy=temperature,!speed",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"entities\": [    {      \"idPattern\": \".*\",      \"type\": \"myFooType\"    },    {      \"id\": \"myBar\",      \"type\": \"myBarType\"    }  ],  \"attributes\": [    \"temperature\",    \"humidity\"  ],  \"scopes\": [    {      \"type\": \"FIWARE::...\",      \"value\": \"...\"    }  ],  \"metadata\": [    \"accuracy\",    \"timestamp\"  ]}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "RAW",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "[  {    \"type\": \"Room\",    \"id\": \"DC_S1-D41\",    \"temperature\": {      \"value\": 35.6,      \"type\": \"Number\"    }  },  {    \"type\": \"Room\",    \"id\": \"Boe-Idearium\",    \"temperature\": {      \"value\": 22.5,      \"type\": \"Number\"    }  },  {    \"type\": \"Car\",    \"id\": \"P-9873-K\",    \"speed\": {      \"value\": 100,      \"type\": \"number\",      \"accuracy\": 2,      \"timestamp\": {        \"value\": \"2015-06-04T07:20:27.378Z\",        \"type\": \"DateTime\"      }    }  }]"
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Query1",
-            "x-testDescription": "The response payload is an Array containing one object per matching entity, or an empty array `[]` if \nno entities are found. The entities follow the JSON entity representation format\n(described in the section \"JSON Entity Representation\").\nThe payload may contain the following elements (all of them optional):\n+ `entities`: a list of entites to search for. Each element is represented by a JSON object with the\n  following elements:\n    + `id` or `idPattern`: Id or pattern of the affected entities. Both cannot be used at the same\n      time, but one of them must be present.\n    + `type` or `typePattern`: Type or type pattern of the entities to search for. Both cannot be used at\n      the same time. If omitted, it means \"any entity type\".\n+ `attributes`: a list of attribute names to search for. If omitted, it means \"all attributes\".\n+ `scopes`: a list of scopes to restrict the result of the query. Each scope is represented by a\n   JSON object with a `type` (a JSON string) and `value` (whose type depends on the `type`\n   property).\n   The different available scopes are described elsewhere.\n+ `metadata`: a list of metadata names to include in the response.\n   See \"Filtering out attributes and metadata\" section for more detail.\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -2423,6 +2291,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
           {
             "name": "body",
             "in": "body",
@@ -2450,31 +2325,7 @@
             }
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/v2/op/register",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"actionType\": \"CREATE\",  \"registrations\": [    {      \"subject\": {        \"entities\": [          {            \"type\": \"Room\"          }        ],        \"attributes\": [          \"humidity\"        ]      },      \"callback\": \"http://localhost:1234\",      \"duration\": \"PT1M\"    },    {      \"subject\": {        \"entities\": [          {            \"type\": \"Car\"          }        ],        \"attributes\": [          \"speed\"        ]      },      \"callback\": \"http://localhost:5678\",      \"duration\": \"PT1M\"    }  ]}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "RAW",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {},
-              "body": "[  \"abcd\",  \"efgh\"]"
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Register1",
-            "x-testDescription": "This operation allows to create, update and/or delete several registrations in a single batch\noperation. The payload is an object with two properties:\n+ `actionType`, to specify the kind of register action to do: either CREATE, UPDATE, or DELETE.\n+ `registrations`, an array of registrations, each one specified using the JSON registration \n  representation format (described above). In case of CREATE operation, the registration `id`\n  must not be included.\nResponse:\n* Successful operation uses 200 OK. In addition, in case of successful CREATE, a list of IDs is\n  returned, each one corresponding to the ID of the element in the request payload and in that same\n  order.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -2495,6 +2346,13 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
           {
             "name": "body",
             "in": "body",
@@ -2588,33 +2446,7 @@
             }
           }
         },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/v2/op/discover/?limit=10&offset=22",
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "{  \"entities\": [    {      \"idPattern\": \".*\",      \"type\": \"myFooType\"    },    {      \"id\": \"myBar\",      \"type\": \"myBarType\"    }  ],  \"attributes\": [    \"temperature\",    \"humidity\"  ],  \"scopes\": [    {      \"type\": \"FIWARE::Filter::Foo\",      \"value\": \"Bar\"    }  ]}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "RAW",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "body": "[  {    \"id\": \"abcde\",    \"subject\": {      \"entities\": [        {          \"id\": \"Foo\",          \"type\": \"myFooType\"        }      ],      \"attributes\": [        \"humidity\"      ]    },    \"callback\": \"http://localhost:1234\",    \"duration\": \"PT1M\"  },  {    \"id\": \"efgh\",    \"subject\": {      \"entities\": [        {          \"id\": \"myBar\",          \"type\": \"myBarType\"        }      ],      \"attributes\": [        \"speed\"      ]    },    \"callback\": \"http://localhost:5678\",    \"duration\": \"PT1M\"  }]"
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Discover1",
-            "x-testDescription": "The response payload is an Array that contains one object per matching registration.\nThe registrations follow the JSON registration representation format (described in a section above).\nThe payload may contain the following elements (all of them optional):\n+ `entities`: a list of entites to search for. Each entity is represented by a JSON object with the\n  following elements:\n    + `id` or `idPattern`: Id or pattern of the affected entities. Both cannot be used at the same\n      time, but one of them must be present.\n    + `type` or `typePattern`: Type or type pattern of the entities to search for. Both cannot be used at\n      the same time. If omitted, it means \"any entity type\".\n+ `attributes`: a list of attribute names to search for. If omitted, it means \"all attributes\".\n+ `scopes`: a list of scopes to restrict the results of the query. Each scope is represented by a\n  JSON object with a `type` (a JSON string) and a `value` (whose type depends on the `type`\n  property). The different available scopes are described elsewhere.\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
-          }
-        ],
+        "x-unitTests": [],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -3124,25 +2956,6 @@
     },
     "CreateEntityRequest": {
       "title": "Create entity request",
-      "example": {
-        "type": "Room",
-        "id": "Bcn-Welt",
-        "temperature": {
-          "value": 21.7
-        },
-        "humidity": {
-          "value": 60
-        },
-        "location": {
-          "value": "41.3763726, 2.1864475",
-          "type": "geo:point",
-          "metadata": {
-            "crs": {
-              "value": "WGS84"
-            }
-          }
-        }
-      },
       "type": "object",
       "properties": {
         "type": {
@@ -3468,14 +3281,6 @@
     },
     "UpdateAttributeDataRequest": {
       "title": "Update attribute data request",
-      "example": {
-        "value": 25.0,
-        "metadata": {
-          "unitCode": {
-            "value": "CEL"
-          }
-        }
-      },
       "type": "object",
       "properties": {
         "value": {
@@ -3540,12 +3345,6 @@
     },
     "UpdateAttributeValueRequest": {
       "title": "Update attribute value request",
-      "example": {
-        "address": "Ronda de la Comunicacion s/n",
-        "zipCode": 28050,
-        "city": "Madrid",
-        "country": "Spain"
-      },
       "type": "object",
       "properties": {
         "address": {
@@ -3861,36 +3660,6 @@
     },
     "CreateANewSubscriptionRequest": {
       "title": "Create a new subscription request",
-      "example": {
-        "description": "One subscription to rule them all",
-        "subject": {
-          "entities": [
-            {
-              "idPattern": ".*",
-              "type": "Room"
-            }
-          ],
-          "condition": {
-            "attrs": [
-              "temperature"
-            ],
-            "expression": {
-              "q": "temperature>40"
-            }
-          }
-        },
-        "notification": {
-          "http": {
-            "url": "http://localhost:1234"
-          },
-          "attrs": [
-            "temperature",
-            "humidity"
-          ]
-        },
-        "expires": "2016-04-05T14:00:00Z",
-        "throttling": 5
-      },
       "type": "object",
       "properties": {
         "description": {
@@ -3953,9 +3722,6 @@
     },
     "UpdateSubscriptionRequest": {
       "title": "Update subscription request",
-      "example": {
-        "expires": "2016-04-05T14:00:00Z"
-      },
       "type": "object",
       "properties": {
         "expires": {
@@ -4069,25 +3835,6 @@
     },
     "CreateANewContextProviderRegistrationRequest": {
       "title": "Create a new context provider registration request",
-      "example": {
-        "description": "Relative Humidity Context Source",
-        "dataProvided": {
-          "entities": [
-            {
-              "id": "room2",
-              "type": "Room"
-            }
-          ],
-          "attrs": [
-            "relativeHumidity"
-          ]
-        },
-        "provider": {
-          "http": {
-            "url": "http://localhost:1234"
-          }
-        }
-      },
       "type": "object",
       "properties": {
         "description": {
@@ -4227,9 +3974,6 @@
     },
     "UpdateContextProviderRegistrationRequest": {
       "title": "Update context provider registration request",
-      "example": {
-        "expires": "2017-10-04T00:00:00"
-      },
       "type": "object",
       "properties": {
         "expires": {
@@ -4244,31 +3988,6 @@
     },
     "UpdateRequest": {
       "title": "Update request",
-      "example": {
-        "actionType": "APPEND",
-        "entities": [
-          {
-            "type": "Room",
-            "id": "Bcn-Welt",
-            "temperature": {
-              "value": 21.7
-            },
-            "humidity": {
-              "value": 60
-            }
-          },
-          {
-            "type": "Room",
-            "id": "Mad_Aud",
-            "temperature": {
-              "value": 22.9
-            },
-            "humidity": {
-              "value": 85
-            }
-          }
-        ]
-      },
       "type": "object",
       "properties": {
         "actionType": {
@@ -4313,32 +4032,6 @@
     },
     "QueryRequest": {
       "title": "Query request",
-      "example": {
-        "entities": [
-          {
-            "idPattern": ".*",
-            "type": "myFooType"
-          },
-          {
-            "id": "myBar",
-            "type": "myBarType"
-          }
-        ],
-        "attributes": [
-          "temperature",
-          "humidity"
-        ],
-        "scopes": [
-          {
-            "type": "FIWARE::...",
-            "value": "..."
-          }
-        ],
-        "metadata": [
-          "accuracy",
-          "timestamp"
-        ]
-      },
       "type": "object",
       "properties": {
         "entities": {
@@ -4452,39 +4145,6 @@
     },
     "RegisterRequest": {
       "title": "Register request",
-      "example": {
-        "actionType": "CREATE",
-        "registrations": [
-          {
-            "subject": {
-              "entities": [
-                {
-                  "type": "Room"
-                }
-              ],
-              "attributes": [
-                "humidity"
-              ]
-            },
-            "callback": "http://localhost:1234",
-            "duration": "PT1M"
-          },
-          {
-            "subject": {
-              "entities": [
-                {
-                  "type": "Car"
-                }
-              ],
-              "attributes": [
-                "speed"
-              ]
-            },
-            "callback": "http://localhost:5678",
-            "duration": "PT1M"
-          }
-        ]
-      },
       "type": "object",
       "properties": {
         "actionType": {
@@ -4537,28 +4197,6 @@
     },
     "DiscoverRequest": {
       "title": "Discover request",
-      "example": {
-        "entities": [
-          {
-            "idPattern": ".*",
-            "type": "myFooType"
-          },
-          {
-            "id": "myBar",
-            "type": "myBarType"
-          }
-        ],
-        "attributes": [
-          "temperature",
-          "humidity"
-        ],
-        "scopes": [
-          {
-            "type": "FIWARE::Filter::Foo",
-            "value": "Bar"
-          }
-        ]
-      },
       "type": "object",
       "properties": {
         "entities": {
