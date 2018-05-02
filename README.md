@@ -1,5 +1,12 @@
-# FIWARE Open API Specifications 
+![FIWARE Banner](https://fiware.github.io/specifications/img/fiware.png)
 
-This repository contains FIWARE Open API specifications
+# Open API Specifications 
 
-The `OpenAPI` folder is meant to contain the Open API specifications of different FIWARE GEs. 
+This repository contains the [Open API](https://www.openapis.org/) / [Swagger](https://swagger.io/) specifications for the following FIWARE Generic Enablers:
+
+* [NGSI v2 API](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
+* [IoT Agent library](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/iot.IoTagent-node-lib/IoTagent-node-lib-openapi.json)
+
+The `OpenAPI` folder contains the raw Open API specification JSON files.
+
+
