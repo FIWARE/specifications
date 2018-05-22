@@ -79,11 +79,11 @@
         "/v2/entities": {
             "get": {
                 "description": "Retrieves a list of entities that match different criteria by id, type, pattern matching (either id or type)\nand/or those which match a query or geographical query (see [Simple Query Language](#simple_query_language) and \n[Geographical Queries](#geographical_queries)). A given entity has to match all the criteria to be retrieved\n(i.e., the criteria is combined in a logical AND way). Note that pattern matching query parameters are incompatible\n(i.e. mutually exclusive) with their corresponding exact matching parameters, i.e. `idPattern` with `id` and\n`typePattern` with `type`.\nThe response payload is an array containing one object per matching entity. Each entity follows\nthe JSON entity representation format (described in \"JSON Entity Representation\" section).\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "List entities",
+                "summary": "List Entities",
                 "tags": [
                     "Entities"
                 ],
-                "operationId": "List entities",
+                "operationId": "List Entities",
                 "produces": [
                     "application/json"
                 ],
@@ -294,7 +294,7 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "List entities1",
+                        "x-testName": "List Entities1",
                         "x-testDescription": "Retrieves a list of entities that match different criteria by id, type, pattern matching (either id or type)\nand/or those which match a query or geographical query (see [Simple Query Language](#simple_query_language) and \n[Geographical Queries](#geographical_queries)). A given entity has to match all the criteria to be retrieved\n(i.e., the criteria is combined in a logical AND way). Note that pattern matching query parameters are incompatible\n(i.e. mutually exclusive) with their corresponding exact matching parameters, i.e. `idPattern` with `id` and\n`typePattern` with `type`.\nThe response payload is an array containing one object per matching entity. Each entity follows\nthe JSON entity representation format (described in \"JSON Entity Representation\" section).\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
                     }
                 ],
@@ -307,11 +307,11 @@
             },
             "post": {
                 "description": "The payload is an object representing the entity to be created. The object follows\nthe JSON entity representation format (described in a \"JSON Entity Representation\" section).\nResponse:\n* Successful operation uses 201 Created. Reponse includes a `Location` header with the URL of the\n  created entity.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Create entity",
+                "summary": "Create Entity",
                 "tags": [
                     "Entities"
                 ],
-                "operationId": "Create entity",
+                "operationId": "Create Entity",
                 "produces": [
                     "application/json"
                 ],
@@ -366,11 +366,11 @@
         "/v2/entities/{entityId}": {
             "get": {
                 "description": "The response is an object representing the entity identified by the ID. The object follows\nthe JSON entity representation format (described in \"JSON Entity Representation\" section).\nThis operation must return one entity element only, but there may be more than one entity with the\nsame ID (e.g. entities with same ID but different types).\nIn such case, an error message is returned, with the HTTP status code set to 409 Conflict.\nResponse:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for more details.",
-                "summary": "Retrieve entity",
+                "summary": "Retrieve Entity",
                 "tags": [
                     "Entities"
                 ],
-                "operationId": "Retrieve entity",
+                "operationId": "Retrieve Entity",
                 "produces": [
                     "application/json"
                 ],
@@ -472,11 +472,11 @@
             },
             "delete": {
                 "description": "Delete the entity.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Remove entity",
+                "summary": "Remove Entity",
                 "tags": [
                     "Entities"
                 ],
-                "operationId": "Remove entity",
+                "operationId": "Remove Entity",
                 "produces": [
                     "application/json"
                 ],
@@ -513,11 +513,11 @@
         "/v2/entities/{entityId}/attrs": {
             "get": {
                 "description": "This request is similar to retreiving the whole entity, however this one omits the `id` and `type`\nfields.\nJust like the general request of getting an entire entity, this operation must return only one\nentity element. If more than one entity with the same ID is found (e.g. entities with\nsame ID but different type), an error message is returned, with the HTTP status code set to\n409 Conflict.\nResponse:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Retrieve entity attributes",
+                "summary": "Retrieve Entity Attributes",
                 "tags": [
                     "Entities"
                 ],
-                "operationId": "Retrieve entity attributes",
+                "operationId": "Retrieve Entity Attributes",
                 "produces": [
                     "application/json"
                 ],
@@ -688,11 +688,11 @@
             },
             "post": {
                 "description": "The request payload is an object representing the attributes to append or update. The object follows\nthe JSON entity representation format (described in \"JSON Entity Representation\" section), except\nthat `id` and `type` are not allowed.\nThe entity attributes are updated with the ones in the payload, depending on\nwhether the `append` operation option is used or not.\n* If `append` is not used: the entity attributes are updated (if they previously exist) or appended\n  (if they don't previously exist) with the ones in the payload.\n* If `append` is used (i.e. strict append semantics): all the attributes in the payload not\n  previously existing in the entity are appended. In addition to that, in case some of the\n  attributes in the payload already exist in the entity, an error is returned.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Update or append entity attributes",
+                "summary": "Update or Append Entity Attributes",
                 "tags": [
                     "Entities"
                 ],
-                "operationId": "Update or append entity attributes",
+                "operationId": "Update or Append Entity Attributes",
                 "produces": [
                     "application/json"
                 ],
@@ -764,11 +764,11 @@
             },
             "patch": {
                 "description": "The request payload is an object representing the attributes to update. The object follows\nthe JSON entity representation format (described in \"JSON Entity Representation\" section), except\nthat `id` and `type` are not allowed.\nThe entity attributes are updated with the ones in the payload. In addition to that, if one or more\nattributes in the payload doesn't exist in the entity, an error is returned.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Update existing entity attributes",
+                "summary": "Update Existing Entity Attributes",
                 "tags": [
                     "Entities"
                 ],
-                "operationId": "Update existing entity attributes",
+                "operationId": "Update Existing Entity Attributes",
                 "produces": [
                     "application/json"
                 ],
@@ -922,11 +922,11 @@
             },
             "put": {
                 "description": "The request payload is an object representing the new attribute data. Previous attribute data\nis replaced by the one in the request. The object follows the JSON representation for attributes\n(described in \"JSON Attribute Representation\" section).\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Update attribute data",
+                "summary": "Update Attribute Data",
                 "tags": [
                     "Attributes"
                 ],
-                "operationId": "Update attribute data",
+                "operationId": "Update Attribute Data",
                 "produces": [
                     "application/json"
                 ],
@@ -984,11 +984,11 @@
             },
             "delete": {
                 "description": "Removes an entity attribute.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Remove a single attribute",
+                "summary": "Remove a Single Attribute",
                 "tags": [
                     "Attributes"
                 ],
-                "operationId": "Remove a single attribute",
+                "operationId": "Remove a Single Attribute",
                 "produces": [
                     "application/json"
                 ],
@@ -1036,7 +1036,7 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "Remove a single attribute1",
+                        "x-testName": "Remove a Single Attribute1",
                         "x-testDescription": "Removes an entity attribute.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
                     }
                 ],
@@ -1051,11 +1051,11 @@
         "/v2/entities/{entityId}/attrs/{attrName}/value": {
             "get": {
                 "description": "This operation returns the `value` property with the value of the attribute.\n* If attribute value is JSON Array or Object:\n  * If `Accept` header can be expanded to `application/json` or `text/plain` return the value as a JSON with a\n    response type of application/json or text/plain (whichever is the first in `Accept` header or\n    `application/json` in case of `Accept: */*`).\n  * Else return a HTTP error \"406 Not Acceptable: accepted MIME types: application/json, text/plain\"\n* If attribute value is a string, number, null or boolean:\n  * If `Accept` header can be expanded to text/plain return the value as text. In case of a string, citation\n    marks are used at the begining and end.\n  * Else return a HTTP error \"406 Not Acceptable: accepted MIME types: text/plain\"\nResponse:\n* Successful operation uses 200 OK.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Get attribute value",
+                "summary": "Get Attribute Value",
                 "tags": [
                     "Attribute Value"
                 ],
-                "operationId": "Get attribute value",
+                "operationId": "Get Attribute Value",
                 "produces": [
                     "application/json"
                 ],
@@ -1117,7 +1117,7 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "Get attribute value1",
+                        "x-testName": "Get Attribute Value1",
                         "x-testDescription": "This operation returns the `value` property with the value of the attribute.\n* If attribute value is JSON Array or Object:\n  * If `Accept` header can be expanded to `application/json` or `text/plain` return the value as a JSON with a\n    response type of application/json or text/plain (whichever is the first in `Accept` header or\n    `application/json` in case of `Accept: */*`).\n  * Else return a HTTP error \"406 Not Acceptable: accepted MIME types: application/json, text/plain\"\n* If attribute value is a string, number, null or boolean:\n  * If `Accept` header can be expanded to text/plain return the value as text. In case of a string, citation\n    marks are used at the begining and end.\n  * Else return a HTTP error \"406 Not Acceptable: accepted MIME types: text/plain\"\nResponse:\n* Successful operation uses 200 OK.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
                     }
                 ],
@@ -1130,11 +1130,11 @@
             },
             "put": {
                 "description": "The request payload is the new attribute value.\n* If the request payload MIME type is `application/json`, then the value of the attribute is set to\n  the JSON object or array coded in the payload (if the payload is not a valid JSON document,\n  then an error is returned).\n* If the request payload MIME type is `text/plain`, then the following algorithm is applied to the\n  payload:\n  * If the payload starts and ends with citation-marks (`\"`), the value is taken as a string\n    (the citation marks themselves are not considered part of the string)\n  * If `true` or `false`, the value is taken as a boolean.\n  * If `null`, the value is taken as null.\n  * If these first three tests 'fail', the text is interpreted as a number.\n  * If not a valid number, then an error is returned and the attribute's value is unchanged.\nThe payload MIME type in the request is specified in the `Content-Type` HTTP header.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Update attribute value",
+                "summary": "Update Attribute Value",
                 "tags": [
                     "Attribute Value"
                 ],
-                "operationId": "Update attribute value",
+                "operationId": "Update Attribute Value",
                 "produces": [
                     "application/json"
                 ],
@@ -1194,11 +1194,11 @@
         "/v2/types/": {
             "get": {
                 "description": "If the `values` option is not in use, this operation returns a JSON array with the entity types.\nEach element is a JSON object with information about the type:\n* `type` : the entity type name.\n* `attrs` : the set of attribute names along with all the entities of such type, represented in\n  a JSON object whose keys are the attribute names and whose values contain information of such\n  attributes (in particular a list of the types used by attributes with that name along with all the\n  entities).\n* `count` : the number of entities belonging to that type.\nIf the `values` option is used, the operation returns a JSON array with a list of entity type\nnames as strings.\nResults are ordered by entity `type` in alphabetical order.\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Retrieve entity types",
+                "summary": "List Entity Types",
                 "tags": [
                     "Types"
                 ],
-                "operationId": "Retrieve entity types",
+                "operationId": "List Entity Types",
                 "produces": [
                     "application/json"
                 ],
@@ -1251,7 +1251,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/RetrieveEntityTypesResponse"
+                                "$ref": "#/definitions/ListEntityTypesResponse"
                             }
                         },
                         "examples": {
@@ -1322,7 +1322,7 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "Retrieve entity types1",
+                        "x-testName": "List Entity Types1",
                         "x-testDescription": "If the `values` option is not in use, this operation returns a JSON array with the entity types.\nEach element is a JSON object with information about the type:\n* `type` : the entity type name.\n* `attrs` : the set of attribute names along with all the entities of such type, represented in\n  a JSON object whose keys are the attribute names and whose values contain information of such\n  attributes (in particular a list of the types used by attributes with that name along with all the\n  entities).\n* `count` : the number of entities belonging to that type.\nIf the `values` option is used, the operation returns a JSON array with a list of entity type\nnames as strings.\nResults are ordered by entity `type` in alphabetical order.\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
                     }
                 ],
@@ -1418,11 +1418,11 @@
         "/v2/subscriptions": {
             "get": {
                 "description": "Returns a list of all the subscriptions present in the system.\nResponse:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Retrieve subscriptions",
+                "summary": "List Subscriptions",
                 "tags": [
                     "Subscriptions"
                 ],
-                "operationId": "Retrieve subscriptions",
+                "operationId": "List Subscriptions",
                 "produces": [
                     "application/json"
                 ],
@@ -1470,7 +1470,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/RetrieveSubscriptionsResponse"
+                                "$ref": "#/definitions/ListSubscriptionsResponse"
                             }
                         },
                         "examples": {
@@ -1538,7 +1538,7 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "Retrieve subscriptions1",
+                        "x-testName": "List Subscriptions1",
                         "x-testDescription": "Returns a list of all the subscriptions present in the system.\nResponse:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
                     }
                 ],
@@ -1551,11 +1551,11 @@
             },
             "post": {
                 "description": "Creates a new subscription.\nThe subscription is represented by a JSON object as described at the beginning of this section.\nResponse:\n* Successful operation uses 201 Created\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Create a new subscription",
+                "summary": "Create Subscription",
                 "tags": [
                     "Subscriptions"
                 ],
-                "operationId": "Create a new subscription",
+                "operationId": "Create Subscription",
                 "produces": [
                     "application/json"
                 ],
@@ -1573,7 +1573,7 @@
                         "required": true,
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/CreateANewSubscriptionRequest"
+                            "$ref": "#/definitions/CreateSubscriptionRequest"
                         }
                     }
                 ],
@@ -1594,11 +1594,11 @@
         "/v2/subscriptions/{subscriptionId}": {
             "get": {
                 "description": "The response is the subscription represented by a JSON object as described at the beginning of this\nsection.\nResponse:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Retrieve subscription",
+                "summary": "Retrieve Subscription",
                 "tags": [
                     "Subscriptions"
                 ],
-                "operationId": "Retrieve subscription",
+                "operationId": "Retrieve Subscription",
                 "produces": [
                     "application/json"
                 ],
@@ -1681,11 +1681,11 @@
             },
             "patch": {
                 "description": "Only the fields included in the request are updated in the subscription.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Update subscription",
+                "summary": "Update Subscription",
                 "tags": [
                     "Subscriptions"
                 ],
-                "operationId": "Update subscription",
+                "operationId": "Update Subscription",
                 "produces": [
                     "application/json"
                 ],
@@ -1730,12 +1730,12 @@
         },
         "/v2/registrations": {
             "get": {
-                "description": "Lists all the registrations present in the system.",
-                "summary": "Retrieve registrations",
+                "description": "Lists all the context provider registrations present in the system.",
+                "summary": "List Registrations",
                 "tags": [
                     "Registrations"
                 ],
-                "operationId": "Retrieve registrations",
+                "operationId": "List Registrations",
                 "produces": [
                     "application/json"
                 ],
@@ -1783,7 +1783,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/RetrieveRegistrationsResponse"
+                                "$ref": "#/definitions/ListRegistrationsResponse"
                             }
                         },
                         "examples": {
@@ -1838,8 +1838,8 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "Retrieve registrations1",
-                        "x-testDescription": "Lists all the registrations present in the system."
+                        "x-testName": "List Registrations1",
+                        "x-testDescription": "Lists all the context provider registrations present in the system."
                     }
                 ],
                 "x-operation-settings": {
@@ -1850,12 +1850,12 @@
                 }
             },
             "post": {
-                "description": "Creates a new registration. This is typically used for binding context sources\nas providers of certain data.\nThe registration is represented by a JSON object as described at the beginning of this section.\nResponse:\n* Successful operation uses 201 Created\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Create a new context provider registration",
+                "description": "Creates a new context provider registration. This is typically used for binding context sources\nas providers of certain data.\nThe registration is represented by a JSON object as described at the beginning of this section.\nResponse:\n* Successful operation uses 201 Created\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
+                "summary": "Create Registration",
                 "tags": [
                     "Registrations"
                 ],
-                "operationId": "Create a new context provider registration",
+                "operationId": "Create Registration",
                 "produces": [
                     "application/json"
                 ],
@@ -1873,7 +1873,7 @@
                         "required": true,
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/CreateANewContextProviderRegistrationRequest"
+                            "$ref": "#/definitions/CreateRegistrationRequest"
                         }
                     }
                 ],
@@ -1894,11 +1894,11 @@
         "/v2/registrations/{registrationId}": {
             "get": {
                 "description": "The response is the registration represented by a JSON object as described at the beginning of this\nsection.\nResponse:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Retrieve context provider registration",
+                "summary": "Retrieve Registration",
                 "tags": [
                     "Registrations"
                 ],
-                "operationId": "Retrieve context provider registration",
+                "operationId": "Retrieve Registration",
                 "produces": [
                     "application/json"
                 ],
@@ -1915,7 +1915,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/RetrieveContextProviderRegistrationResponse"
+                            "$ref": "#/definitions/RetrieveRegistrationResponse"
                         },
                         "examples": {
                             "application/json": {
@@ -1969,7 +1969,7 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "Retrieve context provider registration1",
+                        "x-testName": "Retrieve Registration1",
                         "x-testDescription": "The response is the registration represented by a JSON object as described at the beginning of this\nsection.\nResponse:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
                     }
                 ],
@@ -1981,12 +1981,12 @@
                 }
             },
             "delete": {
-                "description": "Cancels registration.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Delete context provider registration",
+                "description": "Cancels a context provider registration.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
+                "summary": "Delete Registration",
                 "tags": [
                     "Registrations"
                 ],
-                "operationId": "Delete context provider registration",
+                "operationId": "Delete Registration",
                 "produces": [
                     "application/json"
                 ],
@@ -2020,8 +2020,8 @@
                         },
                         "x-testShouldPass": true,
                         "x-testEnabled": true,
-                        "x-testName": "Delete context provider registration1",
-                        "x-testDescription": "Cancels registration.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
+                        "x-testName": "Delete Registration1",
+                        "x-testDescription": "Cancels a context provider registration.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details."
                     }
                 ],
                 "x-operation-settings": {
@@ -2033,11 +2033,11 @@
             },
             "patch": {
                 "description": "Only the fields included in the request are updated in the registration.\nResponse:\n* Successful operation uses 204 No Content\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
-                "summary": "Update context provider registration",
+                "summary": "Update Registration",
                 "tags": [
                     "Registrations"
                 ],
-                "operationId": "Update context provider registration",
+                "operationId": "Update Registration",
                 "produces": [
                     "application/json"
                 ],
@@ -2062,7 +2062,7 @@
                         "required": true,
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/UpdateContextProviderRegistrationRequest"
+                            "$ref": "#/definitions/UpdateRegistrationRequest"
                         }
                     }
                 ],
@@ -2349,7 +2349,7 @@
             ]
         },
         "ListEntitiesResponse": {
-            "title": "List entities response",
+            "title": "List Entities response",
             "example": {
                 "type": "Room",
                 "id": "DC_S1-D41",
@@ -2419,7 +2419,7 @@
             ]
         },
         "CreateEntityRequest": {
-            "title": "Create entity request",
+            "title": "Create Entity request",
             "type": "object",
             "properties": {
                 "type": {
@@ -2493,7 +2493,7 @@
             ]
         },
         "RetrieveEntityResponse": {
-            "title": "Retrieve entity response",
+            "title": "Retrieve Entity response",
             "example": {
                 "type": "Room",
                 "id": "Bcn_Welt",
@@ -2568,7 +2568,7 @@
             ]
         },
         "RetrieveEntityAttributesResponse": {
-            "title": "Retrieve entity attributes response",
+            "title": "Retrieve Entity Attributes response",
             "example": {
                 "temperature": {
                     "value": 21.7,
@@ -2648,7 +2648,7 @@
             ]
         },
         "UpdateOrAppendEntityAttributesRequest": {
-            "title": "Update or append entity attributes request",
+            "title": "Update or Append Entity Attributes request",
             "type": "object",
             "properties": {
                 "ambientNoise": {
@@ -2664,7 +2664,7 @@
             ]
         },
         "UpdateExistingEntityAttributesRequest": {
-            "title": "Update existing entity attributes request",
+            "title": "Update Existing Entity Attributes request",
             "type": "object",
             "properties": {
                 "temperature": {
@@ -2744,7 +2744,7 @@
             ]
         },
         "UpdateAttributeDataRequest": {
-            "title": "Update attribute data request",
+            "title": "Update Attribute Data request",
             "type": "object",
             "properties": {
                 "value": {
@@ -2769,7 +2769,7 @@
             ]
         },
         "GetAttributeValueResponse": {
-            "title": "Get attribute value response",
+            "title": "Get Attribute Value response",
             "example": {
                 "address": "Ronda de la Comunicacion s/n",
                 "zipCode": 28050,
@@ -2808,7 +2808,7 @@
             ]
         },
         "UpdateAttributeValueRequest": {
-            "title": "Update attribute value request",
+            "title": "Update Attribute Value request",
             "type": "object",
             "properties": {
                 "address": {
@@ -2859,8 +2859,8 @@
                 "values"
             ]
         },
-        "RetrieveEntityTypesResponse": {
-            "title": "Retrieve entity types response",
+        "ListEntityTypesResponse": {
+            "title": "List Entity Types response",
             "example": {
                 "type": "Car",
                 "attrs": {
@@ -2996,8 +2996,8 @@
                 "count"
             ]
         },
-        "RetrieveSubscriptionsResponse": {
-            "title": "Retrieve subscriptions response",
+        "ListSubscriptionsResponse": {
+            "title": "List Subscriptions response",
             "example": {
                 "id": "abcdefg",
                 "description": "One subscription to rule them all",
@@ -3122,8 +3122,8 @@
                 "throttling"
             ]
         },
-        "CreateANewSubscriptionRequest": {
-            "title": "Create a new subscription request",
+        "CreateSubscriptionRequest": {
+            "title": "Create Subscription request",
             "type": "object",
             "properties": {
                 "description": {
@@ -3185,7 +3185,7 @@
             ]
         },
         "UpdateSubscriptionRequest": {
-            "title": "Update subscription request",
+            "title": "Update Subscription request",
             "type": "object",
             "properties": {
                 "expires": {
@@ -3198,8 +3198,8 @@
                 "expires"
             ]
         },
-        "RetrieveRegistrationsResponse": {
-            "title": "Retrieve registrations response",
+        "ListRegistrationsResponse": {
+            "title": "List Registrations response",
             "example": {
                 "id": "abcdefg",
                 "description": "Example Context Source",
@@ -3297,8 +3297,8 @@
                 "forwardingInformation"
             ]
         },
-        "CreateANewContextProviderRegistrationRequest": {
-            "title": "Create a new context provider registration request",
+        "CreateRegistrationRequest": {
+            "title": "Create Registration request",
             "type": "object",
             "properties": {
                 "description": {
@@ -3337,8 +3337,8 @@
                 "provider"
             ]
         },
-        "RetrieveContextProviderRegistrationResponse": {
-            "title": "Retrieve context provider registration response",
+        "RetrieveRegistrationResponse": {
+            "title": "Retrieve Registration response",
             "example": {
                 "id": "abcdefg",
                 "description": "Example Context Source",
@@ -3436,8 +3436,8 @@
                 "forwardingInformation"
             ]
         },
-        "UpdateContextProviderRegistrationRequest": {
-            "title": "Update context provider registration request",
+        "UpdateRegistrationRequest": {
+            "title": "Update Registration request",
             "type": "object",
             "properties": {
                 "expires": {
