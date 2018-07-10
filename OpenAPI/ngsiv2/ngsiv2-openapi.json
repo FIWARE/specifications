@@ -306,7 +306,7 @@
                 }
             },
             "post": {
-                "description": "The payload is an object representing the entity to be created. The object follows\nthe JSON entity representation format (described in a \"JSON Entity Representation\" section).\nResponse:\n* Successful operation uses 201 Created. Reponse includes a `Location` header with the URL of the\n  created entity.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
+                "description": "The payload is an object representing the entity to be created. The object follows\nthe JSON entity representation format (described in a \"JSON Entity Representation\" section).\nResponse:\n* Successful operation uses 201 Created (if upsert option is not used) or 204 No Content (if\n  upsert option is used). Response includes a `Location` header with the URL of the\n  created entity.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
                 "summary": "Create Entity",
                 "tags": [
                     "Entities"
@@ -337,11 +337,16 @@
                         "in": "query",
                         "required": false,
                         "enum": [
-                            "keyValues"
+                            "keyValues",
+                            "upsert"
                         ],
                         "x-enum-elements": [
                             {
                                 "name": "keyValues",
+                                "description": ""
+                            },
+                            {
+                                "name": "upsert",
                                 "description": ""
                             }
                         ],
@@ -350,7 +355,7 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "204": {
                         "description": ""
                     }
                 },
@@ -2082,7 +2087,7 @@
         },
         "/v2/op/update": {
             "post": {
-                "description": "This operation allows to create, update and/or delete several entities in a single batch operation.\nThe payload is an object with two properties:\n+ `actionType`, to specify the kind of update action to do: either APPEND, APPEND_STRICT, UPDATE,\n  DELETE, or REPLACE.\n+ `entities`, an array of entities, each entity specified using the JSON entity representation format\n  (described in the section \"JSON Entity Representation\").\nThis operation is split in as many individual operations as entities in the `entities` vector, so\nthe `actionType` is executed for each one of them. Depending on the `actionType`, a mapping with\nregular non-batch operations can be done:\n* APPEND: maps to `POST /v2/entities` (if the entity does not already exist) or `POST /v2/entities/<id>/attrs`\n  (if the entity already exists).\n* APPEND_STRICT: maps to `POST /v2/entities` (if the entity does not already exist) or\n  `POST /v2/entities/<id>/attrs?options=append` (if the entity already exists).\n* UPDATE: maps to `PATCH /v2/entities/<id>/attrs`.\n* DELETE: maps to `DELETE /v2/entities/<id>/attrs/<attrName>` on every attribute included in the entity or\n  to `DELETE /v2/entities/<id>` if no attribute were included in the entity.\n* REPLACE: maps to `PUT /v2/entities/<id>/attrs`.\nResponse:\n* Successful operation uses 204 No Content.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
+                "description": "This operation allows to create, update and/or delete several entities in a single batch operation.\nThe payload is an object with two properties:\n+ `actionType`, to specify the kind of update action to do: either `append`, `appendStrict`, `update`,\n  `delete`, or `replace`.\n+ `entities`, an array of entities, each entity specified using the JSON entity representation format\n  (described in the section \"JSON Entity Representation\").\nThis operation is split in as many individual operations as entities in the `entities` vector, so\nthe `actionType` is executed for each one of them. Depending on the `actionType`, a mapping with\nregular non-batch operations can be done:\n* `append`: maps to `POST /v2/entities` (if the entity does not already exist) or `POST /v2/entities/<id>/attrs`\n  (if the entity already exists).\n* `appendStrict`: maps to `POST /v2/entities` (if the entity does not already exist) or\n  `POST /v2/entities/<id>/attrs?options=append` (if the entity already exists).\n* `update`: maps to `PATCH /v2/entities/<id>/attrs`.\n* `delete`: maps to `DELETE /v2/entities/<id>/attrs/<attrName>` on every attribute included in the entity or\n  to `DELETE /v2/entities/<id>` if no attribute were included in the entity.\n* `replace`: maps to `PUT /v2/entities/<id>/attrs`.\nResponse:\n* Successful operation uses 204 No Content.\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
                 "summary": "Update",
                 "tags": [
                     "Batch Operations"
@@ -2141,7 +2146,7 @@
         },
         "/v2/op/query": {
             "post": {
-                "description": "The response payload is an Array containing one object per matching entity, or an empty array `[]` if \nno entities are found. The entities follow the JSON entity representation format\n(described in the section \"JSON Entity Representation\").\nThe payload may contain the following elements (all of them optional):\n+ `entities`: a list of entites to search for. Each element is represented by a JSON object with the\n  following elements:\n    + `id` or `idPattern`: Id or pattern of the affected entities. Both cannot be used at the same\n      time, but one of them must be present.\n    + `type` or `typePattern`: Type or type pattern of the entities to search for. Both cannot be used at\n      the same time. If omitted, it means \"any entity type\".\n+ `attributes`: a list of attribute names to search for. If omitted, it means \"all attributes\".\n+ `scopes`: a list of scopes to restrict the result of the query. Each scope is represented by a\n   JSON object with a `type` (a JSON string) and `value` (whose type depends on the `type`\n   property).\n   The different available scopes are described elsewhere.\n+ `metadata`: a list of metadata names to include in the response.\n   See \"Filtering out attributes and metadata\" section for more detail.\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
+                "description": "The response payload is an Array containing one object per matching entity, or an empty array `[]` if \nno entities are found. The entities follow the JSON entity representation format\n(described in the section \"JSON Entity Representation\").\nThe payload may contain the following elements (all of them optional):\n+ `entities`: a list of entites to search for. Each element is represented by a JSON object with the\n  following elements:\n    + `id` or `idPattern`: Id or pattern of the affected entities. Both cannot be used at the same\n      time, but one of them must be present.\n    + `type` or `typePattern`: Type or type pattern of the entities to search for. Both cannot be used at\n      the same time. If omitted, it means \"any entity type\".\n+ `attrs`: List of attributes to be provided (if not specified, all attributes).\n+ `expression`: an expression composed of `q`, `mq`, `georel`, `geometry` and `coords` (see \"List\n   entities\" operation above about this field).\n   The different available scopes are described elsewhere.\n+ `metadata`: a list of metadata names to include in the response.\n   See \"Filtering out attributes and metadata\" section for more detail.\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
                 "summary": "Query",
                 "tags": [
                     "Batch Operations"
@@ -2256,9 +2261,9 @@
                                 {
                                     "type": "Car",
                                     "id": "P-9873-K",
-                                    "speed": {
-                                        "value": 100,
-                                        "type": "number",
+                                    "temperature": {
+                                        "value": 40,
+                                        "type": "Number",
                                         "accuracy": 2,
                                         "timestamp": {
                                             "value": "2015-06-04T07:20:27.378Z",
@@ -2268,6 +2273,65 @@
                                 }
                             ]
                         }
+                    }
+                },
+                "x-unitTests": [],
+                "x-operation-settings": {
+                    "CollectParameters": false,
+                    "AllowDynamicQueryParameters": false,
+                    "AllowDynamicFormParameters": false,
+                    "IsMultiContentStreaming": false
+                }
+            }
+        },
+        "/v2/op/notify": {
+            "post": {
+                "description": "This operation is intended to consume a notification payload so that all the entity data included by such notification is persisted, overwriting if necessary.\nThis operation is useful when one NGSIv2 endpoint is subscribed to another NGSIv2 endpoint (federation scenarios). \nThe request payload must be an NGSIv2 notification payload. \nThe behaviour must be exactly the same as `POST /v2/op/update` with `actionType` equal to `append`.\nResponse code:\n* Successful operation uses 200 OK\n* Errors use a non-2xx and (optionally) an error payload. See subsection on \"Error Responses\" for\n  more details.",
+                "summary": "Notify",
+                "tags": [
+                    "Batch Operations"
+                ],
+                "operationId": "Notify",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": ""
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/NotifyRequest"
+                        }
+                    },
+                    {
+                        "name": "options",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "keyValues"
+                        ],
+                        "x-enum-elements": [
+                            {
+                                "name": "keyValues",
+                                "description": ""
+                            }
+                        ],
+                        "type": "string",
+                        "description": "Options dictionary"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
                     }
                 },
                 "x-unitTests": [],
@@ -2411,11 +2475,16 @@
                 {
                     "name": "keyValues",
                     "description": ""
+                },
+                {
+                    "name": "upsert",
+                    "description": ""
                 }
             ],
             "type": "string",
             "enum": [
-                "keyValues"
+                "keyValues",
+                "upsert"
             ]
         },
         "CreateEntityRequest": {
@@ -2468,8 +2537,8 @@
                 "location"
             ]
         },
-        "Options5": {
-            "title": "options5",
+        "Options6": {
+            "title": "options6",
             "example": "keyValues",
             "x-enum-elements": [
                 {
@@ -2628,8 +2697,8 @@
                 "location"
             ]
         },
-        "Options9": {
-            "title": "options9",
+        "Options10": {
+            "title": "options10",
             "example": "append",
             "x-enum-elements": [
                 {
@@ -2661,6 +2730,20 @@
             },
             "required": [
                 "ambientNoise"
+            ]
+        },
+        "Options12": {
+            "title": "options12",
+            "example": "keyValues",
+            "x-enum-elements": [
+                {
+                    "name": "keyValues",
+                    "description": ""
+                }
+            ],
+            "type": "string",
+            "enum": [
+                "keyValues"
             ]
         },
         "UpdateExistingEntityAttributesRequest": {
@@ -2840,8 +2923,8 @@
                 "country"
             ]
         },
-        "Options19": {
-            "title": "options19",
+        "Options20": {
+            "title": "options20",
             "example": "count",
             "x-enum-elements": [
                 {
@@ -2982,8 +3065,8 @@
                 "count"
             ]
         },
-        "Options22": {
-            "title": "options22",
+        "Options23": {
+            "title": "options23",
             "example": "count",
             "x-enum-elements": [
                 {
@@ -3456,7 +3539,7 @@
             "properties": {
                 "actionType": {
                     "description": "",
-                    "example": "APPEND",
+                    "example": "append",
                     "type": "string"
                 },
                 "entities": {
@@ -3503,11 +3586,11 @@
                     "example": [
                         {
                             "idPattern": ".*",
-                            "type": "myFooType"
+                            "type": "Room"
                         },
                         {
-                            "id": "myBar",
-                            "type": "myBarType"
+                            "id": "Car",
+                            "type": "P-9873-K"
                         }
                     ],
                     "type": "array",
@@ -3515,7 +3598,7 @@
                         "type": "object"
                     }
                 },
-                "attributes": {
+                "attrs": {
                     "description": "",
                     "example": [
                         "temperature",
@@ -3526,18 +3609,12 @@
                         "type": "string"
                     }
                 },
-                "scopes": {
+                "expression": {
                     "description": "",
-                    "example": [
-                        {
-                            "type": "FIWARE::...",
-                            "value": "..."
-                        }
-                    ],
-                    "type": "array",
-                    "items": {
-                        "type": "object"
-                    }
+                    "example": {
+                        "q": "temperature>20"
+                    },
+                    "type": "object"
                 },
                 "metadata": {
                     "description": "",
@@ -3553,8 +3630,8 @@
             },
             "required": [
                 "entities",
-                "attributes",
-                "scopes",
+                "attrs",
+                "expression",
                 "metadata"
             ]
         },
@@ -3587,24 +3664,52 @@
                         "type": "Number"
                     },
                     "type": "object"
-                },
-                "speed": {
-                    "description": "",
-                    "example": {
-                        "value": 100,
-                        "type": "number",
-                        "accuracy": 2,
-                        "timestamp": {
-                            "value": "2015-06-04T07:20:27.378Z",
-                            "type": "DateTime"
-                        }
-                    },
-                    "type": "object"
                 }
             },
             "required": [
                 "type",
-                "id"
+                "id",
+                "temperature"
+            ]
+        },
+        "NotifyRequest": {
+            "title": "Notify request",
+            "type": "object",
+            "properties": {
+                "subscriptionId": {
+                    "description": "",
+                    "example": "5aeb0ee97d4ef10a12a0262f",
+                    "type": "string"
+                },
+                "data": {
+                    "description": "",
+                    "example": [
+                        {
+                            "type": "Room",
+                            "id": "DC_S1-D41",
+                            "temperature": {
+                                "value": 35.6,
+                                "type": "Number"
+                            }
+                        },
+                        {
+                            "type": "Room",
+                            "id": "Boe-Idearium",
+                            "temperature": {
+                                "value": 22.5,
+                                "type": "Number"
+                            }
+                        }
+                    ],
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                }
+            },
+            "required": [
+                "subscriptionId",
+                "data"
             ]
         }
     }
