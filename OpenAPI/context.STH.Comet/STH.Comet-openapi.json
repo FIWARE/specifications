@@ -1,0 +1,685 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Short Time Historic (STH) (aka. Comet)",
+    "description": "TODO: Add a description"
+  },
+  "host": "localhost:8666",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/STH/v1/contextEntities/type/{entityType}/id/{entityId}/attributes/{attrName}?hLimit=3&hOffset=0&dateFrom=2015-01-01T00:00:00.000Z&dateTo=2015-12-31T23:59:59.999Z": {
+      "get": {
+        "description": "Gets the raw data stored by the STH from certain date onwards (or the origin of time if no starting date is provided) applying certain offset and a limit to the number of entries to be retrieved. Makes it possible to paginate over the stored raw data.",
+        "summary": "Get raw data",
+        "tags": [
+          "Raw data consumption"
+        ],
+        "operationId": "Get raw data",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Type of the entity whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Identifier of the entity whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "attrName",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Name of the attribute whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "hLimit",
+            "in": "query",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "Maximum number of raw data entries to retrieve."
+          },
+          {
+            "name": "hOffset",
+            "in": "query",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "Offset to be applied to the raw data to be retrieved."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-Service",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-ServicePath",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "The starting date from which the raw data should be retrieved. If not provided, the origin of time is used."
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "The final date until which the raw data should be retrieved. If not provided, the current date is used."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetRawDataResponse"
+            },
+            "examples": {
+              "application/json": {
+                "contextResponses": [
+                  {
+                    "contextElement": {
+                      "attributes": [
+                        {
+                          "name": "attrName",
+                          "values": [
+                            {
+                              "recvTime": "2014-02-14T13:43:33.306Z",
+                              "attrValue": "21.28"
+                            },
+                            {
+                              "recvTime": "2014-02-14T13:43:34.636Z",
+                              "attrValue": "23.42"
+                            },
+                            {
+                              "recvTime": "2014-02-14T13:43:35.424Z",
+                              "attrValue": "22.12"
+                            }
+                          ]
+                        }
+                      ],
+                      "id": "entityId",
+                      "isPattern": false
+                    },
+                    "statusCode": {
+                      "code": "200",
+                      "reasonPhrase": "OK"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/STH/v1/contextEntities/type/{entityType}/id/{entityId}/attributes/{attrName}?lastN=5&dateFrom=2015-01-01T00:00:00.000Z&dateTo=2015-12-31T23:59:59.999Z": {
+      "get": {
+        "description": "Gets the raw data stored by the STH since certain date backwards (or the current time if no final date is provided) limiting the number of results to be retrieved.",
+        "summary": "Filtering by number of last entries_Get raw data",
+        "tags": [
+          "Raw data consumption"
+        ],
+        "operationId": "Filtering by number of last entries_Get raw data",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Type of the entity whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Identifier of the entity whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "attrName",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Name of the attribute whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "lastN",
+            "in": "query",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "Number of raw data entries to retrieve since the final date backwards."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-Service",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-ServicePath",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "The starting date from which the raw data should be retrieved. If not provided, the origin of time is used."
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "The final date until which the raw data should be retrieved. If not provided, the current date is used."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Filtering by number of last entriesGet raw data response"
+            },
+            "examples": {
+              "application/json": {
+                "contextResponses": [
+                  {
+                    "contextElement": {
+                      "attributes": [
+                        {
+                          "name": "attrName",
+                          "values": [
+                            {
+                              "recvTime": "2014-02-14T13:43:33.306Z",
+                              "attrValue": "21.28"
+                            },
+                            {
+                              "recvTime": "2014-02-14T13:43:34.636Z",
+                              "attrValue": "23.42"
+                            },
+                            {
+                              "recvTime": "2014-02-14T13:43:35.424Z",
+                              "attrValue": "22.12"
+                            }
+                          ]
+                        }
+                      ],
+                      "id": "entityId",
+                      "isPattern": false
+                    },
+                    "statusCode": {
+                      "code": "200",
+                      "reasonPhrase": "OK"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/STH/v1/contextEntities/type/{entityType}/id/{entityId}/attributes/{attrName}?aggrMethod=sum&aggrPeriod=second&dateFrom=2015-01-01T00:00:00.000Z&dateTo=2015-12-31T23:59:59.999Z": {
+      "get": {
+        "description": "Gets the aggregated data stored by the STH for certain aggregation method and using certain resolution. Combining the information provided by these aggregated methods with the number of samples, it is possible to calculate probabilistic values such as the average value, the variance as well as the standard deviation.",
+        "summary": "Get aggregated data",
+        "tags": [
+          "Aggregated data consumption"
+        ],
+        "operationId": "Get aggregated data",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Type of the entity whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "entityId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Identifier of the entity whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "attrName",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Name of the attribute whose associated raw data wants to be retrieved."
+          },
+          {
+            "name": "aggrMethod",
+            "in": "query",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "The aggregation method.  In case of numeric attribute values, the STH supports the following aggregation methods: *max* - maximum value, *min* - minimum value, *sum* - sum of all the samples, and *sum2* - sum of the square value of all the samples. On the other hand and in case of textual attribute values, the STH supports the *occur* aggregation method to count the occurrences of each string value."
+          },
+          {
+            "name": "aggrPeriod",
+            "in": "query",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "The aggregation period or resolution of the aggregated data to be retrieved."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-Service",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-ServicePath",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "The starting date from which the raw data should be retrieved. If not provided, the origin of time is used."
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "The final date until which the raw data should be retrieved. If not provided, the current date is used."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetAggregatedDataResponse"
+            },
+            "examples": {
+              "application/json": {
+                "contextResponses": [
+                  {
+                    "contextElement": {
+                      "attributes": [
+                        {
+                          "name": "attrName",
+                          "values": [
+                            {
+                              "_id": {
+                                "origin": "2015-02-18T02:46:00Z",
+                                "resolution": "second"
+                              },
+                              "points": [
+                                {
+                                  "offset": 13,
+                                  "samples": 1,
+                                  "sum": 34.59
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "id": "entityId",
+                      "isPattern": false
+                    },
+                    "statusCode": {
+                      "code": "200",
+                      "reasonPhrase": "OK"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GetRawDataResponse": {
+      "title": "Get raw data response",
+      "example": {
+        "contextResponses": [
+          {
+            "contextElement": {
+              "attributes": [
+                {
+                  "name": "attrName",
+                  "values": [
+                    {
+                      "recvTime": "2014-02-14T13:43:33.306Z",
+                      "attrValue": "21.28"
+                    },
+                    {
+                      "recvTime": "2014-02-14T13:43:34.636Z",
+                      "attrValue": "23.42"
+                    },
+                    {
+                      "recvTime": "2014-02-14T13:43:35.424Z",
+                      "attrValue": "22.12"
+                    }
+                  ]
+                }
+              ],
+              "id": "entityId",
+              "isPattern": false
+            },
+            "statusCode": {
+              "code": "200",
+              "reasonPhrase": "OK"
+            }
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "contextResponses": {
+          "description": "",
+          "example": [
+            {
+              "contextElement": {
+                "attributes": [
+                  {
+                    "name": "attrName",
+                    "values": [
+                      {
+                        "recvTime": "2014-02-14T13:43:33.306Z",
+                        "attrValue": "21.28"
+                      },
+                      {
+                        "recvTime": "2014-02-14T13:43:34.636Z",
+                        "attrValue": "23.42"
+                      },
+                      {
+                        "recvTime": "2014-02-14T13:43:35.424Z",
+                        "attrValue": "22.12"
+                      }
+                    ]
+                  }
+                ],
+                "id": "entityId",
+                "isPattern": false
+              },
+              "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+              }
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "contextResponses"
+      ]
+    },
+    "Filtering by number of last entriesGet raw data response": {
+      "title": "Filtering by number of last entries_Get raw data response",
+      "example": {
+        "contextResponses": [
+          {
+            "contextElement": {
+              "attributes": [
+                {
+                  "name": "attrName",
+                  "values": [
+                    {
+                      "recvTime": "2014-02-14T13:43:33.306Z",
+                      "attrValue": "21.28"
+                    },
+                    {
+                      "recvTime": "2014-02-14T13:43:34.636Z",
+                      "attrValue": "23.42"
+                    },
+                    {
+                      "recvTime": "2014-02-14T13:43:35.424Z",
+                      "attrValue": "22.12"
+                    }
+                  ]
+                }
+              ],
+              "id": "entityId",
+              "isPattern": false
+            },
+            "statusCode": {
+              "code": "200",
+              "reasonPhrase": "OK"
+            }
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "contextResponses": {
+          "description": "",
+          "example": [
+            {
+              "contextElement": {
+                "attributes": [
+                  {
+                    "name": "attrName",
+                    "values": [
+                      {
+                        "recvTime": "2014-02-14T13:43:33.306Z",
+                        "attrValue": "21.28"
+                      },
+                      {
+                        "recvTime": "2014-02-14T13:43:34.636Z",
+                        "attrValue": "23.42"
+                      },
+                      {
+                        "recvTime": "2014-02-14T13:43:35.424Z",
+                        "attrValue": "22.12"
+                      }
+                    ]
+                  }
+                ],
+                "id": "entityId",
+                "isPattern": false
+              },
+              "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+              }
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "contextResponses"
+      ]
+    },
+    "GetAggregatedDataResponse": {
+      "title": "Get aggregated data response",
+      "example": {
+        "contextResponses": [
+          {
+            "contextElement": {
+              "attributes": [
+                {
+                  "name": "attrName",
+                  "values": [
+                    {
+                      "_id": {
+                        "origin": "2015-02-18T02:46:00Z",
+                        "resolution": "second"
+                      },
+                      "points": [
+                        {
+                          "offset": 13,
+                          "samples": 1,
+                          "sum": 34.59
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "id": "entityId",
+              "isPattern": false
+            },
+            "statusCode": {
+              "code": "200",
+              "reasonPhrase": "OK"
+            }
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "contextResponses": {
+          "description": "",
+          "example": [
+            {
+              "contextElement": {
+                "attributes": [
+                  {
+                    "name": "attrName",
+                    "values": [
+                      {
+                        "_id": {
+                          "origin": "2015-02-18T02:46:00Z",
+                          "resolution": "second"
+                        },
+                        "points": [
+                          {
+                            "offset": 13,
+                            "samples": 1,
+                            "sum": 34.59
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "id": "entityId",
+                "isPattern": false
+              },
+              "statusCode": {
+                "code": "200",
+                "reasonPhrase": "OK"
+              }
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "contextResponses"
+      ]
+    }
+  }
+}
