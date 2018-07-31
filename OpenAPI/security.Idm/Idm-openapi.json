@@ -1,0 +1,5330 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Identity Manager GE - Keyrock",
+    "description": "TODO: Add a description"
+  },
+  "host": "keyrock",
+  "basePath": "/",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "http://keyrock",
+      "scopes": {},
+      "x-skip-client-authentication": false
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/auth/tokens": {
+      "get": {
+        "description": "In order to manage the Identity Manager through the API you must obtain an access token to be included in HTTP headers. There are two methods to obtain an access token.",
+        "summary": "Get token info",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Get token info",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Subject-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetTokenInfoResponse"
+            },
+            "examples": {
+              "application/json": {
+                "access_token": "f0a0a067-6341-4943-8225-45f794b3d94b",
+                "expires": "2018-03-21T15:22:33Z",
+                "valid": true,
+                "User": {
+                  "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                  "username": "alice_new",
+                  "email": "alice@test.com",
+                  "date_password": "2018-03-20T12:12:09Z",
+                  "enabled": true,
+                  "admin": false
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "In order to manage the Identity Manager through the API you must obtain an access token to be included in HTTP headers. There are two methods to obtain an access token.",
+        "summary": "Create token with Token method",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create token with Token method",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateTokenWithTokenMethodRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateTokenWithTokenMethodResponse"
+            },
+            "examples": {
+              "application/json": {
+                "token": {
+                  "methods": [
+                    "password"
+                  ],
+                  "expires_at": "2018-03-20T15:05:35.697Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "In order to manage the Identity Manager through the API you must obtain an access token to be included in HTTP headers. There are two methods to obtain an access token.",
+        "summary": "Delete token",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete token",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Subject-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications": {
+      "get": {
+        "description": "Applications are registered in Keyrock and consume OAuth2 resources.",
+        "summary": "List Applications",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List Applications",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListApplicationsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "applications": [
+                  {
+                    "id": "0fbfa58c-e5b6-41c3-b748-ab29f1567a9c",
+                    "name": "Test_application 2",
+                    "description": "Description",
+                    "image": "default",
+                    "url": "http://localhost",
+                    "redirect_uri": "http://localhost/login",
+                    "grant_type": "client_credentials,password,implicit,authorization_code,refresh_token",
+                    "response_type": "code,token",
+                    "client_type": null
+                  },
+                  {
+                    "id": "fd7fe349-f7da-4c27-b404-74da17641025",
+                    "name": "Test_application 1",
+                    "description": "description",
+                    "image": "default",
+                    "url": "http://localhost",
+                    "redirect_uri": "http://localhost/login",
+                    "grant_type": "password,authorization_code,implicit",
+                    "response_type": "code,token",
+                    "client_type": null
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "Applications are registered in Keyrock and consume OAuth2 resources.",
+        "summary": "Create an Application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create an Application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAnApplicationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAnApplicationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "application": {
+                  "id": "fd7fe349-f7da-4c27-b404-74da17641025",
+                  "secret": "9dc463cf-8318-4f65-bc02-778424fdfd77",
+                  "image": "default",
+                  "name": "Test_application 1",
+                  "description": "description",
+                  "redirect_uri": "http://localhost/login",
+                  "url": "http://localhost",
+                  "grant_type": "password,authorization_code,implicit",
+                  "response_type": "code,token"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}": {
+      "get": {
+        "description": "",
+        "summary": "Read Application details",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Read Application details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReadApplicationDetailsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "application": {
+                  "id": "0fbfa58c-e5b6-41c3-b748-ab29f1567a9c",
+                  "name": "Test_application 2",
+                  "description": "Description",
+                  "secret": "61f5def7-bcf9-45b1-9c69-d0887e403737",
+                  "url": "http://localhost",
+                  "redirect_uri": "http://localhost/login",
+                  "image": "default",
+                  "grant_type": "client_credentials,password,implicit,authorization_code,refresh_token",
+                  "response_type": "code,token",
+                  "client_type": null,
+                  "scope": null,
+                  "extra": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete an Application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete an Application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "",
+        "summary": "Update an Application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Update an Application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAnApplicationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAnApplicationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "values_updated": {
+                  "name": "new name",
+                  "description": "new description",
+                  "redirect_uri": "new redirect uri",
+                  "grant_type": "password,authorization_code",
+                  "response_type": "code"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/users": {
+      "get": {
+        "description": "",
+        "summary": "List Users",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List Users",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListUsersResponse"
+            },
+            "examples": {
+              "application/json": {
+                "users": [
+                  {
+                    "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                    "username": "alice",
+                    "email": "alice@test.com",
+                    "enabled": true,
+                    "gravatar": false,
+                    "date_password": "2018-03-20T09:31:07Z",
+                    "description": null,
+                    "website": null
+                  },
+                  {
+                    "id": "admin",
+                    "username": "admin",
+                    "email": "admin@test.com",
+                    "enabled": true,
+                    "gravatar": false,
+                    "date_password": "2018-03-20T08:40:14Z",
+                    "description": null,
+                    "website": null
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "",
+        "summary": "Create a User",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create a User",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAUserRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAUserResponse"
+            },
+            "examples": {
+              "application/json": {
+                "user": {
+                  "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                  "image": "default",
+                  "gravatar": false,
+                  "enabled": true,
+                  "admin": false,
+                  "username": "alice",
+                  "email": "alice@test.com",
+                  "date_password": "2018-03-20T09:31:07.104Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/users/{user_id}": {
+      "get": {
+        "description": "",
+        "summary": "Read info about a User",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Read info about a User",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReadInfoAboutAUserResponse"
+            },
+            "examples": {
+              "application/json": {
+                "user": {
+                  "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                  "username": "alice",
+                  "email": "alice@test.com",
+                  "enabled": true,
+                  "admin": false,
+                  "image": "default",
+                  "gravatar": false,
+                  "date_password": "2018-03-20T09:31:07Z",
+                  "description": null,
+                  "website": null
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete a User",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete a User",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "",
+        "summary": "Update a User",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Update a User",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAUserRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAUserResponse"
+            },
+            "examples": {
+              "application/json": {
+                "values_updated": {
+                  "username": "alice_new",
+                  "email": "alice_new@test.com"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/organizations": {
+      "get": {
+        "description": "",
+        "summary": "List Organizations",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List Organizations",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListOrganizationsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "organizations": [
+                  {
+                    "role": "owner",
+                    "Organization": {
+                      "id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                      "name": "Test organization 2",
+                      "description": "description 2",
+                      "image": "default",
+                      "website": null
+                    }
+                  },
+                  {
+                    "role": "owner",
+                    "Organization": {
+                      "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                      "name": "Test organization",
+                      "description": "description",
+                      "image": "default",
+                      "website": null
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "",
+        "summary": "Create an Organization",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create an Organization",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAnOrganizationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAnOrganizationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "organization": {
+                  "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                  "image": "default",
+                  "name": "Test organization",
+                  "description": "description"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/organizations/{organization_id}": {
+      "get": {
+        "description": "",
+        "summary": "Read info about an Organization",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Read info about an Organization",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReadInfoAboutAnOrganizationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "organization": {
+                  "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                  "name": "Test organization",
+                  "description": "description",
+                  "website": null,
+                  "image": "default"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete an Organization",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete an Organization",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "",
+        "summary": "Update an Organization",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Update an Organization",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAnOrganizationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAnOrganizationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "values_updated": {
+                  "description": "new description",
+                  "website": "http://test.com"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/roles": {
+      "get": {
+        "description": "",
+        "summary": "List Roles",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List Roles",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListRolesResponse"
+            },
+            "examples": {
+              "application/json": {
+                "roles": [
+                  {
+                    "id": "purchaser",
+                    "name": "Purchaser"
+                  },
+                  {
+                    "id": "provider",
+                    "name": "Provider"
+                  },
+                  {
+                    "id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b",
+                    "name": "role 2"
+                  },
+                  {
+                    "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+                    "name": "role 1"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "",
+        "summary": "Create a Role",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create a Role",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateARoleRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateARoleResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role": {
+                  "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+                  "is_internal": false,
+                  "name": "role 1",
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/roles/{role_id}": {
+      "get": {
+        "description": "",
+        "summary": "Read Role details",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Read Role details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReadRoleDetailsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role": {
+                  "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+                  "name": "role 1",
+                  "is_internal": false,
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete a Role",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete a Role",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "",
+        "summary": "Update a Role",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Update a Role",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateARoleRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateARoleResponse"
+            },
+            "examples": {
+              "application/json": {
+                "values_updated": {
+                  "name": "new role name"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/permissions": {
+      "get": {
+        "description": "",
+        "summary": "List Permissions",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List Permissions",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListPermissionsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "permissions": [
+                  {
+                    "id": "6",
+                    "name": "Get and assign only public owned roles",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  },
+                  {
+                    "id": "5",
+                    "name": "Get and assign all public application roles",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  },
+                  {
+                    "id": "4",
+                    "name": "Manage authorizations",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  },
+                  {
+                    "id": "3",
+                    "name": "Manage roles",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  },
+                  {
+                    "id": "2",
+                    "name": "Manage the application",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  },
+                  {
+                    "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+                    "name": "permission 1",
+                    "description": null,
+                    "action": "GET",
+                    "resource": "login",
+                    "xml": null
+                  },
+                  {
+                    "id": "1",
+                    "name": "Get and assign all internal application roles",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "",
+        "summary": "Create a Permission",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create a Permission",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAPermissionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAPermissionResponse"
+            },
+            "examples": {
+              "application/json": {
+                "permission": {
+                  "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+                  "is_internal": false,
+                  "name": "permission 1",
+                  "action": "GET",
+                  "resource": "login",
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/permissions/{permission_id}": {
+      "get": {
+        "description": "",
+        "summary": "Read Permission details",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Read Permission details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "permission_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the permission."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReadPermissionDetailsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "permission": {
+                  "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+                  "name": "permission 1",
+                  "description": null,
+                  "is_internal": false,
+                  "action": "GET",
+                  "resource": "login",
+                  "xml": null,
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete a Permission",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete a Permission",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "permission_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the permission."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "",
+        "summary": "Update a Permission",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Update a Permission",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "permission_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the permission."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAPermissionRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateAPermissionResponse"
+            },
+            "examples": {
+              "application/json": {
+                "values_updated": {
+                  "name": "new name permission",
+                  "description": "new description permission",
+                  "xml": "xml rule"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/pep_proxies": {
+      "get": {
+        "description": "",
+        "summary": "Info Pep Proxy",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Info Pep Proxy",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/InfoPepProxyResponse"
+            },
+            "examples": {
+              "application/json": {
+                "pep_proxy": {
+                  "id": "pep_proxy_2d19d297-e555-4e3a-a18d-22deda37036a",
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "",
+        "summary": "Create a Pep Proxy",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create a Pep Proxy",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAPepProxyResponse"
+            },
+            "examples": {
+              "application/json": {
+                "pep_proxy": {
+                  "id": "pep_proxy_2d19d297-e555-4e3a-a18d-22deda37036a",
+                  "password": "pep_proxy_950468f7-4198-42e1-8f41-4b1f8c5bc1f2"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete Pep Proxy",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete Pep Proxy",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "",
+        "summary": "Reset Password of Pep Proxy",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Reset Password of Pep Proxy",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordOfPepProxyResponse"
+            },
+            "examples": {
+              "application/json": {
+                "new_password": "pep_proxy_3b2c8791-71b9-444a-b8c7-00d37cf35149"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/iot_agents": {
+      "get": {
+        "description": "",
+        "summary": "List of Iot Agents",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List of Iot Agents",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListOfIotAgentsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "iots": [
+                  {
+                    "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7"
+                  },
+                  {
+                    "id": "iot_sensor_74df472c-0fd1-4b8a-8f13-c6848307bc7d"
+                  },
+                  {
+                    "id": "iot_sensor_f95fc041-7102-4be7-8948-37fb571afa89"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "",
+        "summary": "Create an Iot Agent",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create an Iot Agent",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateAnIotAgentResponse"
+            },
+            "examples": {
+              "application/json": {
+                "iot": {
+                  "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7",
+                  "password": "iot_sensor_14569214-60d7-44d1-856c-ec8d8967aba2"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/permissions/{iot_agent_id}": {
+      "get": {
+        "description": "",
+        "summary": "Read Iot agent details",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Read Iot agent details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "iot_agent_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the iot agent."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReadIotAgentDetailsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "iot": {
+                  "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7",
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete an Iot Agent",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete an Iot Agent",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "iot_agent_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the iot agent."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "",
+        "summary": "Reset Password of Iot Agent",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Reset Password of Iot Agent",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "iot_agent_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the iot agent."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ResetPasswordOfIotAgentResponse"
+            },
+            "examples": {
+              "application/json": {
+                "new_password": "iot_sensor_9d209e51-bff1-4a20-a0f1-d75706f95b04"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/roles/{role_id}/permissions": {
+      "get": {
+        "description": "",
+        "summary": "List permissions associated to a role",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List permissions associated to a role",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListPermissionsAssociatedToARoleResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_permission_assignments": [
+                  {
+                    "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+                    "is_internal": false,
+                    "name": "new name permission",
+                    "description": "new description permission",
+                    "action": null,
+                    "resource": null,
+                    "xml": "xml rule"
+                  },
+                  {
+                    "id": "3",
+                    "is_internal": true,
+                    "name": "Manage roles",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  },
+                  {
+                    "id": "1",
+                    "is_internal": true,
+                    "name": "Get and assign all internal application roles",
+                    "description": null,
+                    "action": null,
+                    "resource": null,
+                    "xml": null
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/roles/{role_id}/permissions/{permission_id}": {
+      "post": {
+        "description": "",
+        "summary": "Assign a permission to a role",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Assign a permission to a role",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "permission_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the permission."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AssignAPermissionToARoleResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_permission_assignments": {
+                  "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+                  "permission_id": "4"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Remove a permission from a role",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Remove a permission from a role",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "permission_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the permission."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/users": {
+      "get": {
+        "description": "",
+        "summary": "List users in an application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List users in an application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListUsersInAnApplicationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_user_assignments": [
+                  {
+                    "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                    "role_id": "provider"
+                  },
+                  {
+                    "user_id": "admin",
+                    "role_id": "purchaser"
+                  },
+                  {
+                    "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                    "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+                  },
+                  {
+                    "user_id": "admin",
+                    "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/users/{user_id}/roles": {
+      "get": {
+        "description": "",
+        "summary": "List users role assignments",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List users role assignments",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListUsersRoleAssignmentsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_user_assignments": [
+                  {
+                    "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                    "role_id": "provider"
+                  },
+                  {
+                    "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                    "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/users/{user_id}/roles/{role_id}": {
+      "post": {
+        "description": "",
+        "summary": "Assign a role to a user",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Assign a role to a user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AssignARoleToAUserResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_user_assignments": {
+                  "role_id": "purchaser",
+                  "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Remove a role assignment from a user",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Remove a role assignment from a user",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/organizations": {
+      "get": {
+        "description": "",
+        "summary": "List organizations in an application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List organizations in an application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListOrganizationsInAnApplicationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_organization_assignments": [
+                  {
+                    "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                    "role_organization": "owner",
+                    "role_id": "purchaser"
+                  },
+                  {
+                    "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                    "role_organization": "owner",
+                    "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+                  },
+                  {
+                    "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                    "role_organization": "member",
+                    "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+                  },
+                  {
+                    "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                    "role_organization": "owner",
+                    "role_id": "provider"
+                  },
+                  {
+                    "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                    "role_organization": "owner",
+                    "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+                  },
+                  {
+                    "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                    "role_organization": "member",
+                    "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/organizations/{organization_id}/roles": {
+      "get": {
+        "description": "",
+        "summary": "List organizations role assignments",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List organizations role assignments",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListOrganizationsRoleAssignmentsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_organization_assignments": [
+                  {
+                    "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                    "role_id": "purchaser"
+                  },
+                  {
+                    "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                    "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+                  },
+                  {
+                    "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                    "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/organizations/{organization_id}/roles/{role_id}/organization_roles/{organization_role_id}": {
+      "post": {
+        "description": "",
+        "summary": "Assign a role to a organization",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Assign a role to a organization",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "organization_role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of organization role."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AssignARoleToAOrganizationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "role_organization_assignments": {
+                  "role_id": "provider",
+                  "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                  "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025",
+                  "role_organization": "owner"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Remove a role assignment from an organization",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Remove a role assignment from an organization",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the role."
+          },
+          {
+            "name": "organization_role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of organization role."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/organizations/{organization_id}/users": {
+      "get": {
+        "description": "",
+        "summary": "List members",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List members",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListMembersResponse"
+            },
+            "examples": {
+              "application/json": {
+                "organization_users": [
+                  {
+                    "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+                    "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                    "role": "owner"
+                  },
+                  {
+                    "user_id": "admin",
+                    "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                    "role": "member"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/organizations/{organization_id}/users/{user_id}/organization_roles": {
+      "get": {
+        "description": "",
+        "summary": "Info of user organization relationship",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Info of user organization relationship",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/InfoOfUserOrganizationRelationshipResponse"
+            },
+            "examples": {
+              "application/json": {
+                "organization_user": {
+                  "user_id": "admin",
+                  "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                  "role": "member"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/organizations/{organization_id}/users/{user_id}/organization_roles/{organization_role_id}": {
+      "post": {
+        "description": "",
+        "summary": "Create relationship",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Create relationship",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "organization_role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization role."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateRelationshipResponse"
+            },
+            "examples": {
+              "application/json": {
+                "user_organization_assignments": {
+                  "role": "owner",
+                  "user_id": "admin",
+                  "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Delete relationship",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Delete relationship",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization."
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the user."
+          },
+          {
+            "name": "organization_role_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the organization role."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/service_providers/configs": {
+      "get": {
+        "description": "\"Information\" provides the number of total users, total organizations, and the number of applications.",
+        "summary": "Read Service Provider Configuration",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Read Service Provider Configuration",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ReadServiceProviderConfigurationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "information": {
+                  "totalUsers": 2,
+                  "totalOrganizations": 2,
+                  "totalApplications": 4
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateTokenWithPasswordMethodRequest": {
+      "title": "Create token with Password method request",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "",
+          "example": "alice@test.com",
+          "type": "string"
+        },
+        "password": {
+          "description": "",
+          "example": "passw0rd",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "password"
+      ]
+    },
+    "CreateTokenWithPasswordMethodResponse": {
+      "title": "Create token with Password method response",
+      "example": {
+        "token": {
+          "methods": [
+            "password"
+          ],
+          "expires_at": "2018-03-20T15:05:35.697Z"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "token": {
+          "description": "",
+          "example": {
+            "methods": [
+              "password"
+            ],
+            "expires_at": "2018-03-20T15:05:35.697Z"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "token"
+      ]
+    },
+    "CreateTokenWithTokenMethodRequest": {
+      "title": "Create token with Token method request",
+      "type": "object",
+      "properties": {
+        "token": {
+          "description": "",
+          "example": "token_id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "token"
+      ]
+    },
+    "CreateTokenWithTokenMethodResponse": {
+      "title": "Create token with Token method response",
+      "example": {
+        "token": {
+          "methods": [
+            "password"
+          ],
+          "expires_at": "2018-03-20T15:05:35.697Z"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "token": {
+          "description": "",
+          "example": {
+            "methods": [
+              "password"
+            ],
+            "expires_at": "2018-03-20T15:05:35.697Z"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "token"
+      ]
+    },
+    "GetTokenInfoResponse": {
+      "title": "Get token info response",
+      "example": {
+        "access_token": "f0a0a067-6341-4943-8225-45f794b3d94b",
+        "expires": "2018-03-21T15:22:33Z",
+        "valid": true,
+        "User": {
+          "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+          "username": "alice_new",
+          "email": "alice@test.com",
+          "date_password": "2018-03-20T12:12:09Z",
+          "enabled": true,
+          "admin": false
+        }
+      },
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "description": "",
+          "example": "f0a0a067-6341-4943-8225-45f794b3d94b",
+          "type": "string"
+        },
+        "expires": {
+          "description": "",
+          "example": "3/21/2018 3:22:33 PM",
+          "type": "string"
+        },
+        "valid": {
+          "description": "",
+          "example": true,
+          "type": "boolean"
+        },
+        "User": {
+          "description": "",
+          "example": {
+            "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "username": "alice_new",
+            "email": "alice@test.com",
+            "date_password": "2018-03-20T12:12:09Z",
+            "enabled": true,
+            "admin": false
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "access_token",
+        "expires",
+        "valid",
+        "User"
+      ]
+    },
+    "ListApplicationsResponse": {
+      "title": "List Applications response",
+      "example": {
+        "applications": [
+          {
+            "id": "0fbfa58c-e5b6-41c3-b748-ab29f1567a9c",
+            "name": "Test_application 2",
+            "description": "Description",
+            "image": "default",
+            "url": "http://localhost",
+            "redirect_uri": "http://localhost/login",
+            "grant_type": "client_credentials,password,implicit,authorization_code,refresh_token",
+            "response_type": "code,token",
+            "client_type": null
+          },
+          {
+            "id": "fd7fe349-f7da-4c27-b404-74da17641025",
+            "name": "Test_application 1",
+            "description": "description",
+            "image": "default",
+            "url": "http://localhost",
+            "redirect_uri": "http://localhost/login",
+            "grant_type": "password,authorization_code,implicit",
+            "response_type": "code,token",
+            "client_type": null
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "applications": {
+          "description": "",
+          "example": [
+            {
+              "id": "0fbfa58c-e5b6-41c3-b748-ab29f1567a9c",
+              "name": "Test_application 2",
+              "description": "Description",
+              "image": "default",
+              "url": "http://localhost",
+              "redirect_uri": "http://localhost/login",
+              "grant_type": "client_credentials,password,implicit,authorization_code,refresh_token",
+              "response_type": "code,token",
+              "client_type": null
+            },
+            {
+              "id": "fd7fe349-f7da-4c27-b404-74da17641025",
+              "name": "Test_application 1",
+              "description": "description",
+              "image": "default",
+              "url": "http://localhost",
+              "redirect_uri": "http://localhost/login",
+              "grant_type": "password,authorization_code,implicit",
+              "response_type": "code,token",
+              "client_type": null
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "applications"
+      ]
+    },
+    "CreateAnApplicationRequest": {
+      "title": "Create an Application request",
+      "type": "object",
+      "properties": {
+        "application": {
+          "description": "",
+          "example": {
+            "name": "Test_application 1",
+            "description": "description",
+            "redirect_uri": "http://localhost/login",
+            "url": "http://localhost",
+            "grant_type": [
+              "authorization_code",
+              "implicit",
+              "password"
+            ]
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "application"
+      ]
+    },
+    "CreateAnApplicationResponse": {
+      "title": "Create an Application response",
+      "example": {
+        "application": {
+          "id": "fd7fe349-f7da-4c27-b404-74da17641025",
+          "secret": "9dc463cf-8318-4f65-bc02-778424fdfd77",
+          "image": "default",
+          "name": "Test_application 1",
+          "description": "description",
+          "redirect_uri": "http://localhost/login",
+          "url": "http://localhost",
+          "grant_type": "password,authorization_code,implicit",
+          "response_type": "code,token"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "application": {
+          "description": "",
+          "example": {
+            "id": "fd7fe349-f7da-4c27-b404-74da17641025",
+            "secret": "9dc463cf-8318-4f65-bc02-778424fdfd77",
+            "image": "default",
+            "name": "Test_application 1",
+            "description": "description",
+            "redirect_uri": "http://localhost/login",
+            "url": "http://localhost",
+            "grant_type": "password,authorization_code,implicit",
+            "response_type": "code,token"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "application"
+      ]
+    },
+    "ReadApplicationDetailsResponse": {
+      "title": "Read Application details response",
+      "example": {
+        "application": {
+          "id": "0fbfa58c-e5b6-41c3-b748-ab29f1567a9c",
+          "name": "Test_application 2",
+          "description": "Description",
+          "secret": "61f5def7-bcf9-45b1-9c69-d0887e403737",
+          "url": "http://localhost",
+          "redirect_uri": "http://localhost/login",
+          "image": "default",
+          "grant_type": "client_credentials,password,implicit,authorization_code,refresh_token",
+          "response_type": "code,token",
+          "client_type": null,
+          "scope": null,
+          "extra": null
+        }
+      },
+      "type": "object",
+      "properties": {
+        "application": {
+          "description": "",
+          "example": {
+            "id": "0fbfa58c-e5b6-41c3-b748-ab29f1567a9c",
+            "name": "Test_application 2",
+            "description": "Description",
+            "secret": "61f5def7-bcf9-45b1-9c69-d0887e403737",
+            "url": "http://localhost",
+            "redirect_uri": "http://localhost/login",
+            "image": "default",
+            "grant_type": "client_credentials,password,implicit,authorization_code,refresh_token",
+            "response_type": "code,token",
+            "client_type": null,
+            "scope": null,
+            "extra": null
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "application"
+      ]
+    },
+    "UpdateAnApplicationRequest": {
+      "title": "Update an Application request",
+      "type": "object",
+      "properties": {
+        "application": {
+          "description": "",
+          "example": {
+            "name": "new name",
+            "description": "new description",
+            "redirect_uri": "new redirect uri",
+            "grant_type": [
+              "authorization_code",
+              "password"
+            ]
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "application"
+      ]
+    },
+    "UpdateAnApplicationResponse": {
+      "title": "Update an Application response",
+      "example": {
+        "values_updated": {
+          "name": "new name",
+          "description": "new description",
+          "redirect_uri": "new redirect uri",
+          "grant_type": "password,authorization_code",
+          "response_type": "code"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "values_updated": {
+          "description": "",
+          "example": {
+            "name": "new name",
+            "description": "new description",
+            "redirect_uri": "new redirect uri",
+            "grant_type": "password,authorization_code",
+            "response_type": "code"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "values_updated"
+      ]
+    },
+    "ListUsersResponse": {
+      "title": "List Users response",
+      "example": {
+        "users": [
+          {
+            "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "username": "alice",
+            "email": "alice@test.com",
+            "enabled": true,
+            "gravatar": false,
+            "date_password": "2018-03-20T09:31:07Z",
+            "description": null,
+            "website": null
+          },
+          {
+            "id": "admin",
+            "username": "admin",
+            "email": "admin@test.com",
+            "enabled": true,
+            "gravatar": false,
+            "date_password": "2018-03-20T08:40:14Z",
+            "description": null,
+            "website": null
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "users": {
+          "description": "",
+          "example": [
+            {
+              "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+              "username": "alice",
+              "email": "alice@test.com",
+              "enabled": true,
+              "gravatar": false,
+              "date_password": "2018-03-20T09:31:07Z",
+              "description": null,
+              "website": null
+            },
+            {
+              "id": "admin",
+              "username": "admin",
+              "email": "admin@test.com",
+              "enabled": true,
+              "gravatar": false,
+              "date_password": "2018-03-20T08:40:14Z",
+              "description": null,
+              "website": null
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "users"
+      ]
+    },
+    "CreateAUserRequest": {
+      "title": "Create a User request",
+      "type": "object",
+      "properties": {
+        "user": {
+          "description": "",
+          "example": {
+            "username": "alice",
+            "email": "alice@test.com",
+            "password": "passw0rd"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "user"
+      ]
+    },
+    "CreateAUserResponse": {
+      "title": "Create a User response",
+      "example": {
+        "user": {
+          "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+          "image": "default",
+          "gravatar": false,
+          "enabled": true,
+          "admin": false,
+          "username": "alice",
+          "email": "alice@test.com",
+          "date_password": "2018-03-20T09:31:07.104Z"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "user": {
+          "description": "",
+          "example": {
+            "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "image": "default",
+            "gravatar": false,
+            "enabled": true,
+            "admin": false,
+            "username": "alice",
+            "email": "alice@test.com",
+            "date_password": "2018-03-20T09:31:07.104Z"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "user"
+      ]
+    },
+    "ReadInfoAboutAUserResponse": {
+      "title": "Read info about a User response",
+      "example": {
+        "user": {
+          "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+          "username": "alice",
+          "email": "alice@test.com",
+          "enabled": true,
+          "admin": false,
+          "image": "default",
+          "gravatar": false,
+          "date_password": "2018-03-20T09:31:07Z",
+          "description": null,
+          "website": null
+        }
+      },
+      "type": "object",
+      "properties": {
+        "user": {
+          "description": "",
+          "example": {
+            "id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "username": "alice",
+            "email": "alice@test.com",
+            "enabled": true,
+            "admin": false,
+            "image": "default",
+            "gravatar": false,
+            "date_password": "2018-03-20T09:31:07Z",
+            "description": null,
+            "website": null
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "user"
+      ]
+    },
+    "UpdateAUserRequest": {
+      "title": "Update a User request",
+      "type": "object",
+      "properties": {
+        "user": {
+          "description": "",
+          "example": {
+            "username": "new_alice",
+            "password": "passw0rd_new"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "user"
+      ]
+    },
+    "UpdateAUserResponse": {
+      "title": "Update a User response",
+      "example": {
+        "values_updated": {
+          "username": "alice_new",
+          "email": "alice_new@test.com"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "values_updated": {
+          "description": "",
+          "example": {
+            "username": "alice_new",
+            "email": "alice_new@test.com"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "values_updated"
+      ]
+    },
+    "ListOrganizationsResponse": {
+      "title": "List Organizations response",
+      "example": {
+        "organizations": [
+          {
+            "role": "owner",
+            "Organization": {
+              "id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+              "name": "Test organization 2",
+              "description": "description 2",
+              "image": "default",
+              "website": null
+            }
+          },
+          {
+            "role": "owner",
+            "Organization": {
+              "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+              "name": "Test organization",
+              "description": "description",
+              "image": "default",
+              "website": null
+            }
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "organizations": {
+          "description": "",
+          "example": [
+            {
+              "role": "owner",
+              "Organization": {
+                "id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+                "name": "Test organization 2",
+                "description": "description 2",
+                "image": "default",
+                "website": null
+              }
+            },
+            {
+              "role": "owner",
+              "Organization": {
+                "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+                "name": "Test organization",
+                "description": "description",
+                "image": "default",
+                "website": null
+              }
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "organizations"
+      ]
+    },
+    "CreateAnOrganizationRequest": {
+      "title": "Create an Organization request",
+      "type": "object",
+      "properties": {
+        "organization": {
+          "description": "",
+          "example": {
+            "name": "Test organization",
+            "description": "description"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "organization"
+      ]
+    },
+    "CreateAnOrganizationResponse": {
+      "title": "Create an Organization response",
+      "example": {
+        "organization": {
+          "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+          "image": "default",
+          "name": "Test organization",
+          "description": "description"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "organization": {
+          "description": "",
+          "example": {
+            "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "image": "default",
+            "name": "Test organization",
+            "description": "description"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "organization"
+      ]
+    },
+    "ReadInfoAboutAnOrganizationResponse": {
+      "title": "Read info about an Organization response",
+      "example": {
+        "organization": {
+          "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+          "name": "Test organization",
+          "description": "description",
+          "website": null,
+          "image": "default"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "organization": {
+          "description": "",
+          "example": {
+            "id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "name": "Test organization",
+            "description": "description",
+            "website": null,
+            "image": "default"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "organization"
+      ]
+    },
+    "UpdateAnOrganizationRequest": {
+      "title": "Update an Organization request",
+      "type": "object",
+      "properties": {
+        "organization": {
+          "description": "",
+          "example": {
+            "description": "new description",
+            "website": "http://test.com"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "organization"
+      ]
+    },
+    "UpdateAnOrganizationResponse": {
+      "title": "Update an Organization response",
+      "example": {
+        "values_updated": {
+          "description": "new description",
+          "website": "http://test.com"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "values_updated": {
+          "description": "",
+          "example": {
+            "description": "new description",
+            "website": "http://test.com"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "values_updated"
+      ]
+    },
+    "ListRolesResponse": {
+      "title": "List Roles response",
+      "example": {
+        "roles": [
+          {
+            "id": "purchaser",
+            "name": "Purchaser"
+          },
+          {
+            "id": "provider",
+            "name": "Provider"
+          },
+          {
+            "id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b",
+            "name": "role 2"
+          },
+          {
+            "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+            "name": "role 1"
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "roles": {
+          "description": "",
+          "example": [
+            {
+              "id": "purchaser",
+              "name": "Purchaser"
+            },
+            {
+              "id": "provider",
+              "name": "Provider"
+            },
+            {
+              "id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b",
+              "name": "role 2"
+            },
+            {
+              "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+              "name": "role 1"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "roles"
+      ]
+    },
+    "CreateARoleRequest": {
+      "title": "Create a Role request",
+      "type": "object",
+      "properties": {
+        "role": {
+          "description": "",
+          "example": {
+            "name": "role 1"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "role"
+      ]
+    },
+    "CreateARoleResponse": {
+      "title": "Create a Role response",
+      "example": {
+        "role": {
+          "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+          "is_internal": false,
+          "name": "role 1",
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "role": {
+          "description": "",
+          "example": {
+            "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+            "is_internal": false,
+            "name": "role 1",
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "role"
+      ]
+    },
+    "ReadRoleDetailsResponse": {
+      "title": "Read Role details response",
+      "example": {
+        "role": {
+          "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+          "name": "role 1",
+          "is_internal": false,
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "role": {
+          "description": "",
+          "example": {
+            "id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+            "name": "role 1",
+            "is_internal": false,
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "role"
+      ]
+    },
+    "UpdateARoleRequest": {
+      "title": "Update a Role request",
+      "type": "object",
+      "properties": {
+        "role": {
+          "description": "",
+          "example": {
+            "name": "test_role_new",
+            "application_id": "2222"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "role"
+      ]
+    },
+    "UpdateARoleResponse": {
+      "title": "Update a Role response",
+      "example": {
+        "values_updated": {
+          "name": "new role name"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "values_updated": {
+          "description": "",
+          "example": {
+            "name": "new role name"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "values_updated"
+      ]
+    },
+    "ListPermissionsResponse": {
+      "title": "List Permissions response",
+      "example": {
+        "permissions": [
+          {
+            "id": "6",
+            "name": "Get and assign only public owned roles",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          },
+          {
+            "id": "5",
+            "name": "Get and assign all public application roles",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          },
+          {
+            "id": "4",
+            "name": "Manage authorizations",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          },
+          {
+            "id": "3",
+            "name": "Manage roles",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          },
+          {
+            "id": "2",
+            "name": "Manage the application",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          },
+          {
+            "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+            "name": "permission 1",
+            "description": null,
+            "action": "GET",
+            "resource": "login",
+            "xml": null
+          },
+          {
+            "id": "1",
+            "name": "Get and assign all internal application roles",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "permissions": {
+          "description": "",
+          "example": [
+            {
+              "id": "6",
+              "name": "Get and assign only public owned roles",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            },
+            {
+              "id": "5",
+              "name": "Get and assign all public application roles",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            },
+            {
+              "id": "4",
+              "name": "Manage authorizations",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            },
+            {
+              "id": "3",
+              "name": "Manage roles",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            },
+            {
+              "id": "2",
+              "name": "Manage the application",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            },
+            {
+              "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+              "name": "permission 1",
+              "description": null,
+              "action": "GET",
+              "resource": "login",
+              "xml": null
+            },
+            {
+              "id": "1",
+              "name": "Get and assign all internal application roles",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "permissions"
+      ]
+    },
+    "CreateAPermissionRequest": {
+      "title": "Create a Permission request",
+      "type": "object",
+      "properties": {
+        "permission": {
+          "description": "",
+          "example": {
+            "name": "permission 1",
+            "action": "GET",
+            "resource": "login"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "permission"
+      ]
+    },
+    "CreateAPermissionResponse": {
+      "title": "Create a Permission response",
+      "example": {
+        "permission": {
+          "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+          "is_internal": false,
+          "name": "permission 1",
+          "action": "GET",
+          "resource": "login",
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "permission": {
+          "description": "",
+          "example": {
+            "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+            "is_internal": false,
+            "name": "permission 1",
+            "action": "GET",
+            "resource": "login",
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "permission"
+      ]
+    },
+    "ReadPermissionDetailsResponse": {
+      "title": "Read Permission details response",
+      "example": {
+        "permission": {
+          "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+          "name": "permission 1",
+          "description": null,
+          "is_internal": false,
+          "action": "GET",
+          "resource": "login",
+          "xml": null,
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "permission": {
+          "description": "",
+          "example": {
+            "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+            "name": "permission 1",
+            "description": null,
+            "is_internal": false,
+            "action": "GET",
+            "resource": "login",
+            "xml": null,
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "permission"
+      ]
+    },
+    "UpdateAPermissionRequest": {
+      "title": "Update a Permission request",
+      "type": "object",
+      "properties": {
+        "permission": {
+          "description": "",
+          "example": {
+            "name": "new name permission",
+            "description": "new description permission",
+            "xml": "jambuno"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "permission"
+      ]
+    },
+    "UpdateAPermissionResponse": {
+      "title": "Update a Permission response",
+      "example": {
+        "values_updated": {
+          "name": "new name permission",
+          "description": "new description permission",
+          "xml": "xml rule"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "values_updated": {
+          "description": "",
+          "example": {
+            "name": "new name permission",
+            "description": "new description permission",
+            "xml": "xml rule"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "values_updated"
+      ]
+    },
+    "InfoPepProxyResponse": {
+      "title": "Info Pep Proxy response",
+      "example": {
+        "pep_proxy": {
+          "id": "pep_proxy_2d19d297-e555-4e3a-a18d-22deda37036a",
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "pep_proxy": {
+          "description": "",
+          "example": {
+            "id": "pep_proxy_2d19d297-e555-4e3a-a18d-22deda37036a",
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "pep_proxy"
+      ]
+    },
+    "CreateAPepProxyResponse": {
+      "title": "Create a Pep Proxy response",
+      "example": {
+        "pep_proxy": {
+          "id": "pep_proxy_2d19d297-e555-4e3a-a18d-22deda37036a",
+          "password": "pep_proxy_950468f7-4198-42e1-8f41-4b1f8c5bc1f2"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "pep_proxy": {
+          "description": "",
+          "example": {
+            "id": "pep_proxy_2d19d297-e555-4e3a-a18d-22deda37036a",
+            "password": "pep_proxy_950468f7-4198-42e1-8f41-4b1f8c5bc1f2"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "pep_proxy"
+      ]
+    },
+    "ResetPasswordOfPepProxyResponse": {
+      "title": "Reset Password of Pep Proxy response",
+      "example": {
+        "new_password": "pep_proxy_3b2c8791-71b9-444a-b8c7-00d37cf35149"
+      },
+      "type": "object",
+      "properties": {
+        "new_password": {
+          "description": "",
+          "example": "pep_proxy_3b2c8791-71b9-444a-b8c7-00d37cf35149",
+          "type": "string"
+        }
+      },
+      "required": [
+        "new_password"
+      ]
+    },
+    "ListOfIotAgentsResponse": {
+      "title": "List of Iot Agents response",
+      "example": {
+        "iots": [
+          {
+            "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7"
+          },
+          {
+            "id": "iot_sensor_74df472c-0fd1-4b8a-8f13-c6848307bc7d"
+          },
+          {
+            "id": "iot_sensor_f95fc041-7102-4be7-8948-37fb571afa89"
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "iots": {
+          "description": "",
+          "example": [
+            {
+              "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7"
+            },
+            {
+              "id": "iot_sensor_74df472c-0fd1-4b8a-8f13-c6848307bc7d"
+            },
+            {
+              "id": "iot_sensor_f95fc041-7102-4be7-8948-37fb571afa89"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "iots"
+      ]
+    },
+    "CreateAnIotAgentResponse": {
+      "title": "Create an Iot Agent response",
+      "example": {
+        "iot": {
+          "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7",
+          "password": "iot_sensor_14569214-60d7-44d1-856c-ec8d8967aba2"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "iot": {
+          "description": "",
+          "example": {
+            "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7",
+            "password": "iot_sensor_14569214-60d7-44d1-856c-ec8d8967aba2"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "iot"
+      ]
+    },
+    "ReadIotAgentDetailsResponse": {
+      "title": "Read Iot agent details response",
+      "example": {
+        "iot": {
+          "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7",
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "iot": {
+          "description": "",
+          "example": {
+            "id": "iot_sensor_47886fa2-883e-4550-bb56-0138ae9862b7",
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "iot"
+      ]
+    },
+    "ResetPasswordOfIotAgentResponse": {
+      "title": "Reset Password of Iot Agent response",
+      "example": {
+        "new_password": "iot_sensor_9d209e51-bff1-4a20-a0f1-d75706f95b04"
+      },
+      "type": "object",
+      "properties": {
+        "new_password": {
+          "description": "",
+          "example": "iot_sensor_9d209e51-bff1-4a20-a0f1-d75706f95b04",
+          "type": "string"
+        }
+      },
+      "required": [
+        "new_password"
+      ]
+    },
+    "ListPermissionsAssociatedToARoleResponse": {
+      "title": "List permissions associated to a role response",
+      "example": {
+        "role_permission_assignments": [
+          {
+            "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+            "is_internal": false,
+            "name": "new name permission",
+            "description": "new description permission",
+            "action": null,
+            "resource": null,
+            "xml": "xml rule"
+          },
+          {
+            "id": "3",
+            "is_internal": true,
+            "name": "Manage roles",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          },
+          {
+            "id": "1",
+            "is_internal": true,
+            "name": "Get and assign all internal application roles",
+            "description": null,
+            "action": null,
+            "resource": null,
+            "xml": null
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "role_permission_assignments": {
+          "description": "",
+          "example": [
+            {
+              "id": "15ca810b-27d1-44a1-8491-a3fb4b6bc6f3",
+              "is_internal": false,
+              "name": "new name permission",
+              "description": "new description permission",
+              "action": null,
+              "resource": null,
+              "xml": "xml rule"
+            },
+            {
+              "id": "3",
+              "is_internal": true,
+              "name": "Manage roles",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            },
+            {
+              "id": "1",
+              "is_internal": true,
+              "name": "Get and assign all internal application roles",
+              "description": null,
+              "action": null,
+              "resource": null,
+              "xml": null
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "role_permission_assignments"
+      ]
+    },
+    "AssignAPermissionToARoleResponse": {
+      "title": "Assign a permission to a role response",
+      "example": {
+        "role_permission_assignments": {
+          "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+          "permission_id": "4"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "role_permission_assignments": {
+          "description": "",
+          "example": {
+            "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91",
+            "permission_id": "4"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "role_permission_assignments"
+      ]
+    },
+    "ListUsersInAnApplicationResponse": {
+      "title": "List users in an application response",
+      "example": {
+        "role_user_assignments": [
+          {
+            "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "role_id": "provider"
+          },
+          {
+            "user_id": "admin",
+            "role_id": "purchaser"
+          },
+          {
+            "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+          },
+          {
+            "user_id": "admin",
+            "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "role_user_assignments": {
+          "description": "",
+          "example": [
+            {
+              "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+              "role_id": "provider"
+            },
+            {
+              "user_id": "admin",
+              "role_id": "purchaser"
+            },
+            {
+              "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+              "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+            },
+            {
+              "user_id": "admin",
+              "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "role_user_assignments"
+      ]
+    },
+    "ListUsersRoleAssignmentsResponse": {
+      "title": "List users role assignments response",
+      "example": {
+        "role_user_assignments": [
+          {
+            "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "role_id": "provider"
+          },
+          {
+            "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "role_user_assignments": {
+          "description": "",
+          "example": [
+            {
+              "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+              "role_id": "provider"
+            },
+            {
+              "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+              "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "role_user_assignments"
+      ]
+    },
+    "AssignARoleToAUserResponse": {
+      "title": "Assign a role to a user response",
+      "example": {
+        "role_user_assignments": {
+          "role_id": "purchaser",
+          "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "role_user_assignments": {
+          "description": "",
+          "example": {
+            "role_id": "purchaser",
+            "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "role_user_assignments"
+      ]
+    },
+    "ListOrganizationsInAnApplicationResponse": {
+      "title": "List organizations in an application response",
+      "example": {
+        "role_organization_assignments": [
+          {
+            "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+            "role_organization": "owner",
+            "role_id": "purchaser"
+          },
+          {
+            "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+            "role_organization": "owner",
+            "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+          },
+          {
+            "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+            "role_organization": "member",
+            "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+          },
+          {
+            "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "role_organization": "owner",
+            "role_id": "provider"
+          },
+          {
+            "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "role_organization": "owner",
+            "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+          },
+          {
+            "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "role_organization": "member",
+            "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "role_organization_assignments": {
+          "description": "",
+          "example": [
+            {
+              "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+              "role_organization": "owner",
+              "role_id": "purchaser"
+            },
+            {
+              "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+              "role_organization": "owner",
+              "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+            },
+            {
+              "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+              "role_organization": "member",
+              "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+            },
+            {
+              "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+              "role_organization": "owner",
+              "role_id": "provider"
+            },
+            {
+              "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+              "role_organization": "owner",
+              "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+            },
+            {
+              "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+              "role_organization": "member",
+              "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "role_organization_assignments"
+      ]
+    },
+    "ListOrganizationsRoleAssignmentsResponse": {
+      "title": "List organizations role assignments response",
+      "example": {
+        "role_organization_assignments": [
+          {
+            "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+            "role_id": "purchaser"
+          },
+          {
+            "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+            "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+          },
+          {
+            "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+            "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "role_organization_assignments": {
+          "description": "",
+          "example": [
+            {
+              "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+              "role_id": "purchaser"
+            },
+            {
+              "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+              "role_id": "ee2ec16f-694b-447f-b61a-e293b6fe5f7b"
+            },
+            {
+              "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+              "role_id": "33fd15c0-e919-47b0-9e05-5f47999f6d91"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "role_organization_assignments"
+      ]
+    },
+    "AssignARoleToAOrganizationResponse": {
+      "title": "Assign a role to a organization response",
+      "example": {
+        "role_organization_assignments": {
+          "role_id": "provider",
+          "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+          "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025",
+          "role_organization": "owner"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "role_organization_assignments": {
+          "description": "",
+          "example": {
+            "role_id": "provider",
+            "organization_id": "33cf4d3c-8dfb-4bed-bf37-7647f45528ec",
+            "oauth_client_id": "fd7fe349-f7da-4c27-b404-74da17641025",
+            "role_organization": "owner"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "role_organization_assignments"
+      ]
+    },
+    "ListMembersResponse": {
+      "title": "List members response",
+      "example": {
+        "organization_users": [
+          {
+            "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+            "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "role": "owner"
+          },
+          {
+            "user_id": "admin",
+            "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "role": "member"
+          }
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "organization_users": {
+          "description": "",
+          "example": [
+            {
+              "user_id": "2d6f5391-6130-48d8-a9d0-01f20699a7eb",
+              "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+              "role": "owner"
+            },
+            {
+              "user_id": "admin",
+              "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+              "role": "member"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "organization_users"
+      ]
+    },
+    "InfoOfUserOrganizationRelationshipResponse": {
+      "title": "Info of user organization relationship response",
+      "example": {
+        "organization_user": {
+          "user_id": "admin",
+          "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+          "role": "member"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "organization_user": {
+          "description": "",
+          "example": {
+            "user_id": "admin",
+            "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd",
+            "role": "member"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "organization_user"
+      ]
+    },
+    "CreateRelationshipResponse": {
+      "title": "Create relationship response",
+      "example": {
+        "user_organization_assignments": {
+          "role": "owner",
+          "user_id": "admin",
+          "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd"
+        }
+      },
+      "type": "object",
+      "properties": {
+        "user_organization_assignments": {
+          "description": "",
+          "example": {
+            "role": "owner",
+            "user_id": "admin",
+            "organization_id": "3e20722f-d420-422d-89ba-3ae87bc1c0cd"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "user_organization_assignments"
+      ]
+    },
+    "ReadServiceProviderConfigurationResponse": {
+      "title": "Read Service Provider Configuration response",
+      "example": {
+        "information": {
+          "totalUsers": 2,
+          "totalOrganizations": 2,
+          "totalApplications": 4
+        }
+      },
+      "type": "object",
+      "properties": {
+        "information": {
+          "description": "",
+          "example": {
+            "totalUsers": 2,
+            "totalOrganizations": 2,
+            "totalApplications": 4
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "information"
+      ]
+    }
+  }
+}
