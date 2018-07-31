@@ -1,0 +1,3711 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "FIWARE Application Mashup RESTful Specification",
+    "description": "TODO: Add a description"
+  },
+  "host": "mashup.lab.fiware.org",
+  "basePath": "/",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "implicit",
+      "authorizationUrl": "https://mashup.lab.fiware.org/",
+      "scopes": {},
+      "x-skip-client-authentication": false
+    }
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/features": {
+      "get": {
+        "description": "**Used status codes**: 200, 304, 406\n> **NOTE**: This action SHOULD NOT be protected by any authentication mechanism.",
+        "summary": "List all supported features",
+        "tags": [
+          "Core"
+        ],
+        "operationId": "List all supported features",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListAllSupportedFeaturesResponse"
+            },
+            "examples": {
+              "application/json": {
+                "FIWARE": "5.2.1",
+                "Wirecloud": "0.9.0",
+                "ObjectStorage": "0.5",
+                "ApplicationMashup": "1.0",
+                "NGSI": "1.0",
+                "FullscreenWidget": "0.5",
+                "StyledElements": "0.5"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/preferences/platform": {
+      "get": {
+        "description": "**Used status codes**: 200, 304, 401, 403, 406",
+        "summary": "Retrieve platform preferences",
+        "tags": [
+          "Core"
+        ],
+        "operationId": "Retrieve platform preferences",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/RetrievePlatformPreferencesResponse"
+            },
+            "examples": {
+              "application/json": {
+                "language": {
+                  "value": "en-gb",
+                  "inherit": false
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "**Used status codes**: 204, 400, 401, 403, 413, 415",
+        "summary": "Update platform preferences",
+        "tags": [
+          "Core"
+        ],
+        "operationId": "Update platform preferences",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdatePlatformPreferencesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspaces": {
+      "get": {
+        "description": "List all the workspaces available to the user. If the request is made without\nincluding user credentials, this action will return all the public workspaces.\nThis action will return a subset of the fields returned by the [Get workspace details](#reference/managing-workspaces/workspace/get-workspace-details) action. More specifically, this API will return the following fields: `description`,\n`id`, `lastmodified`, `longdescription`, `name`, `owner`, `removable` and `shared`.\n**Used status codes**: 200, 304, 401, 406",
+        "summary": "List workspaces",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "List workspaces",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ListWorkspacesResponse"
+              }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "description": "A public dashboard",
+                  "id": "20",
+                  "lastmodified": 1461673370860,
+                  "longdescription": "A dashboard description using **Markdown** _Syntax_",
+                  "name": "public-workspace",
+                  "owner": "otheruser",
+                  "removable": false,
+                  "shared": true,
+                  "title": "Public Workspace"
+                }
+              ]
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "Creates a new workspace. This workspace will be empty, created from a template or created by duplicating an existing workspace depending on the used parameters.\nThose parameters should be sent in the body of the request using the selected representation format (e.g. `JSON`):\n+ `mashup` (string): Id of the mashup to use as base for creating the workspace.\n  This option cannot be used along `workspace`.\n+ `workspace` (string): Id of the workspace to use as base for creating the new\n  workspace. This option cannot be used along `mashup`.\n+ `name` (string): Id for the new workspace. This parameter is optional if\n  either `mashup` or `workspace` are used. In those cases, the `name` parameter\n  will be obtained from the referenced mashup or workspace. This parameter is\n  also optional if the `title` is provided, in this case a urlify version of\n  the `title` parameter will be used as `name`.\n  This parameter currently support any character (except '/'), but it is\n  recommended to only use english alphanumeric characters (lowercase), dashes\n  ('-') and underscores ('_') as this parameter will be used in URLs. Moreover,\n  future versions of the API will enforce this.\n+ `title` (string): Title for the new workspace. This parameter is optional. If\n  either `mashup` or `workspace` are used, the `title` parameter will be\n  obtained from the referenced mashup or workspace. In any other case it will be\n  filled using the `name` parameter.\n+ `allow_renaming` (boolean; default: `false`): If `false`, any attempt to\n  create a workspace using a currently used name will fail (with a `409` status\n  code). If this parameter is `true` and the name is already in use, a new name\n  will be computed using the indicated name as base.\nIf everything goes well and the workspace is created, this action will return the initial workspace details using the same format used in the [Get workspace details](#reference/managing-workspaces/workspace/get-workspace-details) action.\n**Used status codes**: 201, 400, 401, 403, 406, 409, 413, 415, 422",
+        "summary": "Create new workspaces",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Create new workspaces",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateNewWorkspacesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/CreateNewWorkspacesResponse"
+            },
+            "examples": {
+              "application/json": {
+                "description": "",
+                "empty_params": [],
+                "extra_prefs": {},
+                "id": "81",
+                "lastmodified": 1464187437041,
+                "longdescription": "",
+                "name": "test",
+                "owner": "admin",
+                "preferences": {
+                  "public": {
+                    "value": "true",
+                    "inherit": false
+                  }
+                },
+                "removable": true,
+                "shared": false,
+                "tabs": [
+                  {
+                    "visible": true,
+                    "iwidgets": [],
+                    "id": "84",
+                    "name": "tab",
+                    "preferences": {},
+                    "title": "Tab"
+                  }
+                ],
+                "title": "test",
+                "users": [],
+                "wiring": {
+                  "operators": {},
+                  "connections": []
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unexpected error in API call. See HTTP response body for details.",
+            "schema": {
+              "$ref": "#/definitions/CreateNewWorkspaces422Response"
+            },
+            "examples": {
+              "application/json": {
+                "description": "Mashup not found: UPM/inexistent-mashup/1.0"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}": {
+      "get": {
+        "description": "Returned fields:\n- `id` (string): Id of the workspace.\n- `owner` (string): Username of the workspace's owner.\n- `name` (string): Name of the workspace.\n- `title` (string, available in WireCloud 1.1+ / FIWARE Application Mashup\n  RESTful Specification v2.2+): Title of the workspace.\n- `description` (string, available in WireCloud 1.0+ / FIWARE Application Mashup\n  RESTful Specification v2.1+): Short description in plain text describing the\n  workspace.\n- `longdescription` (string, available in WireCloud 1.0+ / FIWARE Application\n  Mashup RESTful Specification v2.1+): Text describing this workspace. This\n  field can be formatted using Markdown.\n- `preferences` (object): Preference values.\n- `lastmodified` (number): Unix timestamp indicating the last time this\n  workspace was updated.\n- `tabs` (array): Visual description of the workspace.\n- `wiring` (object): Wiring configuration of the workspace. See the [Update workspace wiring configuration](reference/managing-workspaces/workspace/update-workspace-wiring-configuration) action documentation for more details about the structure of this field.\n- `removable` (object): Indicates wheter this workspace can be removed by the current user.\n- `users` (object): List of users and groups with access to this workspace.\n- `shared` (boolean): Indicates whether this workspace has been shared with\n  other users or groups.\n**Used status codes**: 200, 401, 403, 404, 406",
+        "summary": "Get workspace details",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Get workspace details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            },
+            "examples": {}
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "Workspace attributes that can be modified:\n- `name` (string): Name of the workspace. This parameter currently support any\n  character (except '/'), but it is recommended to only use english alphanumeric\n  characters (lowercase), dashes ('-') and underscores ('_') as this parameter\n  will be used in URLs. Moreover, future versions of the API will enforce this.\n- `title` (string, available in WireCloud 1.1+ / FIWARE Application Mashup\n  RESTful Specification v2.2+): Title of the workspace.\n- `description` (string, available in WireCloud 1.0+ / FIWARE Application Mashup\n  RESTful Specification v2.1+): Short description in plain text describing the\n  workspace.\n- `longdescription` (string, available in WireCloud 1.0+ / FIWARE Application\n  Mashup RESTful Specification v2.1+): Text describing this workspace. This\n  field can be formatted using Markdown.\n**Used status codes**: 204, 400, 401, 403, 404, 415",
+        "summary": "Update workspace details",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update workspace details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateWorkspaceDetailsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "403": {
+            "description": "Unexpected error in API call. See HTTP response body for details.",
+            "schema": {
+              "$ref": "#/definitions/UpdateWorkspaceDetails403Response"
+            },
+            "examples": {
+              "application/json": {
+                "description": "You are not allowed to update this workspace"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "**Used status codes**: 204, 401, 403, 404",
+        "summary": "Delete workspace",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Delete workspace",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/preferences": {
+      "post": {
+        "description": "**Used status codes**: 204, 400, 401, 403, 404, 413, 415\n> **NOTE**: Supported preferences varies depending on the extensions enabled on the Application Mashup instance.",
+        "summary": "Update workspace preferences",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update workspace preferences",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateWorkspacePreferencesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/wiring": {
+      "put": {
+        "description": "- `version` (string): Format version used in this wiring configuration. At present, the only available version is \"2.0\".\n- `operators` (object): Description of the operators used in this wiring description.\n- `connections` (array): Connections stablished between widgets and operators.\n- `visualdescription` (object): Visual description. Used for displaying this wiring configuration in the user interface.\n**Used status codes**: 204, 400, 401, 403, 404, 413, 422",
+        "summary": "Update workspace wiring configuration",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update workspace wiring configuration",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateWorkspaceWiringConfigurationRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "patch": {
+        "description": "- `version` (string): Format version used in this wiring configuration. At present, the only available version is \"2.0\".\n- `operators` (object): Description of the operators used in this wiring description.\n- `connections` (array): Connections stablished between widgets and operators.\n- `visualdescription` (object): Visual description. Used for displaying this wiring configuration in the user interface.\n**Used status codes**: 204, 400, 401, 403, 404, 413, 422\n> *new in WireCloud 1.1 / FIWARE Application Mashup RESTful Specification v2.2*",
+        "summary": "Patch workspace wiring configuration",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Patch workspace wiring configuration",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PatchWorkspaceWiringConfigurationRequest"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/worksace/{workspace_id}/tabs": {
+      "post": {
+        "description": "Creates a new empty tab. This request must provide the `name` or the `title`\nparameter to be used for creating the tab in the body of the request using the\nselected representation format (e.g. JSON).\n**Used status codes**: 201, 400, 401, 403, 404, 406, 413, 415, 422",
+        "summary": "Adding new tabs",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Adding new tabs",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddingNewTabsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddingNewTabsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "id": "3",
+                "iwidgets": [],
+                "name": "tab-2",
+                "preferences": {},
+                "title": "Tab 2",
+                "visible": false
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/tab/{tab_id}": {
+      "get": {
+        "description": "Returned fields:\n- `id` (string): Id of the tab.\n- `name` (string): Name of the tab.\n- `title` (string, available in WireCloud 1.1+ / FIWARE Application Mashup\n  RESTful Specification v2.2+): Title of the tab.\n- `visible` (boolean): Indicates if this is the tab to display by default when\n  loading the workspace.\n- `iwidgets` (array): List of widgets associated with this tab.\n- `preferences` (object): Preference values.\n**Used status codes**: 200, 401, 403, 404, 406, 413, 415, 422\n> *new in WireCloud 1.0 / FIWARE Application Mashup RESTful Specification v2.1*",
+        "summary": "Get tab details",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Get tab details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetTabDetailsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "id": "84",
+                "iwidgets": [
+                  {
+                    "widget": "UPM/Widget1/0.1",
+                    "layout": 0,
+                    "title": "Widget1",
+                    "icon_top": -1,
+                    "variables": {},
+                    "minimized": false,
+                    "id": "313",
+                    "height": 28,
+                    "zIndex": 0,
+                    "width": 6,
+                    "readOnly": false,
+                    "icon_left": -1,
+                    "top": 0,
+                    "fulldragboard": false,
+                    "left": 0
+                  },
+                  {
+                    "widget": "UPM/Widget2/0.1",
+                    "layout": 0,
+                    "title": "Widget2",
+                    "icon_top": -1,
+                    "variables": {},
+                    "minimized": false,
+                    "id": "314",
+                    "height": 28,
+                    "zIndex": 0,
+                    "width": 6,
+                    "readOnly": false,
+                    "icon_left": -1,
+                    "top": 0,
+                    "fulldragboard": false,
+                    "left": 7
+                  }
+                ],
+                "name": "Tab",
+                "preferences": {},
+                "title": "tab",
+                "visible": true
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "Tab attributes that can be modified:\n- `name` (string): Name to use for identifying this tab.\n  This parameter currently support any character (except '/'), but it is\n  recommended to only use english alphanumeric characters (lowercase), dashes\n  ('-') and underscores ('_') as this parameter will be used in URLs. Moreover,\n  future versions of the API will enforce this.\n- `title` (string, available in WireCloud 1.1+ / FIWARE Application Mashup\n  RESTful Specification v2.2+): Label to display in the user interface.\n- `visible` (boolean): `true` to make this the initial/default tab of the workspace.\n**Used status codes**: 204, 400, 401, 403, 404, 409, 413, 415, 422\n> **NOTE**: WireCloud versions prior to 1.0 implemented incorrectly this endpoint by using `PUT` requests instead of using `POST` requests.",
+        "summary": "Update tab details",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update tab details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateTabDetailsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "**Used status codes**: 204, 401, 403, 404",
+        "summary": "Delete a tab",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Delete a tab",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/tab/{tab_id}/preferences": {
+      "post": {
+        "description": "**Used status codes**: 204, 400, 401, 403, 404, 413, 415\n> **NOTE**: Supported preferences varies depending on the extensions enabled on the Application Mashup instance.",
+        "summary": "Update tab preferences",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update tab preferences",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateTabPreferencesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/tab/{tab_id}/iwidgets": {
+      "post": {
+        "description": "Adds a widget to the workspace/tab. This request support the following\nparameters (that should be send in the body of the request using the selected\nrepresentation format, e.g. JSON):\n+ `widget` (string): Id (vendor/name/version) of the widget to instantiate.\n+ `title` (optional, string): Title of the widget. If not provided, the title of\n  the widget will be obtained from the widget description (`config.xml`).\n**Used status codes**: 201, 400, 401, 403, 404, 406, 413, 415, 422",
+        "summary": "Add new widgets",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Add new widgets",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddNewWidgetsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddNewWidgetsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "widget": "UPM/Widget/1.0",
+                "left": 12,
+                "top": 0,
+                "icon_left": -1,
+                "icon_top": -1,
+                "zIndex": 2,
+                "width": 6,
+                "height": 28,
+                "title": "Widget's Title",
+                "layout": 0
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/tab/{tab_id}/iwidget/{iwidget_id}": {
+      "post": {
+        "description": "Updates the attributes of a instantiated widget. Only the attributes referenced in the request will be updated leaving the other attributes intact. The modificable attributes are:\n- `title` (string): Title for the widget.\n- `tab` (string): Id of the tab where the widget is going to be hosted. Widgets can only be moved between tabs of the same workspace.\n- `width` (number): Width of the widget in layout columns.\n- `height` (number): Height of the widget in layout rows.\n- `top` (number): Vertical position of the widget in layout rows.\n- `left` (number): Horizontal postiion of the widget in layout columns.\n- `zIndex` (number): Stack order of the widget.\n**Used status codes**: 204, 400, 401, 403, 404, 413, 415, 422",
+        "summary": "Update instantiated widget details",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update instantiated widget details",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "iwidget_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the instantiated widget"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateInstantiatedWidgetDetailsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "**Used status codes**: 204, 401, 403, 404",
+        "summary": "Remove instantiated widget",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Remove instantiated widget",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "iwidget_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the instantiated widget"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/tab/{tab_id}/iwidget/{iwidget_id}/preferences": {
+      "get": {
+        "description": "> *new in WireCloud 1.1 / FIWARE Application Mashup RESTful Specification v2.2*\n**Used status codes**: 200, 304, 401, 403",
+        "summary": "Get instantiated widget preferences",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Get instantiated widget preferences",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "iwidget_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the instantiated widget"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetInstantiatedWidgetPreferencesResponse"
+            },
+            "examples": {
+              "application/json": {
+                "first_preference_name": {
+                  "readonly": false,
+                  "hidden": false,
+                  "name": "boolean",
+                  "value": false,
+                  "secure": false
+                },
+                "second_preference_nanme": {
+                  "readonly": false,
+                  "hidden": false,
+                  "name": "text",
+                  "value": "initial text",
+                  "secure": false
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "**Used status codes**: 204, 400, 401, 403, 404, 413, 415",
+        "summary": "Update instantiated widget preferences",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update instantiated widget preferences",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "iwidget_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the instantiated widget"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateInstantiatedWidgetPreferencesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/tab/{tab_id}/iwidget/{iwidget_id}/properties": {
+      "get": {
+        "description": "> *new in WireCloud 1.1 / FIWARE Application Mashup RESTful Specification v2.2*\n**Used status codes**: 200, 304, 401, 403",
+        "summary": "Get instantiated widget properties",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Get instantiated widget properties",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "iwidget_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the instantiated widget"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetInstantiatedWidgetPropertiesResponse"
+            },
+            "examples": {
+              "application/json": {
+                "first_property_name": {
+                  "readonly": false,
+                  "hidden": false,
+                  "name": "boolean",
+                  "value": false,
+                  "secure": false
+                },
+                "second_property_nanme": {
+                  "readonly": false,
+                  "hidden": false,
+                  "name": "text",
+                  "value": "initial text",
+                  "secure": false
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "**Used status codes**: 204, 400, 401, 403, 404, 413, 415",
+        "summary": "Update instantiated widget properties",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Update instantiated widget properties",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "tab_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the tab"
+          },
+          {
+            "name": "iwidget_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the instantiated widget"
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UpdateInstantiatedWidgetPropertiesRequest"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/workspace/{workspace_id}/operators/{operator_id}/variables": {
+      "get": {
+        "description": "> *new in WireCloud 1.1 / FIWARE Application Mashup RESTful Specification v2.2*\n**Used status codes**: 200, 304, 401, 403",
+        "summary": "Get operator variables",
+        "tags": [
+          "Managing workspaces"
+        ],
+        "operationId": "Get operator variables",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "workspace_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the workspace"
+          },
+          {
+            "name": "operator_id",
+            "in": "path",
+            "required": true,
+            "type": "number",
+            "format": "double",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "ID of the operator"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/GetOperatorVariablesResponse"
+            },
+            "examples": {
+              "application/json": {
+                "preferences": {
+                  "username": {
+                    "hidden": false,
+                    "name": "username",
+                    "readonly": false,
+                    "secure": false,
+                    "value": "test_username"
+                  },
+                  "password": {
+                    "hidden": false,
+                    "name": "password",
+                    "readonly": false,
+                    "secure": true,
+                    "value": "********"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/resources": {
+      "get": {
+        "description": "**Used status codes**: 200, 401, 406",
+        "summary": "List available Mashable Application Components",
+        "tags": [
+          "Managing resources"
+        ],
+        "operationId": "List available Mashable Application Components",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            },
+            "examples": {}
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "Due to this request handles binary content, this request SHOULD support the\nfollowing extra `Content-Types` for the request itself:\n`application/octect-stream` and `multipart/form-data`.\n**Used status codes**: 204, 401, 403, 404, 406, 409, 413, 415",
+        "summary": "\u00a0Upload Mashable Application Components",
+        "tags": [
+          "Managing resources"
+        ],
+        "operationId": "\u00a0Upload Mashable Application Components",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/UploadMashableApplicationComponentsResponse"
+            },
+            "examples": {
+              "application/json": {
+                "contributors": [],
+                "image": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/images/catalogue.png",
+                "type": "widget",
+                "smartphoneimage": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/images/catalogue_iphone.png",
+                "contents": {
+                  "src": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/test.html",
+                  "charset": "utf-8",
+                  "contenttype": "text/html",
+                  "cacheable": true,
+                  "useplatformstyle": false
+                },
+                "requirements": [],
+                "preferences": [
+                  {
+                    "secure": false,
+                    "description": "list preference",
+                    "default": "default",
+                    "value": null,
+                    "label": "list",
+                    "readonly": false,
+                    "type": "list",
+                    "options": [
+                      {
+                        "value": "default",
+                        "label": "Default"
+                      },
+                      {
+                        "value": "1",
+                        "label": "value1"
+                      },
+                      {
+                        "value": "2",
+                        "label": "value2"
+                      }
+                    ],
+                    "name": "list"
+                  },
+                  {
+                    "secure": false,
+                    "description": "text preference",
+                    "default": "initial text",
+                    "value": null,
+                    "label": "text",
+                    "readonly": false,
+                    "type": "text",
+                    "name": "text"
+                  },
+                  {
+                    "secure": false,
+                    "description": "boolean preference",
+                    "default": "false",
+                    "value": null,
+                    "label": "boolean",
+                    "readonly": false,
+                    "type": "boolean",
+                    "name": "boolean"
+                  },
+                  {
+                    "secure": false,
+                    "description": "password preference",
+                    "default": "default",
+                    "value": null,
+                    "label": "password",
+                    "readonly": false,
+                    "type": "password",
+                    "name": "password"
+                  },
+                  {
+                    "secure": false,
+                    "description": "number preference",
+                    "default": "2",
+                    "value": null,
+                    "label": "number",
+                    "readonly": false,
+                    "type": "number",
+                    "name": "number"
+                  }
+                ],
+                "title": "Test",
+                "wiring": {
+                  "inputs": [
+                    {
+                      "friendcode": "test-data",
+                      "name": "inputendpoint",
+                      "actionlabel": "",
+                      "label": "Input",
+                      "type": "text",
+                      "description": ""
+                    },
+                    {
+                      "friendcode": "nothandled",
+                      "name": "nothandled",
+                      "actionlabel": "",
+                      "label": "Not handled endpoint",
+                      "type": "text",
+                      "description": ""
+                    }
+                  ],
+                  "outputs": [
+                    {
+                      "description": "",
+                      "type": "text",
+                      "friendcode": "test-data",
+                      "name": "outputendpoint",
+                      "label": "Output"
+                    }
+                  ]
+                },
+                "longdescription": "DESCRIPTION.md",
+                "version": "1.0",
+                "widget_height": "24",
+                "homepage": "",
+                "email": "aarranz@conwet.com",
+                "default_lang": "en",
+                "issuetracker": "",
+                "vendor": "Wirecloud",
+                "description": "This widget is used to test some of the features of the Wirecloud platform",
+                "authors": [
+                  {
+                    "name": "aarranz"
+                  }
+                ],
+                "properties": [],
+                "altcontents": [],
+                "name": "Test",
+                "license": "",
+                "changelog": "CHANGELOG.md",
+                "doc": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/doc/index.md",
+                "licenseurl": "",
+                "widget_width": "6"
+              }
+            }
+          },
+          "400": {
+            "description": "Unexpected error in API call. See HTTP response body for details.",
+            "schema": {
+              "$ref": "#/definitions/UploadMashableApplicationComponents400Response"
+            },
+            "examples": {
+              "application/json": {
+                "description": "The uploaded file is not a zip file"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/resource/{vendor}/{name}/{version}": {
+      "get": {
+        "description": "**Used status codes**: 200, 401, 403, 404, 406",
+        "summary": "Export Mashable Application Component",
+        "tags": [
+          "Managing resources"
+        ],
+        "operationId": "Export Mashable Application Component",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the Mashable Application Component"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Name ID of the Mashable Application Component"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Version of the Mashable Application Component"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "string"
+            },
+            "examples": {
+              "text/plain": "\u2039Binary data (Not supported on APIary)\u203a"
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "**Used status codes**: 204, 401, 403, 404",
+        "summary": "Uninstall Mashable Application Component",
+        "tags": [
+          "Managing resources"
+        ],
+        "operationId": "Uninstall Mashable Application Component",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the Mashable Application Component"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Name ID of the Mashable Application Component"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Version of the Mashable Application Component"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/api/resource/{vendor}/{name}": {
+      "delete": {
+        "description": "**Used status codes**: 204, 401, 403, 404",
+        "summary": "Uninstall all versions of a Mashable Application Component",
+        "tags": [
+          "Managing resources"
+        ],
+        "operationId": "Uninstall all versions of a Mashable Application Component",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vendor",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the Mashable Application Component"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Name ID of the Mashable Application Component"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Version of the Mashable Application Component"
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ListAllSupportedFeaturesResponse": {
+      "title": "List all supported features response",
+      "example": {
+        "FIWARE": "5.2.1",
+        "Wirecloud": "0.9.0",
+        "ObjectStorage": "0.5",
+        "ApplicationMashup": "1.0",
+        "NGSI": "1.0",
+        "FullscreenWidget": "0.5",
+        "StyledElements": "0.5"
+      },
+      "type": "object",
+      "properties": {
+        "FIWARE": {
+          "description": "",
+          "example": "5.2.1",
+          "type": "string"
+        },
+        "Wirecloud": {
+          "description": "",
+          "example": "0.9.0",
+          "type": "string"
+        },
+        "ObjectStorage": {
+          "description": "",
+          "example": "0.5",
+          "type": "string"
+        },
+        "ApplicationMashup": {
+          "description": "",
+          "example": "1.0",
+          "type": "string"
+        },
+        "NGSI": {
+          "description": "",
+          "example": "1.0",
+          "type": "string"
+        },
+        "FullscreenWidget": {
+          "description": "",
+          "example": "0.5",
+          "type": "string"
+        },
+        "StyledElements": {
+          "description": "",
+          "example": "0.5",
+          "type": "string"
+        }
+      },
+      "required": [
+        "FIWARE",
+        "Wirecloud",
+        "ObjectStorage",
+        "ApplicationMashup",
+        "NGSI",
+        "FullscreenWidget",
+        "StyledElements"
+      ]
+    },
+    "RetrievePlatformPreferencesResponse": {
+      "title": "Retrieve platform preferences response",
+      "example": {
+        "language": {
+          "value": "en-gb",
+          "inherit": false
+        }
+      },
+      "type": "object",
+      "properties": {
+        "language": {
+          "description": "",
+          "example": {
+            "value": "en-gb",
+            "inherit": false
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "language"
+      ]
+    },
+    "UpdatePlatformPreferencesRequest": {
+      "title": "Update platform preferences request",
+      "type": "object",
+      "properties": {
+        "language": {
+          "description": "",
+          "example": {
+            "value": "browser"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "language"
+      ]
+    },
+    "ListWorkspacesResponse": {
+      "title": "List workspaces response",
+      "example": {
+        "description": "A public dashboard",
+        "id": "20",
+        "lastmodified": 1461673370860,
+        "longdescription": "A dashboard description using **Markdown** _Syntax_",
+        "name": "public-workspace",
+        "owner": "otheruser",
+        "removable": false,
+        "shared": true,
+        "title": "Public Workspace"
+      },
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "A public dashboard",
+          "type": "string"
+        },
+        "id": {
+          "description": "",
+          "example": "20",
+          "type": "string"
+        },
+        "lastmodified": {
+          "description": "",
+          "example": 1461673370860,
+          "type": "integer",
+          "format": "int64"
+        },
+        "longdescription": {
+          "description": "",
+          "example": "A dashboard description using **Markdown** _Syntax_",
+          "type": "string"
+        },
+        "name": {
+          "description": "",
+          "example": "public-workspace",
+          "type": "string"
+        },
+        "owner": {
+          "description": "",
+          "example": "otheruser",
+          "type": "string"
+        },
+        "removable": {
+          "description": "",
+          "example": false,
+          "type": "boolean"
+        },
+        "shared": {
+          "description": "",
+          "example": true,
+          "type": "boolean"
+        },
+        "title": {
+          "description": "",
+          "example": "Public Workspace",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description",
+        "id",
+        "lastmodified",
+        "longdescription",
+        "name",
+        "owner",
+        "removable",
+        "shared",
+        "title"
+      ]
+    },
+    "CreateNewWorkspacesRequest": {
+      "title": "Create new workspaces request",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "",
+          "example": "test",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "CreateNewWorkspacesResponse": {
+      "title": "Create new workspaces response",
+      "example": {
+        "description": "",
+        "empty_params": [],
+        "extra_prefs": {},
+        "id": "81",
+        "lastmodified": 1464187437041,
+        "longdescription": "",
+        "name": "test",
+        "owner": "admin",
+        "preferences": {
+          "public": {
+            "value": "true",
+            "inherit": false
+          }
+        },
+        "removable": true,
+        "shared": false,
+        "tabs": [
+          {
+            "visible": true,
+            "iwidgets": [],
+            "id": "84",
+            "name": "tab",
+            "preferences": {},
+            "title": "Tab"
+          }
+        ],
+        "title": "test",
+        "users": [],
+        "wiring": {
+          "operators": {},
+          "connections": []
+        }
+      },
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "type": "string"
+        },
+        "empty_params": {
+          "description": "",
+          "example": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "extra_prefs": {
+          "description": "",
+          "example": {},
+          "type": "object"
+        },
+        "id": {
+          "description": "",
+          "example": "81",
+          "type": "string"
+        },
+        "lastmodified": {
+          "description": "",
+          "example": 1464187437041,
+          "type": "integer",
+          "format": "int64"
+        },
+        "longdescription": {
+          "description": "",
+          "type": "string"
+        },
+        "name": {
+          "description": "",
+          "example": "test",
+          "type": "string"
+        },
+        "owner": {
+          "description": "",
+          "example": "admin",
+          "type": "string"
+        },
+        "preferences": {
+          "description": "",
+          "example": {
+            "public": {
+              "value": "true",
+              "inherit": false
+            }
+          },
+          "type": "object"
+        },
+        "removable": {
+          "description": "",
+          "example": true,
+          "type": "boolean"
+        },
+        "shared": {
+          "description": "",
+          "example": false,
+          "type": "boolean"
+        },
+        "tabs": {
+          "description": "",
+          "example": [
+            {
+              "visible": true,
+              "iwidgets": [],
+              "id": "84",
+              "name": "tab",
+              "preferences": {},
+              "title": "Tab"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "title": {
+          "description": "",
+          "example": "test",
+          "type": "string"
+        },
+        "users": {
+          "description": "",
+          "example": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "wiring": {
+          "description": "",
+          "example": {
+            "operators": {},
+            "connections": []
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "description",
+        "empty_params",
+        "extra_prefs",
+        "id",
+        "lastmodified",
+        "longdescription",
+        "name",
+        "owner",
+        "preferences",
+        "removable",
+        "shared",
+        "tabs",
+        "title",
+        "users",
+        "wiring"
+      ]
+    },
+    "CreateNewWorkspacesRequest6": {
+      "title": "Create new workspaces request6",
+      "type": "object",
+      "properties": {
+        "mashup": {
+          "description": "",
+          "example": "UPM/Mashup/1.0",
+          "type": "string"
+        }
+      },
+      "required": [
+        "mashup"
+      ]
+    },
+    "CreateNewWorkspaces422Response": {
+      "title": "Create new workspaces 422 response",
+      "example": {
+        "description": "Mashup not found: UPM/inexistent-mashup/1.0"
+      },
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "Mashup not found: UPM/inexistent-mashup/1.0",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description"
+      ]
+    },
+    "CreateNewWorkspacesRequest10": {
+      "title": "Create new workspaces request10",
+      "type": "object",
+      "properties": {
+        "workspace": {
+          "description": "",
+          "example": "81",
+          "type": "string"
+        }
+      },
+      "required": [
+        "workspace"
+      ]
+    },
+    "UpdateWorkspaceDetailsRequest": {
+      "title": "Update workspace details request",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "",
+          "example": "New Name",
+          "type": "string"
+        },
+        "name": {
+          "description": "",
+          "example": "new-name",
+          "type": "string"
+        },
+        "longdescription": {
+          "description": "",
+          "example": "A dashboard description using **Markdown** _Syntax_",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "name",
+        "longdescription"
+      ]
+    },
+    "UpdateWorkspaceDetails403Response": {
+      "title": "Update workspace details 403 response",
+      "example": {
+        "description": "You are not allowed to update this workspace"
+      },
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "You are not allowed to update this workspace",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description"
+      ]
+    },
+    "UpdateWorkspacePreferencesRequest": {
+      "title": "Update workspace preferences request",
+      "type": "object",
+      "properties": {
+        "public": {
+          "description": "",
+          "example": {
+            "value": "true"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "public"
+      ]
+    },
+    "PatchWorkspaceWiringConfigurationRequest": {
+      "title": "Patch workspace wiring configuration request",
+      "type": "object",
+      "properties": {
+        "op": {
+          "description": "",
+          "example": "replace",
+          "type": "string"
+        },
+        "path": {
+          "description": "",
+          "example": "/operators/1/preferences/preferenceName/value",
+          "type": "string"
+        },
+        "value": {
+          "description": "",
+          "example": "newPreferenceValue",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "path",
+        "value"
+      ]
+    },
+    "PatchWorkspaceWiringConfigurationRequest16": {
+      "title": "Patch workspace wiring configuration request16",
+      "type": "object",
+      "properties": {
+        "op": {
+          "description": "",
+          "example": "remove",
+          "type": "string"
+        },
+        "path": {
+          "description": "",
+          "example": "/operators/1",
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "path"
+      ]
+    },
+    "UpdateWorkspaceWiringConfigurationRequest": {
+      "title": "Update workspace wiring configuration request",
+      "type": "object",
+      "properties": {
+        "operators": {
+          "description": "",
+          "example": {
+            "0": {
+              "name": "UPM/Operator/0.1",
+              "id": "0"
+            }
+          },
+          "type": "object"
+        },
+        "connections": {
+          "description": "",
+          "example": [
+            {
+              "source": {
+                "type": "iwidget",
+                "id": 311,
+                "endpoint": "location_info_event"
+              },
+              "target": {
+                "type": "iwidget",
+                "id": 312,
+                "endpoint": "search_text_slot"
+              }
+            },
+            {
+              "source": {
+                "type": "iwidget",
+                "id": 311,
+                "endpoint": "location_info_event"
+              },
+              "target": {
+                "type": "ioperator",
+                "id": 0,
+                "endpoint": "message"
+              }
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "operators",
+        "connections"
+      ]
+    },
+    "AddingNewTabsRequest": {
+      "title": "Adding new tabs request",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "",
+          "example": "Tab 2",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    },
+    "AddingNewTabsResponse": {
+      "title": "Adding new tabs response",
+      "example": {
+        "id": "3",
+        "iwidgets": [],
+        "name": "tab-2",
+        "preferences": {},
+        "title": "Tab 2",
+        "visible": false
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+          "example": "3",
+          "type": "string"
+        },
+        "iwidgets": {
+          "description": "",
+          "example": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "description": "",
+          "example": "tab-2",
+          "type": "string"
+        },
+        "preferences": {
+          "description": "",
+          "example": {},
+          "type": "object"
+        },
+        "title": {
+          "description": "",
+          "example": "Tab 2",
+          "type": "string"
+        },
+        "visible": {
+          "description": "",
+          "example": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "iwidgets",
+        "name",
+        "preferences",
+        "title",
+        "visible"
+      ]
+    },
+    "GetTabDetailsResponse": {
+      "title": "Get tab details response",
+      "example": {
+        "id": "84",
+        "iwidgets": [
+          {
+            "widget": "UPM/Widget1/0.1",
+            "layout": 0,
+            "title": "Widget1",
+            "icon_top": -1,
+            "variables": {},
+            "minimized": false,
+            "id": "313",
+            "height": 28,
+            "zIndex": 0,
+            "width": 6,
+            "readOnly": false,
+            "icon_left": -1,
+            "top": 0,
+            "fulldragboard": false,
+            "left": 0
+          },
+          {
+            "widget": "UPM/Widget2/0.1",
+            "layout": 0,
+            "title": "Widget2",
+            "icon_top": -1,
+            "variables": {},
+            "minimized": false,
+            "id": "314",
+            "height": 28,
+            "zIndex": 0,
+            "width": 6,
+            "readOnly": false,
+            "icon_left": -1,
+            "top": 0,
+            "fulldragboard": false,
+            "left": 7
+          }
+        ],
+        "name": "Tab",
+        "preferences": {},
+        "title": "tab",
+        "visible": true
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+          "example": "84",
+          "type": "string"
+        },
+        "iwidgets": {
+          "description": "",
+          "example": [
+            {
+              "widget": "UPM/Widget1/0.1",
+              "layout": 0,
+              "title": "Widget1",
+              "icon_top": -1,
+              "variables": {},
+              "minimized": false,
+              "id": "313",
+              "height": 28,
+              "zIndex": 0,
+              "width": 6,
+              "readOnly": false,
+              "icon_left": -1,
+              "top": 0,
+              "fulldragboard": false,
+              "left": 0
+            },
+            {
+              "widget": "UPM/Widget2/0.1",
+              "layout": 0,
+              "title": "Widget2",
+              "icon_top": -1,
+              "variables": {},
+              "minimized": false,
+              "id": "314",
+              "height": 28,
+              "zIndex": 0,
+              "width": 6,
+              "readOnly": false,
+              "icon_left": -1,
+              "top": 0,
+              "fulldragboard": false,
+              "left": 7
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "name": {
+          "description": "",
+          "example": "Tab",
+          "type": "string"
+        },
+        "preferences": {
+          "description": "",
+          "example": {},
+          "type": "object"
+        },
+        "title": {
+          "description": "",
+          "example": "tab",
+          "type": "string"
+        },
+        "visible": {
+          "description": "",
+          "example": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "iwidgets",
+        "name",
+        "preferences",
+        "title",
+        "visible"
+      ]
+    },
+    "UpdateTabDetailsRequest": {
+      "title": "Update tab details request",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "",
+          "example": "new-name",
+          "type": "string"
+        },
+        "title": {
+          "description": "",
+          "example": "New Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "title"
+      ]
+    },
+    "UpdateTabPreferencesRequest": {
+      "title": "Update tab preferences request",
+      "type": "object",
+      "properties": {
+        "baselayout": {
+          "description": "",
+          "example": {
+            "inherit": false,
+            "value": "{\"verticalmargin\":3,\"smart\":\"false\",\"horizontalmargin\":4,\"type\":\"gridlayout\",\"columns\":20,\"cellheight\":12,\"rows\":12}"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "baselayout"
+      ]
+    },
+    "AddNewWidgetsRequest": {
+      "title": "Add new widgets request",
+      "type": "object",
+      "properties": {
+        "widget": {
+          "description": "",
+          "example": "UPM/Widget/1.0",
+          "type": "string"
+        }
+      },
+      "required": [
+        "widget"
+      ]
+    },
+    "AddNewWidgetsResponse": {
+      "title": "Add new widgets response",
+      "example": {
+        "widget": "UPM/Widget/1.0",
+        "left": 12,
+        "top": 0,
+        "icon_left": -1,
+        "icon_top": -1,
+        "zIndex": 2,
+        "width": 6,
+        "height": 28,
+        "title": "Widget's Title",
+        "layout": 0
+      },
+      "type": "object",
+      "properties": {
+        "widget": {
+          "description": "",
+          "example": "UPM/Widget/1.0",
+          "type": "string"
+        },
+        "left": {
+          "description": "",
+          "example": 12,
+          "type": "integer",
+          "format": "int32"
+        },
+        "top": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "icon_left": {
+          "description": "",
+          "example": -1,
+          "type": "integer",
+          "format": "int32"
+        },
+        "icon_top": {
+          "description": "",
+          "example": -1,
+          "type": "integer",
+          "format": "int32"
+        },
+        "zIndex": {
+          "description": "",
+          "example": 2,
+          "type": "integer",
+          "format": "int32"
+        },
+        "width": {
+          "description": "",
+          "example": 6,
+          "type": "integer",
+          "format": "int32"
+        },
+        "height": {
+          "description": "",
+          "example": 28,
+          "type": "integer",
+          "format": "int32"
+        },
+        "title": {
+          "description": "",
+          "example": "Widget's Title",
+          "type": "string"
+        },
+        "layout": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "widget",
+        "left",
+        "top",
+        "icon_left",
+        "icon_top",
+        "zIndex",
+        "width",
+        "height",
+        "title",
+        "layout"
+      ]
+    },
+    "UpdateInstantiatedWidgetDetailsRequest": {
+      "title": "Update instantiated widget details request",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "",
+          "example": "new title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "title"
+      ]
+    },
+    "GetInstantiatedWidgetPreferencesResponse": {
+      "title": "Get instantiated widget preferences response",
+      "example": {
+        "first_preference_name": {
+          "readonly": false,
+          "hidden": false,
+          "name": "boolean",
+          "value": false,
+          "secure": false
+        },
+        "second_preference_nanme": {
+          "readonly": false,
+          "hidden": false,
+          "name": "text",
+          "value": "initial text",
+          "secure": false
+        }
+      },
+      "type": "object",
+      "properties": {
+        "first_preference_name": {
+          "description": "",
+          "example": {
+            "readonly": false,
+            "hidden": false,
+            "name": "boolean",
+            "value": false,
+            "secure": false
+          },
+          "type": "object"
+        },
+        "second_preference_nanme": {
+          "description": "",
+          "example": {
+            "readonly": false,
+            "hidden": false,
+            "name": "text",
+            "value": "initial text",
+            "secure": false
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "first_preference_name",
+        "second_preference_nanme"
+      ]
+    },
+    "UpdateInstantiatedWidgetPreferencesRequest": {
+      "title": "Update instantiated widget preferences request",
+      "type": "object",
+      "properties": {
+        "pref": {
+          "description": "",
+          "example": "value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "pref"
+      ]
+    },
+    "GetInstantiatedWidgetPropertiesResponse": {
+      "title": "Get instantiated widget properties response",
+      "example": {
+        "first_property_name": {
+          "readonly": false,
+          "hidden": false,
+          "name": "boolean",
+          "value": false,
+          "secure": false
+        },
+        "second_property_nanme": {
+          "readonly": false,
+          "hidden": false,
+          "name": "text",
+          "value": "initial text",
+          "secure": false
+        }
+      },
+      "type": "object",
+      "properties": {
+        "first_property_name": {
+          "description": "",
+          "example": {
+            "readonly": false,
+            "hidden": false,
+            "name": "boolean",
+            "value": false,
+            "secure": false
+          },
+          "type": "object"
+        },
+        "second_property_nanme": {
+          "description": "",
+          "example": {
+            "readonly": false,
+            "hidden": false,
+            "name": "text",
+            "value": "initial text",
+            "secure": false
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "first_property_name",
+        "second_property_nanme"
+      ]
+    },
+    "UpdateInstantiatedWidgetPropertiesRequest": {
+      "title": "Update instantiated widget properties request",
+      "type": "object",
+      "properties": {
+        "property_name": {
+          "description": "",
+          "example": "new_value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "property_name"
+      ]
+    },
+    "GetOperatorVariablesResponse": {
+      "title": "Get operator variables response",
+      "example": {
+        "preferences": {
+          "username": {
+            "hidden": false,
+            "name": "username",
+            "readonly": false,
+            "secure": false,
+            "value": "test_username"
+          },
+          "password": {
+            "hidden": false,
+            "name": "password",
+            "readonly": false,
+            "secure": true,
+            "value": "********"
+          }
+        }
+      },
+      "type": "object",
+      "properties": {
+        "preferences": {
+          "description": "",
+          "example": {
+            "username": {
+              "hidden": false,
+              "name": "username",
+              "readonly": false,
+              "secure": false,
+              "value": "test_username"
+            },
+            "password": {
+              "hidden": false,
+              "name": "password",
+              "readonly": false,
+              "secure": true,
+              "value": "********"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "preferences"
+      ]
+    },
+    "UploadMashableApplicationComponentsResponse": {
+      "title": "Upload Mashable Application Components response",
+      "example": {
+        "contributors": [],
+        "image": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/images/catalogue.png",
+        "type": "widget",
+        "smartphoneimage": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/images/catalogue_iphone.png",
+        "contents": {
+          "src": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/test.html",
+          "charset": "utf-8",
+          "contenttype": "text/html",
+          "cacheable": true,
+          "useplatformstyle": false
+        },
+        "requirements": [],
+        "preferences": [
+          {
+            "secure": false,
+            "description": "list preference",
+            "default": "default",
+            "value": null,
+            "label": "list",
+            "readonly": false,
+            "type": "list",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "1",
+                "label": "value1"
+              },
+              {
+                "value": "2",
+                "label": "value2"
+              }
+            ],
+            "name": "list"
+          },
+          {
+            "secure": false,
+            "description": "text preference",
+            "default": "initial text",
+            "value": null,
+            "label": "text",
+            "readonly": false,
+            "type": "text",
+            "name": "text"
+          },
+          {
+            "secure": false,
+            "description": "boolean preference",
+            "default": "false",
+            "value": null,
+            "label": "boolean",
+            "readonly": false,
+            "type": "boolean",
+            "name": "boolean"
+          },
+          {
+            "secure": false,
+            "description": "password preference",
+            "default": "default",
+            "value": null,
+            "label": "password",
+            "readonly": false,
+            "type": "password",
+            "name": "password"
+          },
+          {
+            "secure": false,
+            "description": "number preference",
+            "default": "2",
+            "value": null,
+            "label": "number",
+            "readonly": false,
+            "type": "number",
+            "name": "number"
+          }
+        ],
+        "title": "Test",
+        "wiring": {
+          "inputs": [
+            {
+              "friendcode": "test-data",
+              "name": "inputendpoint",
+              "actionlabel": "",
+              "label": "Input",
+              "type": "text",
+              "description": ""
+            },
+            {
+              "friendcode": "nothandled",
+              "name": "nothandled",
+              "actionlabel": "",
+              "label": "Not handled endpoint",
+              "type": "text",
+              "description": ""
+            }
+          ],
+          "outputs": [
+            {
+              "description": "",
+              "type": "text",
+              "friendcode": "test-data",
+              "name": "outputendpoint",
+              "label": "Output"
+            }
+          ]
+        },
+        "longdescription": "DESCRIPTION.md",
+        "version": "1.0",
+        "widget_height": "24",
+        "homepage": "",
+        "email": "aarranz@conwet.com",
+        "default_lang": "en",
+        "issuetracker": "",
+        "vendor": "Wirecloud",
+        "description": "This widget is used to test some of the features of the Wirecloud platform",
+        "authors": [
+          {
+            "name": "aarranz"
+          }
+        ],
+        "properties": [],
+        "altcontents": [],
+        "name": "Test",
+        "license": "",
+        "changelog": "CHANGELOG.md",
+        "doc": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/doc/index.md",
+        "licenseurl": "",
+        "widget_width": "6"
+      },
+      "type": "object",
+      "properties": {
+        "contributors": {
+          "description": "",
+          "example": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "image": {
+          "description": "",
+          "example": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/images/catalogue.png",
+          "type": "string"
+        },
+        "type": {
+          "description": "",
+          "example": "widget",
+          "type": "string"
+        },
+        "smartphoneimage": {
+          "description": "",
+          "example": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/images/catalogue_iphone.png",
+          "type": "string"
+        },
+        "contents": {
+          "description": "",
+          "example": {
+            "src": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/test.html",
+            "charset": "utf-8",
+            "contenttype": "text/html",
+            "cacheable": true,
+            "useplatformstyle": false
+          },
+          "type": "object"
+        },
+        "requirements": {
+          "description": "",
+          "example": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "preferences": {
+          "description": "",
+          "example": [
+            {
+              "secure": false,
+              "description": "list preference",
+              "default": "default",
+              "value": null,
+              "label": "list",
+              "readonly": false,
+              "type": "list",
+              "options": [
+                {
+                  "value": "default",
+                  "label": "Default"
+                },
+                {
+                  "value": "1",
+                  "label": "value1"
+                },
+                {
+                  "value": "2",
+                  "label": "value2"
+                }
+              ],
+              "name": "list"
+            },
+            {
+              "secure": false,
+              "description": "text preference",
+              "default": "initial text",
+              "value": null,
+              "label": "text",
+              "readonly": false,
+              "type": "text",
+              "name": "text"
+            },
+            {
+              "secure": false,
+              "description": "boolean preference",
+              "default": "false",
+              "value": null,
+              "label": "boolean",
+              "readonly": false,
+              "type": "boolean",
+              "name": "boolean"
+            },
+            {
+              "secure": false,
+              "description": "password preference",
+              "default": "default",
+              "value": null,
+              "label": "password",
+              "readonly": false,
+              "type": "password",
+              "name": "password"
+            },
+            {
+              "secure": false,
+              "description": "number preference",
+              "default": "2",
+              "value": null,
+              "label": "number",
+              "readonly": false,
+              "type": "number",
+              "name": "number"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "title": {
+          "description": "",
+          "example": "Test",
+          "type": "string"
+        },
+        "wiring": {
+          "description": "",
+          "example": {
+            "inputs": [
+              {
+                "friendcode": "test-data",
+                "name": "inputendpoint",
+                "actionlabel": "",
+                "label": "Input",
+                "type": "text",
+                "description": ""
+              },
+              {
+                "friendcode": "nothandled",
+                "name": "nothandled",
+                "actionlabel": "",
+                "label": "Not handled endpoint",
+                "type": "text",
+                "description": ""
+              }
+            ],
+            "outputs": [
+              {
+                "description": "",
+                "type": "text",
+                "friendcode": "test-data",
+                "name": "outputendpoint",
+                "label": "Output"
+              }
+            ]
+          },
+          "type": "object"
+        },
+        "longdescription": {
+          "description": "",
+          "example": "DESCRIPTION.md",
+          "type": "string"
+        },
+        "version": {
+          "description": "",
+          "example": "1.0",
+          "type": "string"
+        },
+        "widget_height": {
+          "description": "",
+          "example": "24",
+          "type": "string"
+        },
+        "homepage": {
+          "description": "",
+          "type": "string"
+        },
+        "email": {
+          "description": "",
+          "example": "aarranz@conwet.com",
+          "type": "string"
+        },
+        "default_lang": {
+          "description": "",
+          "example": "en",
+          "type": "string"
+        },
+        "issuetracker": {
+          "description": "",
+          "type": "string"
+        },
+        "vendor": {
+          "description": "",
+          "example": "Wirecloud",
+          "type": "string"
+        },
+        "description": {
+          "description": "",
+          "example": "This widget is used to test some of the features of the Wirecloud platform",
+          "type": "string"
+        },
+        "authors": {
+          "description": "",
+          "example": [
+            {
+              "name": "aarranz"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "properties": {
+          "description": "",
+          "example": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "altcontents": {
+          "description": "",
+          "example": [],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "description": "",
+          "example": "Test",
+          "type": "string"
+        },
+        "license": {
+          "description": "",
+          "type": "string"
+        },
+        "changelog": {
+          "description": "",
+          "example": "CHANGELOG.md",
+          "type": "string"
+        },
+        "doc": {
+          "description": "",
+          "example": "https://mashup.lab.fiware.org/catalogue/media/Wirecloud/Test/1.0/doc/index.md",
+          "type": "string"
+        },
+        "licenseurl": {
+          "description": "",
+          "type": "string"
+        },
+        "widget_width": {
+          "description": "",
+          "example": "6",
+          "type": "string"
+        }
+      },
+      "required": [
+        "contributors",
+        "image",
+        "type",
+        "smartphoneimage",
+        "contents",
+        "requirements",
+        "preferences",
+        "title",
+        "wiring",
+        "longdescription",
+        "version",
+        "widget_height",
+        "homepage",
+        "email",
+        "default_lang",
+        "issuetracker",
+        "vendor",
+        "description",
+        "authors",
+        "properties",
+        "altcontents",
+        "name",
+        "license",
+        "changelog",
+        "doc",
+        "licenseurl",
+        "widget_width"
+      ]
+    },
+    "UploadMashableApplicationComponents400Response": {
+      "title": "Upload Mashable Application Components 400 response",
+      "example": {
+        "description": "The uploaded file is not a zip file"
+      },
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "The uploaded file is not a zip file",
+          "type": "string"
+        }
+      },
+      "required": [
+        "description"
+      ]
+    }
+  }
+}
