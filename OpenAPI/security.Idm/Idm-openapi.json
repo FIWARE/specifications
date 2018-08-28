@@ -81,7 +81,37 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/v1/auth/tokens",
+              "headers": {
+                "X-Auth-token": "auth_token",
+                "X-Subject-token": "subj_token"
+              }
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "Content-Length": "278",
+                "ETag": "W/\"116-JwJR8Y5eFV2SDon0j1GE5yWyNx4\"",
+                "Date": "Tue, 20 Mar 2018 15:23:21 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{  \"access_token\": \"f0a0a067-6341-4943-8225-45f794b3d94b\",  \"expires\": \"2018-03-21T15:22:33.000Z\",  \"valid\": true,  \"User\": {    \"id\": \"2d6f5391-6130-48d8-a9d0-01f20699a7eb\",    \"username\": \"alice_new\",    \"email\": \"alice@test.com\",    \"date_password\": \"2018-03-20T12:12:09.000Z\",    \"enabled\": true,    \"admin\": false  }}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Get token info1",
+            "x-testDescription": "In order to manage the Identity Manager through the API you must obtain an access token to be included in HTTP headers. There are two methods to obtain an access token."
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -140,7 +170,38 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/v1/auth/tokens",
+              "headers": {
+                "Content-Type": "application/json"
+              },
+              "body": "{  \"token\": \"token_id\"}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "X-Subject-Token": "04c5b070-4292-4b3f-911b-36a103f3ac3f",
+                "Content-Length": "74",
+                "ETag": "W/\"4a-jYFzvNRMQcIZ2P+p5EfmbN+VHcw\"",
+                "Date": "Mon, 19 Mar 2018 15:05:35 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{    \"token\": {        \"methods\": [\"password\"],        \"expires_at\":\"2018-03-20T15:05:35.697Z\"    }}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Create token with Token method1",
+            "x-testDescription": "In order to manage the Identity Manager through the API you must obtain an access token to be included in HTTP headers. There are two methods to obtain an access token."
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -184,7 +245,32 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "DELETE",
+              "uri": "/v1/auth/tokens",
+              "headers": {
+                "X-Auth-token": "auth_token",
+                "X-Subject-token": "subj_token"
+              }
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json"
+              }
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Delete token1",
+            "x-testDescription": "In order to manage the Identity Manager through the API you must obtain an access token to be included in HTTP headers. There are two methods to obtain an access token."
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -254,7 +340,37 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/v1/applications",
+              "headers": {
+                "X-Auth-token": "token"
+              }
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "X-Powered-By": "Express",
+                "Content-Length": "303",
+                "ETag": "W/\"12f-64q7xcRDNfw7c2xrc1r2S5EFS6k\"",
+                "Date": "Tue, 20 Mar 2018 10:14:30 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{  \"applications\": [    {      \"id\": \"0fbfa58c-e5b6-41c3-b748-ab29f1567a9c\",      \"name\": \"Test_application 2\",      \"description\": \"Description\",      \"image\": \"default\",      \"url\": \"http://localhost\",      \"redirect_uri\": \"http://localhost/login\",      \"grant_type\": \"client_credentials,password,implicit,authorization_code,refresh_token\",      \"response_type\": \"code,token\",      \"client_type\": null    },    {      \"id\": \"fd7fe349-f7da-4c27-b404-74da17641025\",      \"name\": \"Test_application 1\",      \"description\": \"description\",      \"image\": \"default\",      \"url\": \"http://localhost\",      \"redirect_uri\": \"http://localhost/login\",      \"grant_type\": \"password,authorization_code,implicit\",      \"response_type\": \"code,token\",      \"client_type\": null    }  ]}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "List Applications1",
+            "x-testDescription": "Applications are registered in Keyrock and consume OAuth2 resources."
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -325,7 +441,39 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/v1/applications",
+              "headers": {
+                "Content-Type": "application/json",
+                "X-Auth-token": "token"
+              },
+              "body": "{  \"application\": {    \"name\": \"Test_application 1\",    \"description\": \"description\",    \"redirect_uri\": \"http://localhost/login\",    \"url\": \"http://localhost\",    \"grant_type\": [      \"authorization_code\",      \"implicit\",      \"password\"    ]  }}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "X-Powered-By": "Express",
+                "Content-Length": "329",
+                "ETag": "W/\"149-yQORsIAntQ0YHR5uCyLZhk7jTkg\"",
+                "Date": "Tue, 20 Mar 2018 10:16:13 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{  \"application\": {    \"id\": \"fd7fe349-f7da-4c27-b404-74da17641025\",    \"secret\": \"9dc463cf-8318-4f65-bc02-778424fdfd77\",    \"image\": \"default\",    \"name\": \"Test_application 1\",    \"description\": \"description\",    \"redirect_uri\": \"http://localhost/login\",    \"url\": \"http://localhost\",    \"grant_type\": \"password,authorization_code,implicit\",    \"response_type\": \"code,token\"  }}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Create an Application1",
+            "x-testDescription": "Applications are registered in Keyrock and consume OAuth2 resources."
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -578,7 +726,36 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/v1/users",
+              "headers": {
+                "X-Auth-token": "token"
+              }
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "Content-Length": "378",
+                "ETag": "W/\"17a-/TnzfhPjjd4IG4D1u38zPZiSIL0\"",
+                "Date": "Tue, 20 Mar 2018 10:08:27 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{  \"users\": [    {      \"id\": \"2d6f5391-6130-48d8-a9d0-01f20699a7eb\",      \"username\": \"alice\",      \"email\": \"alice@test.com\",      \"enabled\": true,      \"gravatar\": false,      \"date_password\": \"2018-03-20T09:31:07.000Z\",      \"description\": null,      \"website\": null    },    {      \"id\": \"admin\",      \"username\": \"admin\",      \"email\": \"admin@test.com\",      \"enabled\": true,      \"gravatar\": false,      \"date_password\": \"2018-03-20T08:40:14.000Z\",      \"description\": null,      \"website\": null    }  ]}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "List Users1",
+            "x-testDescription": "Testcase for testing endpoint List Users"
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -648,7 +825,38 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/v1/users",
+              "headers": {
+                "Content-Type": "application/json",
+                "X-Auth-token": "token"
+              },
+              "body": "{    \"user\": {        \"username\": \"alice\",        \"email\": \"alice@test.com\",        \"password\": \"passw0rd\"    }}"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "Content-Length": "205",
+                "ETag": "W/\"cd-hbCwPDJrO5NvpsY2pqY6Qhlf/do\"",
+                "Date": "Tue, 20 Mar 2018 09:31:07 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{    \"user\": {        \"id\":\"2d6f5391-6130-48d8-a9d0-01f20699a7eb\",        \"image\":\"default\",        \"gravatar\":false,        \"enabled\":true,        \"admin\":false,        \"username\":\"alice\",        \"email\":\"alice@test.com\",        \"date_password\":\"2018-03-20T09:31:07.104Z\"    }}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Create a User1",
+            "x-testDescription": "Testcase for testing endpoint Create a User"
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -896,7 +1104,36 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/v1/organizations",
+              "headers": {
+                "X-Auth-token": "token"
+              }
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "Content-Length": "355",
+                "ETag": "W/\"163-0eDqBVBTEbKRQmAm6AtzDLXVigI\"",
+                "Date": "Tue, 20 Mar 2018 10:45:36 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{  \"organizations\": [    {      \"role\": \"owner\",      \"Organization\": {        \"id\": \"33cf4d3c-8dfb-4bed-bf37-7647f45528ec\",        \"name\": \"Test organization 2\",        \"description\": \"description 2\",        \"image\": \"default\",        \"website\": null      }    },    {      \"role\": \"owner\",      \"Organization\": {        \"id\": \"3e20722f-d420-422d-89ba-3ae87bc1c0cd\",        \"name\": \"Test organization\",        \"description\": \"description\",        \"image\": \"default\",        \"website\": null      }    }  ]}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "List Organizations1",
+            "x-testDescription": "Testcase for testing endpoint List Organizations"
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -962,7 +1199,38 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/v1/organizations",
+              "headers": {
+                "Content-Type": "application/json",
+                "X-Auth-token": "token"
+              },
+              "body": "{    \"organization\": {        \"name\": \"Test organization\",        \"description\": \"description\"    }} "
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "Content-Length": "135",
+                "ETag": "W/\"87-mQPZWVCWNw1jTeBUp2u6DfQUBXg\"",
+                "Date": "Tue, 20 Mar 2018 10:41:14 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{  \"organization\": {    \"id\": \"3e20722f-d420-422d-89ba-3ae87bc1c0cd\",    \"image\": \"default\",    \"name\": \"Test organization\",    \"description\": \"description\"  }}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Create an Organization1",
+            "x-testDescription": "Testcase for testing endpoint Create an Organization"
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -2766,7 +3034,7 @@
       }
     },
     "/v1/applications/{application_id}/users/{user_id}/roles/{role_id}": {
-      "post": {
+      "put": {
         "description": "",
         "summary": "Assign a role to a user",
         "tags": [
@@ -2874,6 +3142,13 @@
             "required": true,
             "type": "string",
             "description": "Id of the role."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
           }
         ],
         "responses": {
@@ -3055,7 +3330,7 @@
       }
     },
     "/v1/applications/{application_id}/organizations/{organization_id}/roles/{role_id}/organization_roles/{organization_role_id}": {
-      "post": {
+      "put": {
         "description": "",
         "summary": "Assign a role to a organization",
         "tags": [
@@ -3178,6 +3453,13 @@
             "required": true,
             "type": "string",
             "description": "Id of organization role."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
           }
         ],
         "responses": {
@@ -3330,7 +3612,7 @@
       }
     },
     "/v1/organizations/{organization_id}/users/{user_id}/organization_roles/{organization_role_id}": {
-      "post": {
+      "put": {
         "description": "",
         "summary": "Create relationship",
         "tags": [
@@ -3466,6 +3748,185 @@
         }
       }
     },
+    "/v1/applications/{application_id}/trusted_applications": {
+      "get": {
+        "description": "",
+        "summary": "List trusted applications associated to an application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "List trusted applications associated to an application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/ListTrustedApplicationsAssociatedToAnApplicationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "trusted_applications": [
+                  "8692ec57-8514-4ef6-a347-3d1ac6409f79",
+                  "78b4763f-139a-4820-a42b-3e265fb9d56e",
+                  "462ee067-f10a-4c9c-aefe-079038830043",
+                  "6781fd6c-9dd3-46d7-bdcc-4ca2af1ae42d"
+                ]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/v1/applications/{application_id}/trusted_applications/{trustedApplicationId}": {
+      "put": {
+        "description": "",
+        "summary": "Add trusted application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Add trusted application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "trustedApplicationId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application to be added as trusted."
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/AddTrustedApplicationResponse"
+            },
+            "examples": {
+              "application/json": {
+                "oauth_client_id": "3e34cbf6-3579-4e54-878a-0a406962ac36",
+                "trusted_oauth_client_id": "0118ccb7-756e-42f9-8a19-5b4e83ca8c46"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "",
+        "summary": "Remove trusted application from an application",
+        "tags": [
+          "Keyrock API"
+        ],
+        "operationId": "Remove trusted application from an application",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "application_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application."
+          },
+          {
+            "name": "trustedApplicationId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id of the application to be added as trusted."
+          },
+          {
+            "name": "X-Auth-token",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "auth": []
+          }
+        ],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
     "/v1/service_providers/configs": {
       "get": {
         "description": "\"Information\" provides the number of total users, total organizations, and the number of applications.",
@@ -3508,7 +3969,36 @@
             "auth": []
           }
         ],
-        "x-unitTests": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/v1/service_providers/configs",
+              "headers": {
+                "X-Auth-token": "token"
+              }
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "RAW",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {
+                "Content-Type": "application/json",
+                "Content-Length": "77",
+                "ETag": "W/\"4d-XGO2xqHcxBbtv7+72qxVUUJvMT4\"",
+                "Date": "Tue, 20 Mar 2018 12:57:50 GMT",
+                "Connection": "keep-alive"
+              },
+              "body": "{  \"information\": {    \"totalUsers\": 2,    \"totalOrganizations\": 2,    \"totalApplications\": 4  }}"
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Read Service Provider Configuration1",
+            "x-testDescription": "\"Information\" provides the number of total users, total organizations, and the number of applications."
+          }
+        ],
         "x-operation-settings": {
           "CollectParameters": false,
           "AllowDynamicQueryParameters": false,
@@ -3521,6 +4011,10 @@
   "definitions": {
     "CreateTokenWithPasswordMethodRequest": {
       "title": "Create token with Password method request",
+      "example": {
+        "name": "alice@test.com",
+        "password": "passw0rd"
+      },
       "type": "object",
       "properties": {
         "name": {
@@ -3568,6 +4062,9 @@
     },
     "CreateTokenWithTokenMethodRequest": {
       "title": "Create token with Token method request",
+      "example": {
+        "token": "token_id"
+      },
       "type": "object",
       "properties": {
         "token": {
@@ -3727,6 +4224,19 @@
     },
     "CreateAnApplicationRequest": {
       "title": "Create an Application request",
+      "example": {
+        "application": {
+          "name": "Test_application 1",
+          "description": "description",
+          "redirect_uri": "http://localhost/login",
+          "url": "http://localhost",
+          "grant_type": [
+            "authorization_code",
+            "implicit",
+            "password"
+          ]
+        }
+      },
       "type": "object",
       "properties": {
         "application": {
@@ -3944,6 +4454,13 @@
     },
     "CreateAUserRequest": {
       "title": "Create a User request",
+      "example": {
+        "user": {
+          "username": "alice",
+          "email": "alice@test.com",
+          "password": "passw0rd"
+        }
+      },
       "type": "object",
       "properties": {
         "user": {
@@ -4138,6 +4655,12 @@
     },
     "CreateAnOrganizationRequest": {
       "title": "Create an Organization request",
+      "example": {
+        "organization": {
+          "name": "Test organization",
+          "description": "description"
+        }
+      },
       "type": "object",
       "properties": {
         "organization": {
@@ -5299,6 +5822,60 @@
       },
       "required": [
         "user_organization_assignments"
+      ]
+    },
+    "ListTrustedApplicationsAssociatedToAnApplicationResponse": {
+      "title": "List trusted applications associated to an application response",
+      "example": {
+        "trusted_applications": [
+          "8692ec57-8514-4ef6-a347-3d1ac6409f79",
+          "78b4763f-139a-4820-a42b-3e265fb9d56e",
+          "462ee067-f10a-4c9c-aefe-079038830043",
+          "6781fd6c-9dd3-46d7-bdcc-4ca2af1ae42d"
+        ]
+      },
+      "type": "object",
+      "properties": {
+        "trusted_applications": {
+          "description": "",
+          "example": [
+            "8692ec57-8514-4ef6-a347-3d1ac6409f79",
+            "78b4763f-139a-4820-a42b-3e265fb9d56e",
+            "462ee067-f10a-4c9c-aefe-079038830043",
+            "6781fd6c-9dd3-46d7-bdcc-4ca2af1ae42d"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "trusted_applications"
+      ]
+    },
+    "AddTrustedApplicationResponse": {
+      "title": "Add trusted application response",
+      "example": {
+        "oauth_client_id": "3e34cbf6-3579-4e54-878a-0a406962ac36",
+        "trusted_oauth_client_id": "0118ccb7-756e-42f9-8a19-5b4e83ca8c46"
+      },
+      "type": "object",
+      "properties": {
+        "oauth_client_id": {
+          "description": "",
+          "example": "3e34cbf6-3579-4e54-878a-0a406962ac36",
+          "type": "string"
+        },
+        "trusted_oauth_client_id": {
+          "description": "",
+          "example": "0118ccb7-756e-42f9-8a19-5b4e83ca8c46",
+          "type": "string"
+        }
+      },
+      "required": [
+        "oauth_client_id",
+        "trusted_oauth_client_id"
       ]
     },
     "ReadServiceProviderConfigurationResponse": {
