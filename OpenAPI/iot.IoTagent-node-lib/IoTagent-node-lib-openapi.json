@@ -3,7 +3,8 @@
   "info": {
     "version": "1.0",
     "title": "Copyright",
-    "description": "TODO: Add a description"
+    "description": "TODO: Add a description",
+    "contact": {}
   },
   "host": "idas.lab.fiware.org",
   "basePath": "/",
@@ -1100,5 +1101,11 @@
         "entity_name"
       ]
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "Configuration API",
+      "description": ""
+    }
+  ]
 }
