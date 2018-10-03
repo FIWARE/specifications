@@ -109,38 +109,6 @@
               }
             }
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "GET",
-              "uri": "/services",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/*"
-              }
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "RAW",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {},
-              "body": "{  \"count\": 1,  \"services\": [    {        \"apikey\": \"apikey3\",        \"service\": \"service2\",        \"service_path\": \"/srvpath2\",        \"token\": \"token2\",        \"cbroker\": \"http://127.0.0.1:1026\",        \"entity_type\": \"thing\",        \"resource\": \"/iot/d\"    }  ]}"
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Retrieve a service1",
-            "x-testDescription": "With Fiware-ServicePath you can retrieve a subservice or all subservices.\n+ Parameters [limit, offset, resource]\n    + `limit` (optional, number). In order to specify the maximum number of services (default is 20, maximun allowed is 1000).\n    + `offset` (optional, number). In order to skip a given number of elements at the beginning (default is 0) .\n    + `resource` (optional, string). URI for the iotagent, return only services for this iotagent."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       },
       "put": {
@@ -224,38 +192,6 @@
           "204": {
             "description": ""
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "PUT",
-              "uri": "/services",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/TestSubservice"
-              },
-              "body": "{   \"entity_type\": \"entity_type\"}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Update a service/subservice1",
-            "x-testDescription": "If you want modify only a field, you can do it. You cannot modify an element into an array field, but whole array. (\"/*\" is not allowed).\n+ Parameters [apikey, resource]\n    + `apikey` (optional, string). If you don't specify, apikey=\" \" is applied.\n    + `resource` (mandatory, string). URI for service into iotagent."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       },
       "post": {
@@ -339,38 +275,6 @@
           "201": {
             "description": ""
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/services",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/TestSubservice"
-              },
-              "body": "{  \"services\": [    {      \"apikey\": \"apikey3\",      \"token\": \"token2\",      \"cbroker\": \"http://127.0.0.1:1026\",      \"entity_type\": \"thing\",      \"resource\": \"/iot/d\"    }   ] }"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Create a service1",
-            "x-testDescription": "With one subservice defined in Fiware-ServicePath header. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory)."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       },
       "delete": {
@@ -445,37 +349,6 @@
           "204": {
             "description": ""
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "DELETE",
-              "uri": "/services",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/TestSubservice"
-              }
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Remove a subservice/service1",
-            "x-testDescription": "You remove a subservice into a service. If Fiware-ServicePath is '/*' or '/#' remove service and all subservices.\n+ Parameters [apikey, resource, device]\n    + `apikey` (optional, string). If you don't specify, apikey=\"\" is applied.\n    + `resource` (mandatory, string). URI for service into iotagent.\n    + `device` (optional, boolean). Default value is false. Remove devices in service/subservice. This parameter is not valid when Fiware-ServicePath is '/*' or '/#'."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       }
     },
@@ -583,38 +456,6 @@
               }
             }
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "GET",
-              "uri": "/devices",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testService",
-                "Fiware-ServicePath": "/TestSubservice"
-              }
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "RAW",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {},
-              "body": "   {      \"count\": 1,      \"devices\": [        {          \"device_id\": \"device_id\",          \"protocol\": \"12345\",          \"entity_name\": \"entity_name\",          \"entity_type\": \"entity_type\",          \"timezone\": \"America/Santiago\",          \"attributes\": [            {              \"object_id\": \"source_data\",              \"name\": \"attr_name\",              \"type\": \"int\"            }          ],          \"static_attributes\": [            {              \"name\": \"att_name\",              \"type\": \"string\",              \"value\": \"value\"            }          ]        }      ]    }"
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Retrieve all devices1",
-            "x-testDescription": "+ Parameters [limit, offset, detailed, entity, protocol]\n    + `limit` (optional, number). In order to specify the maximum number of devices (default is 20, maximun allowed is 1000).\n    + `offset` (optional, number). In order to skip a given number of elements at the beginning (default is 0) .\n    + `detailed` (optional, string). `on` return all device information, `off` (default) return only name.\n    + `entity` (optional, string). It allows get a device from entity name.\n    + `protocol` (optional, string). It allows get devices with this protocol."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       },
       "post": {
@@ -719,39 +560,6 @@
             "description": "",
             "schema": {}
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "POST",
-              "uri": "/devices",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/TestSubservice"
-              },
-              "body": "   {        \"devices\": [        {          \"device_id\": \"device_id\",          \"protocol\": \"12345\",          \"entity_name\": \"entity_name\",          \"entity_type\": \"entity_type\",          \"timezone\": \"America/Santiago\",          \"attributes\": [            {              \"object_id\": \"source_data\",              \"name\": \"attr_name\",              \"type\": \"int\"            }          ],          \"static_attributes\": [            {              \"name\": \"att_name\",              \"type\": \"string\",              \"value\": \"value\"            }          ]        }        ]    }"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "RAW",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {},
-              "body": "+ Headers (only if ONE device is in request)        Location: /iot/devices/device_id"
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Create a device1",
-            "x-testDescription": "From device model, mandatory fields are: device_id and protocol."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       }
     },
@@ -826,38 +634,6 @@
               }
             }
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "GET",
-              "uri": "/devices/{device_id}",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/TestSubservice"
-              }
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "RAW",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {},
-              "body": "{  \"device_id\": \"device_id\",  \"protocol\": \"121345\",  \"entity_name\": \"entity_name\",  \"entity_type\": \"entity_type\",  \"timezone\": \"America/Santiago\",  \"attributes\": [    {      \"object_id\": \"source_data\",      \"name\": \"attr_name\",      \"type\": \"int\"    }  ],  \"static_attributes\": [    {      \"name\": \"att_name\",      \"type\": \"string\",      \"value\": \"value\"    }  ]}"
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Retrieve a device1",
-            "x-testDescription": "Testcase for testing endpoint Retrieve a device"
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       },
       "put": {
@@ -913,38 +689,6 @@
           "204": {
             "description": ""
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "PUT",
-              "uri": "/devices/{device_id}",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/TestSubservice"
-              },
-              "body": "{   \"entity_name\": \"entity_name\"}"
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Update a device1",
-            "x-testDescription": "If you want modify only a field, you can do it, except field `protocol` (this field, if provided it is removed from request)."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       },
       "delete": {
@@ -991,37 +735,6 @@
           "204": {
             "description": ""
           }
-        },
-        "x-unitTests": [
-          {
-            "request": {
-              "method": "DELETE",
-              "uri": "/devices/{device_id}",
-              "headers": {
-                "Content-Type": "application/json",
-                "Fiware-Service": "testservice",
-                "Fiware-ServicePath": "/TestSubservice"
-              }
-            },
-            "expectedResponse": {
-              "x-allowExtraHeaders": true,
-              "x-bodyMatchMode": "NONE",
-              "x-arrayOrderedMatching": false,
-              "x-arrayCheckCount": false,
-              "x-matchResponseSchema": true,
-              "headers": {}
-            },
-            "x-testShouldPass": true,
-            "x-testEnabled": true,
-            "x-testName": "Remove a device1",
-            "x-testDescription": "If specific device is not found, we work as deleted."
-          }
-        ],
-        "x-operation-settings": {
-          "CollectParameters": false,
-          "AllowDynamicQueryParameters": false,
-          "AllowDynamicFormParameters": false,
-          "IsMultiContentStreaming": false
         }
       }
     }
