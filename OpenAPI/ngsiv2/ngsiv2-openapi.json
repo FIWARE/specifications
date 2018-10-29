@@ -1655,7 +1655,13 @@
         ],
         "responses": {
           "201": {
-            "description": ""
+            "description": "",
+            "headers": {
+              "Location": {
+                "type": "string",
+                "description": "Path to use to update or delete the created subscription. e.g. '/v2/subscriptions/abcde98765'"
+              }
+            }
           }
         },
         "x-unitTests": [
