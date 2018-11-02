@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0",
     "title": "Copyright",
-    "description": "TODO: Add a description",
+    "description": "Copyright (c) 2014-2016 Telefonica Investigacion y Desarrollo\n\n## License\n\nThis specification is licensed under the\n[FIWARE Open Specification License (implicit patent license)](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Implicit_Patents_License).\n\n# IoT Agent Provision API Documentacion\n\nAn [IoT Agent](https://github.com/telefonicaid/fiware-IoTAgent-Cplusplus) is a component that mediates between a set of Devices using their own native protocols and a NGSI compliant Context Provider (i.e. Fiware Context Broker).\nThis documentation covers the IoT Agent Provision API and the resources you can manipulate on an IoT Agent in order to publish custom information in IoT Platform. The IoT Agent Provision API is based on REST principles.\n\n|Allowed HTTPs requests      |                                         |\n|:---------------------------|:----------------------------------------|\n|POST:                       |Creates a resource or list of resources  |\n|PUT:                        |Updates a resource                       |\n|GET:                        |Retrieves a resource or list of resources|\n|DELETE:                     |Delete a resource                        |\n\n|Server Responses            |                                                                                                   |\n|:---------------------------|:--------------------------------------------------------------------------------------------------|\n|200 OK                      |The request was succesful (some API calls may return 201 instead)                                  |\n|201 Created                 |The request was succesful and a resource or list of resources was created                          |\n|204 No Content              |The request was succesful but there is no representation to return (that is, the response is empty)|\n|400 Bad Request             |The request could not be understood or was missing required parameters                             |\n|401 Unauthorized            |Authentication failed                                                                              |\n|403 Forbidden               |Access denied                                                                                      |\n|404 Not Found               |Resource was not found                                                                             |\n|409 Conflict                |A resource cannot be created because it already exists                                             |\n|500 Internal Server Error   |Generic error when server has a malfunction. This error will be removed                            |\n\nResponses related with authentication and authorization depends on this feature is configured and a Keystone OpenStack sytem is present.\n\nWhen an error is returned, a representation is returned as:\n\n```\n{\n  \"reason\": \"contains why an error is returned\",\n  \"details\": \"contains specific information about the error, if possible\"\n}\n```\n\n## Authentication and Authorization\n\nIf the IoT Agent is in authenticated environment, this API requires a token, which you obtain from authentication system. This system and its API is out of scope of present documentation. In this environment, a mandatory header is needed: `X-Auth-Token`.\n\n## Mandatory HTTP Headers\n\nThe API needs two headers in order to manage requests:\n\n|Http Header                 |Level                                                                                                                         |If not present                       |Observations                                                                                                                                |\n|:---------------------------|:-----------------------------------------------------------------------------------------------------------------------------|:------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|\n|<b>Fiware-Service</b>       |Represents a tenant. Higher level in resources hierachy in IoT Platform                                                       |An error is returned                 |Must only contain less than 50 Underscores and Alphanumeric lowercase characters                                                            |\n|<b>Fiware-ServicePath</b>   |Represents the second level                                                                                                   |We assume '/'. Allowed operation '/*'|Must only contain less than 50 Underscores and Alphanumeric characters. Must start with character '/'. Max. length is 51 characters (with /)|\n\n## API Access\n\nAll API base URLs are relative and depend on where the IoT Agent is listening (depends on each service).\nFor example, `http://127.0.0.1:8080/iot/`.",
     "contact": {}
   },
   "host": "idas.lab.fiware.org",
@@ -21,11 +21,11 @@
     "/services": {
       "get": {
         "description": "With Fiware-ServicePath you can retrieve a subservice or all subservices.\n+ Parameters [limit, offset, resource]\n    + `limit` (optional, number). In order to specify the maximum number of services (default is 20, maximun allowed is 1000).\n    + `offset` (optional, number). In order to skip a given number of elements at the beginning (default is 0) .\n    + `resource` (optional, string). URI for the iotagent, return only services for this iotagent.",
-        "summary": "Retrieve a service",
+        "summary": "Retrieveaservice",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Retrieve a service",
+        "operationId": "Retrieveaservice",
         "produces": [
           "application/json"
         ],
@@ -91,7 +91,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/RetrieveAServiceResponse"
+              "$ref": "#/definitions/Retrieveaserviceresponse"
             },
             "examples": {
               "application/json": {
@@ -112,96 +112,13 @@
           }
         }
       },
-      "put": {
-        "description": "If you want modify only a field, you can do it. You cannot modify an element into an array field, but whole array. (\"/*\" is not allowed).\n+ Parameters [apikey, resource]\n    + `apikey` (optional, string). If you don't specify, apikey=\" \" is applied.\n    + `resource` (mandatory, string). URI for service into iotagent.",
-        "summary": "Update a service/subservice",
-        "tags": [
-          "Configuration API"
-        ],
-        "operationId": "Update a service/subservice",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Fiware-Service",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "Fiware-ServicePath",
-            "in": "header",
-            "required": true,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/UpdateAService~1subserviceRequest"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "resource",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "apikey",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": ""
-          },
-          {
-            "name": "device",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "description": ""
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": ""
-          }
-        }
-      },
       "post": {
         "description": "With one subservice defined in Fiware-ServicePath header. From service model, mandatory fields are: apikey, resource (cbroker field is temporary mandatory).",
-        "summary": "Create a service",
+        "summary": "Createaservice",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Create a service",
+        "operationId": "Createaservice",
         "produces": [
           "application/json"
         ],
@@ -233,7 +150,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/CreateAServiceRequest"
+              "$ref": "#/definitions/Createaservicerequest"
             }
           },
           {
@@ -278,13 +195,96 @@
           }
         }
       },
+      "put": {
+        "description": "If you want modify only a field, you can do it. You cannot modify an element into an array field, but whole array. (\"/*\" is not allowed).\n+ Parameters [apikey, resource]\n    + `apikey` (optional, string). If you don't specify, apikey=\" \" is applied.\n    + `resource` (mandatory, string). URI for service into iotagent.",
+        "summary": "Updateaservice/subservice",
+        "tags": [
+          "ConfigurationAPI"
+        ],
+        "operationId": "Updateaservice/subservice",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-Service",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "Fiware-ServicePath",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Updateaservice~1subservicerequest"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "resource",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "apikey",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "device",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        }
+      },
       "delete": {
         "description": "You remove a subservice into a service. If Fiware-ServicePath is '/*' or '/#' remove service and all subservices.\n+ Parameters [apikey, resource, device]\n    + `apikey` (optional, string). If you don't specify, apikey=\"\" is applied.\n    + `resource` (mandatory, string). URI for service into iotagent.\n    + `device` (optional, boolean). Default value is false. Remove devices in service/subservice. This parameter is not valid when Fiware-ServicePath is '/*' or '/#'.",
-        "summary": "Remove a subservice/service",
+        "summary": "Removeasubservice/service",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Remove a subservice/service",
+        "operationId": "Removeasubservice/service",
         "produces": [
           "application/json"
         ],
@@ -356,11 +356,11 @@
     "/devices": {
       "get": {
         "description": "+ Parameters [limit, offset, detailed, entity, protocol]\n    + `limit` (optional, number). In order to specify the maximum number of devices (default is 20, maximun allowed is 1000).\n    + `offset` (optional, number). In order to skip a given number of elements at the beginning (default is 0) .\n    + `detailed` (optional, string). `on` return all device information, `off` (default) return only name.\n    + `entity` (optional, string). It allows get a device from entity name.\n    + `protocol` (optional, string). It allows get devices with this protocol.",
-        "summary": "Retrieve all devices",
+        "summary": "Retrievealldevices",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Retrieve all devices",
+        "operationId": "Retrievealldevices",
         "produces": [
           "application/json"
         ],
@@ -426,7 +426,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/RetrieveAllDevicesResponse"
+              "$ref": "#/definitions/Retrievealldevicesresponse"
             },
             "examples": {
               "application/json": {
@@ -461,11 +461,11 @@
       },
       "post": {
         "description": "From device model, mandatory fields are: device_id and protocol.",
-        "summary": "Create a device",
+        "summary": "Createadevice",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Create a device",
+        "operationId": "Createadevice",
         "produces": [
           "application/json"
         ],
@@ -497,7 +497,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/CreateADeviceRequest"
+              "$ref": "#/definitions/Createadevicerequest"
             }
           },
           {
@@ -549,7 +549,7 @@
           "400": {
             "description": "Unexpected error in API call. See HTTP response body for details.",
             "schema": {
-              "$ref": "#/definitions/CreateADevice400Response"
+              "$ref": "#/definitions/Createadevice400response"
             },
             "examples": {
               "application/json": {
@@ -567,11 +567,11 @@
     "/devices/{device_id}": {
       "get": {
         "description": "",
-        "summary": "Retrieve a device",
+        "summary": "Retrieveadevice",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Retrieve a device",
+        "operationId": "Retrieveadevice",
         "produces": [
           "application/json"
         ],
@@ -609,7 +609,7 @@
           "200": {
             "description": "",
             "schema": {
-              "$ref": "#/definitions/RetrieveADeviceResponse"
+              "$ref": "#/definitions/Retrieveadeviceresponse"
             },
             "examples": {
               "application/json": {
@@ -639,11 +639,11 @@
       },
       "put": {
         "description": "If you want modify only a field, you can do it, except field `protocol` (this field, if provided it is removed from request).",
-        "summary": "Update a device",
+        "summary": "Updateadevice",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Update a device",
+        "operationId": "Updateadevice",
         "produces": [
           "application/json"
         ],
@@ -675,7 +675,7 @@
             "required": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/UpdateADeviceRequest"
+              "$ref": "#/definitions/Updateadevicerequest"
             }
           },
           {
@@ -694,11 +694,11 @@
       },
       "delete": {
         "description": "If specific device is not found, we work as deleted.",
-        "summary": "Remove a device",
+        "summary": "Removeadevice",
         "tags": [
-          "Configuration API"
+          "ConfigurationAPI"
         ],
-        "operationId": "Remove a device",
+        "operationId": "Removeadevice",
         "produces": [
           "application/json"
         ],
@@ -741,8 +741,8 @@
     }
   },
   "definitions": {
-    "RetrieveAServiceResponse": {
-      "title": "Retrieve a service response",
+    "Retrieveaserviceresponse": {
+      "title": "Retrieveaserviceresponse",
       "example": {
         "count": 1,
         "services": [
@@ -760,24 +760,10 @@
       "type": "object",
       "properties": {
         "count": {
-          "description": "",
-          "example": 1,
           "type": "integer",
           "format": "int32"
         },
         "services": {
-          "description": "",
-          "example": [
-            {
-              "apikey": "apikey3",
-              "service": "service2",
-              "service_path": "/srvpath2",
-              "token": "token2",
-              "cbroker": "http://127.0.0.1:1026",
-              "entity_type": "thing",
-              "resource": "/iot/d"
-            }
-          ],
           "type": "array",
           "items": {
             "type": "object"
@@ -789,8 +775,8 @@
         "services"
       ]
     },
-    "CreateAServiceRequest": {
-      "title": "Create a service request",
+    "Createaservicerequest": {
+      "title": "Createaservicerequest",
       "example": {
         "services": [
           {
@@ -805,16 +791,6 @@
       "type": "object",
       "properties": {
         "services": {
-          "description": "",
-          "example": [
-            {
-              "apikey": "apikey3",
-              "token": "token2",
-              "cbroker": "http://127.0.0.1:1026",
-              "entity_type": "thing",
-              "resource": "/iot/d"
-            }
-          ],
           "type": "array",
           "items": {
             "type": "object"
@@ -825,16 +801,14 @@
         "services"
       ]
     },
-    "UpdateAService/subserviceRequest": {
-      "title": "Update a service/subservice request",
+    "Updateaservice/subservicerequest": {
+      "title": "Updateaservice/subservicerequest",
       "example": {
         "entity_type": "entity_type"
       },
       "type": "object",
       "properties": {
         "entity_type": {
-          "description": "",
-          "example": "entity_type",
           "type": "string"
         }
       },
@@ -842,8 +816,8 @@
         "entity_type"
       ]
     },
-    "RetrieveAllDevicesResponse": {
-      "title": "Retrieve all devices response",
+    "Retrievealldevicesresponse": {
+      "title": "Retrievealldevicesresponse",
       "example": {
         "count": 1,
         "devices": [
@@ -873,36 +847,10 @@
       "type": "object",
       "properties": {
         "count": {
-          "description": "",
-          "example": 1,
           "type": "integer",
           "format": "int32"
         },
         "devices": {
-          "description": "",
-          "example": [
-            {
-              "device_id": "device_id",
-              "protocol": "12345",
-              "entity_name": "entity_name",
-              "entity_type": "entity_type",
-              "timezone": "America/Santiago",
-              "attributes": [
-                {
-                  "object_id": "source_data",
-                  "name": "attr_name",
-                  "type": "int"
-                }
-              ],
-              "static_attributes": [
-                {
-                  "name": "att_name",
-                  "type": "string",
-                  "value": "value"
-                }
-              ]
-            }
-          ],
           "type": "array",
           "items": {
             "type": "object"
@@ -914,8 +862,8 @@
         "devices"
       ]
     },
-    "CreateADeviceRequest": {
-      "title": "Create a device request",
+    "Createadevicerequest": {
+      "title": "Createadevicerequest",
       "example": {
         "devices": [
           {
@@ -944,30 +892,6 @@
       "type": "object",
       "properties": {
         "devices": {
-          "description": "",
-          "example": [
-            {
-              "device_id": "device_id",
-              "protocol": "12345",
-              "entity_name": "entity_name",
-              "entity_type": "entity_type",
-              "timezone": "America/Santiago",
-              "attributes": [
-                {
-                  "object_id": "source_data",
-                  "name": "attr_name",
-                  "type": "int"
-                }
-              ],
-              "static_attributes": [
-                {
-                  "name": "att_name",
-                  "type": "string",
-                  "value": "value"
-                }
-              ]
-            }
-          ],
           "type": "array",
           "items": {
             "type": "object"
@@ -978,16 +902,14 @@
         "devices"
       ]
     },
-    "CreateADevice400Response": {
-      "title": "Create a device 400 response",
+    "Createadevice400response": {
+      "title": "Createadevice400response",
       "example": {
         "reason": "parameter limit must be an integer"
       },
       "type": "object",
       "properties": {
         "reason": {
-          "description": "",
-          "example": "parameter limit must be an integer",
           "type": "string"
         }
       },
@@ -995,8 +917,8 @@
         "reason"
       ]
     },
-    "RetrieveADeviceResponse": {
-      "title": "Retrieve a device response",
+    "Retrieveadeviceresponse": {
+      "title": "Retrieveadeviceresponse",
       "example": {
         "device_id": "device_id",
         "protocol": "121345",
@@ -1021,53 +943,27 @@
       "type": "object",
       "properties": {
         "device_id": {
-          "description": "",
-          "example": "device_id",
           "type": "string"
         },
         "protocol": {
-          "description": "",
-          "example": "121345",
           "type": "string"
         },
         "entity_name": {
-          "description": "",
-          "example": "entity_name",
           "type": "string"
         },
         "entity_type": {
-          "description": "",
-          "example": "entity_type",
           "type": "string"
         },
         "timezone": {
-          "description": "",
-          "example": "America/Santiago",
           "type": "string"
         },
         "attributes": {
-          "description": "",
-          "example": [
-            {
-              "object_id": "source_data",
-              "name": "attr_name",
-              "type": "int"
-            }
-          ],
           "type": "array",
           "items": {
             "type": "object"
           }
         },
         "static_attributes": {
-          "description": "",
-          "example": [
-            {
-              "name": "att_name",
-              "type": "string",
-              "value": "value"
-            }
-          ],
           "type": "array",
           "items": {
             "type": "object"
@@ -1084,16 +980,14 @@
         "static_attributes"
       ]
     },
-    "UpdateADeviceRequest": {
-      "title": "Update a device request",
+    "Updateadevicerequest": {
+      "title": "Updateadevicerequest",
       "example": {
         "entity_name": "entity_name"
       },
       "type": "object",
       "properties": {
         "entity_name": {
-          "description": "",
-          "example": "entity_name",
           "type": "string"
         }
       },
