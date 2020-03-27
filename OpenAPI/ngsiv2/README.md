@@ -1,4 +1,4 @@
-# NGSI Context Source Forwarding Specification
+# NGSI v2 Context Source Forwarding Specification
 
 ## Editor
 
