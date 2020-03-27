@@ -1,0 +1,1758 @@
+swagger: '2.0'  # For 3.0 see (https://github.com/zalando/connexion/issues/420)
+info:
+  title: "QuantumLeap API"
+  version: "0.7.5"      # we'll keep it aligned with QL version
+host: "localhost:8668"  # it'll run in the same container, hence localhost.
+produces:
+  - text/plain
+  - application/json
+
+
+################################################################################
+# DEFINITIONS
+################################################################################
+definitions:
+  # When having an official NGSI swagger, use external refs to avoid duplication
+  # (http://azimi.me/2015/07/16/split-swagger-into-smaller-files.html)
+  Entity:
+    type: object
+    required:
+    - "id"
+    - "type"
+    properties:
+      type:
+        type: string
+        example: Room
+        description: "The NGSI Entity Type."
+      id:
+        type: string
+        example: Kitchen
+        description: "The NGSI Entity Id."
+
+  Notification:
+    type: object
+    required:
+    - "data"
+    properties:
+      subscriptionId:
+        type: string
+        example: 5947d174793fe6f7eb5e3961
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/Entity'
+    example:
+      subscriptionId: 5947d174793fe6f7eb5e3961
+      data:
+        - id: Kitchen
+          type: Room
+          temperature:
+            value: 24.2
+            type: "Number"
+            metadata:
+              dateModified:
+                type: "DateTime"
+                value: 2017-06-19T11:46:45.00Z
+        - id: Bedroom1
+          type: Room
+          temperature:
+            value: 26.4
+            type: "Number"
+            metadata:
+              dateModified:
+                type: "DateTime"
+                value: 2017-06-19T11:46:45.00Z
+
+
+################################################################################
+# DEFINITIONS: Response objects
+################################################################################
+  IndexArray:
+    type: array
+    items:
+      type: string
+    description: "Array of the timestamps which are indexes of the response
+    for the requested data. It's a parallel array to 'values'. The timestamp
+    will be in the ISO8601 format (e.g. 2010-10-10T07:09:00.792) or in
+    milliseconds since epoch whichever format was used in the input
+    (notification), but ALWAYS in UTC.
+    When using aggregation options, the format of this remains the same, only
+     the semantics will change. For example, if aggrPeriod is day, each index
+      will be a valid timestamp of a moment in the corresponding day."
+
+  ValuesArray:
+    type: array
+    items: {}
+    description: "Array of values of the selected attribute, in the same
+    corresponding order of the 'index' array. When using aggregation options,
+    the format of this remains the same, only the semantics will change. For
+    example, if aggrPeriod is day, each value of course may not correspond
+    to original measurements but rather the aggregate of measurements in
+    each day."
+    
+  IndexedValues:
+    type: object
+    properties:
+      index:
+        $ref: '#/definitions/IndexArray'
+      values:
+        $ref: '#/definitions/ValuesArray'
+
+  AttributeValues:
+    type: object
+    properties:
+      attrName:
+        type: string
+      values:
+        $ref: '#/definitions/ValuesArray'
+
+  EntityIndexedValues:
+    type: object
+    properties:
+      entityId:
+        type: string
+      index:
+        $ref: '#/definitions/IndexArray'
+      values:
+        $ref: '#/definitions/ValuesArray'
+
+
+################################################################################
+# PARAMETERS: IN HEADERS
+################################################################################
+parameters:
+  fiware-Service:
+    in: header
+    name: fiware-Service
+    required: false
+    type: string
+    description: "The corresponding 'fiware-service' header.
+    See http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy"
+  fiware-ServicePath:
+    in: header
+    name: fiware-ServicePath
+    required: false
+    type: string
+    description: "The corresponding 'fiware-servicepath' header.
+    See http://fiware-orion.readthedocs.io/en/latest/user/multitenancy/index.html#multi-tenancy"
+
+################################################################################
+# PARAMETERS: IN PATH
+################################################################################
+# Unfortunately Swagger 2.0 does not support examples for parameters :(
+  entityTypeInPath:
+    in: path
+    required: true
+    name: entityType
+    type: string
+    description: "The entity type in which the query is restricted on. Used to
+    constraint the search to entities of this type, specially useful when the
+    entity id is not enough to uniquely identify an entity."
+    # example: Room  # Only Valid in OAPI 3.0
+  entityIdInPath:
+    in: path
+    required: true
+    name: entityId
+    type: string
+    description: "The entity id in which the query is restricted on. If the id
+    is unique among all entity types, this could be used to uniquely identify
+    the entity instance. Otherwise, you will have to use the entityType
+    attribute to resolve ambiguity."
+    # example: Kitchen1  # Only Valid in OAPI 3.0
+  attrNameInPath:
+    in: path
+    required: true
+    name: attrName
+    type: string
+    description: "The name of the attribute the query is interested on. It must
+    be a valid attribute of all the entities covered by the query scope."
+    # example: temperature  # Only Valid in OAPI 3.0
+
+################################################################################
+# PARAMETERS: IN QUERY
+################################################################################
+  type:
+    in: query
+    name: type
+    type: string
+    description: "Comma-separated list of entity types whose data are to be
+    included in the response. Use only one (no comma) when required. If used to
+    resolve ambiguity for the given entityId, make sure the given entityId
+    exists for this entityType."
+  id:
+    in: query
+    name: id
+    type: string
+    description: "Optional. Comma-separated list of entity ids whose data are to
+     be included in the response."
+  idPattern:
+    in: query
+    name: idPattern
+    type: string
+    description: "A correctly formated regular expression. Retrieve entities
+    whose ID matches the regular expression. Incompatible with id."
+  attrs:
+    in: query
+    name: attrs
+    type: string
+    description: "Optional. Comma-separated list of attribute names whose data
+     are to be included in the response. The attributes are retrieved in the
+     order specified by this parameter. If not specified, all attributes are
+     included in the response in arbitrary order."
+  aggrMethod:
+    in: query
+    name: aggrMethod
+    type: string
+    enum: [count, sum, avg, min, max]  # These taken from ISO standard on SQL.
+    # Remember Crate supports many others https://crate.io/docs/crate/reference/en/latest/sql/aggregation.html
+    description: "Optional. The function to apply to the raw data filtered by
+    the query parameters. If not given, the returned data are the same raw
+    inserted data."
+  aggrPeriod:
+    in: query
+    name: aggrPeriod
+    type: string
+    enum: [year, month, day, hour, minute, second]
+    description: "Optional. If not defined, the aggregation will apply to all
+     the values contained in the search result. If defined, the aggregation
+     function will instead be applied N times, once for each period, and all
+     those results will be considered for the response. For example, a query
+     asking for the average temperature of an attribute will typically return
+     1 value. However, with an aggregationPeriod of day, you get the daily
+     average of the temperature instead (more than one value assuming you
+     had measurements across many days within the scope of your search result).
+     aggrPeriod must be accompanied by an aggrMethod, and the aggrMethod will
+     be applied to all the numeric attributes specified in attrs; the rest of
+     the non-numerical attrs will be ignored. By default, the response is
+     grouped by entity_id. See aggrScope to create aggregation across entities."
+  aggrScope:
+    in: query
+    name: aggrScope
+    type: string
+    enum: [global, entity]
+    default: entity
+    description: "Optional. (This parameter is not yet supported). When the
+    query results cover historical data for multiple entities instances, you
+    can define the aggregation method to be applied for each entity instance
+    [entity] or across them [global]."
+  options:
+    in: query
+    name: options
+    type: string
+    enum: [keyValues, values]
+    description: "Optional. (This parameter is not yet supported). Options
+    dictionary to format output. See definition in
+    NGSIv2 for example here: https://orioncontextbroker.docs.apiary.io/#reference/entities/list-entities/list-entities"
+  fromDate:
+    in: query
+    name: fromDate
+    type: string
+    description: "Optional. The starting date and time (inclusive) from which
+    the context information is queried. Must be in ISO8601 format (e.g.,
+    2018-01-05T15:44:34)"
+  toDate:
+    in: query
+    name: toDate
+    type: string
+    description: "Optional. The final date and time (inclusive) from which the
+    context information is queried. Must be in ISO8601 format (e.g.,
+    2018-01-05T15:44:34)"
+  lastN:
+    in: query
+    name: lastN
+    type: integer
+    minimum: 1
+    description: "Optional. Used to request only the last N values that satisfy
+    the request conditions."
+  limit:
+    in: query
+    name: limit
+    type: integer
+    minimum: 1
+    default: 10000
+    description: "Optional. Maximum number of results to retrieve in a single
+    response."
+  offset:
+    in: query
+    name: offset
+    type: integer
+    minimum: 0
+    description: "Optional. Offset to apply to the response results. For
+    example, if the query was to return 10 results and you use an offset of
+    1, the response will return the last 9 values. Make sure you don't give
+    more offset than the number of results."
+  georel:
+    in: query
+    name: georel
+    type: string
+    pattern: '^coveredBy$|^intersects$|^equals$|^disjoint$|^near;maxDistance:(0|([1-9][0-9]*))(\.[0-9]+)?$|^near;minDistance:(0|([1-9][0-9]*))(\.[0-9]+)?$|^near;maxDistance:(0|([1-9][0-9]*))(\.[0-9]+)?;minDistance:(0|([1-9][0-9]*))(\.[0-9]+)?$|^near;minDistance:(0|([1-9][0-9]*))(\.[0-9]+)?;maxDistance:(0|([1-9][0-9]*))(\.[0-9]+)?$'
+    description: "Optional. It specifies a spatial relationship between matching
+    entities and a reference shape (geometry). This parameter is used to perform
+    geographical queries with the same semantics as in the FIWARE-NGSI v2 Specification.
+    Full details can be found in the Geographical Queries section of the specification:
+    http://fiware.github.io/specifications/ngsiv2/stable/."
+  geometry:
+    in: query
+    name: geometry
+    type: string
+    enum: [point, line, polygon, box]
+    description: "Optional but required if georel is specified. This parameter
+    defines the reference shape to be used for geographical queries and has the
+    same semantics as in the FIWARE-NGSI v2 Specification.
+    Full details can be found in the Geographical Queries section of the specification:
+    http://fiware.github.io/specifications/ngsiv2/stable/."
+  coords:
+    in: query
+    name: coords
+    type: string
+    pattern: '^[+,-]?(0|([1-9][0-9]*))(\.[0-9]+)?,[+,-]?(0|([1-9][0-9]*))(\.[0-9]+)?(;[+,-]?(0|([1-9][0-9]*))(\.[0-9]+)?,[+,-]?(0|([1-9][0-9]*))(\.[0-9]+)?)*$'
+    description: "Optional but required if georel is specified. This parameter
+    defines the reference shape (geometry) in terms of WGS 84 coordinates and has
+    the same semantics as in the FIWARE-NGSI v2 Specification, except we only
+    accept coordinates in decimal degrees---e.g. `40.714,-74.006` is okay, but not
+    `40 42' 51'',74 0' 21''`.
+    Full details can be found in the Geographical Queries section of the specification:
+    http://fiware.github.io/specifications/ngsiv2/stable/."
+
+################################################################################
+# PATHS: META
+################################################################################
+paths:
+
+  /v2/:
+    get:
+      operationId: reporter.api.list_of_api
+      summary: "Returns the List of API's available in QuantumLeap."
+      tags:
+        - meta
+      responses:
+        200:
+          description: "Successful response."
+
+  /version:
+    get:
+      operationId: reporter.version.version
+      summary: "Returns the version of QuantumLeap."
+      tags:
+        - meta
+      responses:
+        200:
+          description: "Successful response."
+          schema:
+            type: object
+            properties:
+              version:
+                type: string
+          examples:
+            application/json:
+              {
+                "version": "0.0.1"
+              }
+
+  /config:
+    post:
+      operationId: reporter.reporter.config
+      summary: "(To Be Implemented) Customize your persistance configuration to
+      better suit
+      your
+      needs."
+      description: ""
+      parameters:
+        - $ref: '#/parameters/type'
+        - in: query
+          name: replicas
+          type: number
+          description: "The number of replicas to use for the selected types."
+      tags:
+        - meta
+      responses:
+        501:
+          description: "Not implemented!"
+          schema:
+            type: string
+
+  /health:
+    get:
+      operationId: reporter.health.get_health
+      summary: "Returns the health-check status of QuantumLeap and the services
+      it depends on."
+      description: "This endpoint is intended for administrators of
+      QuantumLeap. Using the information returned by this endpoint they can
+      diagnose problems in the service or its dependencies. This information is
+      also useful for cloud tools such as orchestrators and load balancers
+      with rules based on health-checks. Due to the lack of a standardized
+      response format, we base the implementation on the draft of
+       https://inadarei.github.io/rfc-healthcheck/
+
+       QuantumlLeap's dependencies are the following:
+        - CrateDB: Critical
+        - Redis:   Critical only if geocoding is enabled.
+        - OSM:     Non-critical"
+      tags:
+        - meta
+      responses:
+        200:
+          description: "QuantumLeap health is OK, the service works as
+          expected."
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+          examples:
+            application/json:
+              {
+                "status": "pass"
+              }
+        207:
+          description: "QuantumLeap health may be OK, but some of its
+          dependencies report a warning status, or some of its non-critical
+          dependencies report a fail status, so you should double-check."
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              details:
+                type: object
+          examples:
+            application/json:
+              {
+                "status": "warn",
+                "details": {
+                  "crateDB": {
+                    "status": "warn",
+                    "time": "2018-01-01T00:00:00Z",
+                    "output": "message-from-crateDB"
+                  },
+                  "redis": {
+                    "status": "warn",
+                    "time": "2018-01-01T00:00:00Z",
+                    "output": "raw-error-from-redis"
+                  }
+                }
+              }
+        424:
+          description: "QuantumLeap health is NOT OK, as some of its
+          dependencies report a failure status."
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              details:
+                type: object
+          examples:
+            application/json:
+              {
+                "status": "fail",
+                "details": {
+                  "crateDB": {
+                    "status": "fail",
+                    "time": "2018-01-01T00:00:00Z",
+                    "output": "raw-error-from-crateDB"
+                  },
+                  "orion": {
+                    "status": "fail",
+                    "time": "2018-01-01T00:00:00Z",
+                    "output": "raw-error-from-orion"
+                  },
+                  "redis": {
+                    "status": "fail",
+                    "time": "2018-01-01T00:00:00Z",
+                    "output": "raw-error-from-redis"
+                  },
+                  "OSM": {
+                    "componentType": "system",
+                    "status": "pass",
+                    "time": "2018-01-01T00:00:00Z"
+                  },
+                  "grafana": {
+                    "componentType": "system",
+                    "status": "pass",
+                    "time": "2018-01-01T00:00:00Z"
+                  }
+                }
+              }
+
+
+################################################################################
+# PATHS: INPUT
+################################################################################
+  /v2/notify:
+    post:
+      operationId: reporter.reporter.notify
+      summary: "Notify QuantumLeap the arrival of a new NGSI notification."
+      description: ""
+      parameters:
+        - in: body
+          name: notification
+          required: true
+          schema:
+            $ref: '#/definitions/Notification'
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      tags:
+        - input
+      responses:
+        201:
+          description: "Successfully created record."
+        400:
+          description: "Received notification is not valid."
+        500:
+          description: "Internal server error."
+
+  /v2/subscribe:
+    post:
+      operationId: reporter.reporter.subscribe
+      summary: "Subscribe QL to process Orion notifications of certain type."
+      description: "This endpoint simplifies the creation of the subscription
+       in orion that will generate the notifications to be consumed by
+       QuantumLeap in order to save historical records. If you want an
+       advanced specification of the notifications, you can always create the
+       subscription in orion at your will. This endpoint just aims to
+       simplify the common use case."
+      parameters:
+        - in: query
+          name: orionUrl
+          required: true
+          type: string
+          description: "The url where QuantumLeap can reach Orion. Do not
+          include specific paths, just the base one including the api version.
+          E.g http://my-orion.com:1026/v2"
+        - in: query
+          name: quantumleapUrl
+          required: true
+          type: string
+          description: "The url where Orion can reach QuantumLeap. Do not
+          include specific paths, just the base one including the api version.
+          E.g http://my-quantumleap.com:8668/v2"
+        - in: query
+          name: entityType
+          required: false
+          type: string
+          description: "The type of entities for which to create a
+          subscription, so as to persist historical data of entities of this
+          type. ATTENTION: If not specified, all entity types will be tracked."
+        - in: query
+          name: entityId
+          required: false
+          type: string
+          description: "Id of the entity to track. If specified, it takes precedence
+          over the idPattern parameter. If absent but an idPattern is given, then QL
+          will use the idPattern to determine which entities to track. If no idPattern
+          is given either, then QL will use the entityType if present. If not even an
+          entityType is given, then QL will fall back to tracking all entities."
+        - in: query
+          name: idPattern
+          required: false
+          type: string
+          description: "The pattern covering the entity ids for which to
+          subscribe. If not specified, QL will track all entities of the
+          specified type. This attribute is documented in orion, see
+          https://fiware-orion.readthedocs.io/en/master/user/walkthrough_apiv2/index.html#subscriptions"
+        - in: query
+          name: attributes
+          required: false
+          type: string
+          description: "Comma-separated list of attribute names to track. These attributes
+          are used to narrow the condition that triggers data change notifications---i.e.
+          they will be used to fill the attrs field of the subject's condition of the Orion
+          subscription QL creates. They will also be used to fill the attrs field of the
+          notification object in the subscription QL creates.
+          (Full details at: http://telefonicaid.github.io/fiware-orion/api/v2/stable/)
+          More specifically, call E the set of entities determined by the given combination
+          of entityType, entityId and idPattern. Then we have a set A of all attributes of
+          entities in E whose name is in attributes. When the value of any of the attributes
+          in A changes, Orion will send QL the current values of those attributes.
+          Note that when using this attributes parameter the set of attributes that Orion
+          will track for changes (observed attributes) is the same as the set of attributes
+          that determine which data Orion will put in notifications (notified attributes).
+          If the two sets need to be different, use the observedAttributes and notifiedAttributes
+          parameters below. (If you supply an attributes parameter, observedAttributes and
+          notifiedAttributes will be ignored.)"
+        - in: query
+          name: observedAttributes
+          required: false
+          type: string
+          description: "Comma-separated list of attribute names to track. These attributes
+          are used to narrow the condition that triggers data change notifications---i.e.
+          they will be used to fill the attrs field of the subject's condition of the Orion
+          subscription QL creates. (Full details at: http://telefonicaid.github.io/fiware-orion/api/v2/stable/)
+          More specifically, call E the set of entities determined by the given combination
+          of entityType, entityId and idPattern. Then we have a set A of all attributes of
+          entities in E whose name is in observedAttributes. When the value of any of the
+          attributes in A changes, Orion will send QL the current values of the attributes
+          specified by the notifiedAttributes parameter. If observedAttributes is absent,
+          QL will be notified of any changes to the entities in E."
+        - in: query
+          name: notifiedAttributes
+          required: false
+          type: string
+          description: "Comma-separated list of attribute names to be used to restrict
+          the data of which QL will keep a history. This list will be used to set the
+          notification's attrs field of the subscription that QL creates.
+          (Full details at: http://telefonicaid.github.io/fiware-orion/api/v2/stable/)
+          If not specified, QL will keep a history of all data changes in any of the
+          entities identified by the given combination of entityType, entityId and idPattern."
+        - in: query
+          name: throttling
+          required: false
+          type: integer
+          description: "Minimal period of time in seconds which must elapse between two
+          consecutive notifications. This is the value QL will use for the throttling
+          field when creating the subscription. If not specified, it defaults to 1."
+        - in: query
+          name: timeIndexAttribute
+          required: false
+          type: string
+          description: "The name of a custom attribute to be used as a time index. On
+          receiving notifications containing this attribute, QL will use its value as
+          a time series index for the entity being notified. If specified, it should
+          refer to an entity attribute whose value is an ISO 8601 timestamp."
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      tags:
+        - input
+      responses:
+        201:
+          description: "Successfully created subscription."
+        400:
+          description: "Bad Request"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              description:
+                type: string
+          examples:
+            application/json:
+              {
+                "error": "Bad Request",
+                "description": "Orion is not reachable by QuantumLeap at http://foo"
+              }
+        412:
+          description: "You specified an unreachable Orion url for QuantumLeap."
+        500:
+          description: "Internal server error."
+
+################################################################################
+# PATHS: OUTPUT
+################################################################################
+  /v2/entities:
+    get:
+      operationId: reporter.query_NTNE.query_NTNE
+      summary: "List of all the entityId"
+      description: "For example, query the entities for entityId available in database specific to fiware-Service and fiware-ServicePath."
+      tags:
+        - queries
+      parameters:
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              entityId:
+                type: string
+              index:
+                $ref: '#/definitions/IndexArray'
+              type:
+                type: string
+          examples:
+            application/json:
+              [{
+                    "id": "Kitchen1",
+                    "index": [
+                      "2018-01-07T15:44:59"],
+                    "type": "Kitchen"
+              },
+              {
+                    "id": "Kitchen2",
+                    "index": [
+                      "2018-01-07T15:44:59"],
+                    "type": "Kitchen"
+              }]
+        404:
+          description: "Not Found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              description:
+                type: string
+          examples:
+            application/json:
+              {
+                "error": "Not Found",
+                "description": "No records were found for such query."
+              }
+
+  /v2/entities/{entityId}/attrs/{attrName}:
+    get:
+      operationId: reporter.query_1T1E1A.query_1T1E1A
+      summary: "History of an attribute of a given entity instance."
+      description: "For example, query max water level of the central tank
+      throughout the last year. Queries can get more sophisticated with the use
+      of filters and query attributes."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityIdInPath'
+        - $ref: '#/parameters/attrNameInPath'
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              entityId:
+                type: string
+              attrName:
+                type: string
+              index:
+                $ref: '#/definitions/IndexArray'
+              values:
+                $ref: '#/definitions/ValuesArray'
+          examples:
+            application/json:
+              {
+                    "entityId": "Kitchen1",
+                    "attrName": "temperature",
+                    "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                    "2018-01-07T15:44:59"],
+                    # TODO: in NGSI orion would return the type+metadata of attr
+                    "values": [24.1, 25.3, 26.7]
+              }
+        404:
+          description: "Not Found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              description:
+                type: string
+          examples:
+            application/json:
+              {
+                "error": "Not Found",
+                "description": "No records were found for such query."
+              }
+
+  /v2/entities/{entityId}/attrs/{attrName}/value:
+    get:
+      operationId: reporter.query_1T1E1A.query_1T1E1A_value
+      summary: "History of an attribute (values only) of a given entity
+      instance."
+      description: "Similar to the previous, but focusing on the values
+      regardless of the metadata."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityIdInPath'
+        - $ref: '#/parameters/attrNameInPath'
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/IndexedValues'
+          examples:
+            application/json:
+              {
+                    "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                    "2018-01-07T15:44:59"],
+                    "values": [24.1, 25.3, 26.7]
+              }
+        404:
+          description: "Not Found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              description:
+                type: string
+          examples:
+            application/json:
+              {
+                "error": "Not Found",
+                "description": "No records were found for such query."
+              }
+
+  /v2/entities/{entityId}:
+    get:
+      operationId: reporter.query_1T1ENA.query_1T1ENA
+      summary: "History of N attributes of a given entity instance."
+      description: "For example, query the average pressure, temperature and
+      humidity of this month in the weather station WS1."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityIdInPath'
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/attrs'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              entityId:
+                type: string
+              index:
+                $ref: '#/definitions/IndexArray'
+              attributes:
+                type: array
+                items:
+                  $ref: '#/definitions/AttributeValues'
+          examples:
+            application/json:
+              {
+                  "entityId": "Kitchen1",
+                  "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                            "2018-01-07T15:44:59"],
+                  "attributes": [
+                    {
+                      "attrName": "temperature",
+                      "values": [24.1, 25.3, 26.7]
+                    },
+                    {
+                      "attrName": "pressure",
+                      "values": [1.01, 0.9, 1.02]
+                    }
+                  ]
+              }
+        404:
+          description: "Not Found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              description:
+                type: string
+          examples:
+            application/json:
+              {
+                "error": "Not Found",
+                "description": "No records were found for such query."
+              }
+    delete:
+      operationId: reporter.delete.delete_entity
+      summary: "Delete historical data of a certain entity."
+      description: "Given an entity (with type and id), delete all its
+      historical records."
+      tags:
+        - input
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityIdInPath'
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        204:
+          description: "Records successfully deleted."
+          schema:
+            type: string
+        404:
+          description: "Not Found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              description:
+                type: string
+          examples:
+            application/json:
+              {
+                "error": "Not Found",
+                "description": "No records were found for such query."
+              }
+
+  /v2/entities/{entityId}/value:
+    get:
+      operationId: reporter.query_1T1ENA.query_1T1ENA_value
+      summary: "History of N attributes (values only) of a given entity
+      instance."
+      description: "For example, query the average pressure, temperature and
+      humidity (values only, no metadata) of this month in the weather station
+      WS1."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityIdInPath'
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/attrs'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              index:
+                $ref: '#/definitions/IndexArray'
+              values:
+                type: array
+                items:
+                  $ref: '#/definitions/AttributeValues'
+          examples:
+            application/json:
+              {
+                  "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                            "2018-01-07T15:44:59"],
+                  "values": [
+                    {
+                      "attrName": "temperature",
+                      "values": [24.1, 25.3, 26.7]
+                    },
+                    {
+                      "attrName": "pressure",
+                      "values": [1.01, 0.9, 1.02]
+                    }
+                  ]
+              }
+        404:
+          description: "Not Found"
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              description:
+                type: string
+          examples:
+            application/json:
+              {
+                "error": "Not Found",
+                "description": "No records were found for such query."
+              }
+
+
+  /v2/types/{entityType}/attrs/{attrName}:
+    get:
+      operationId: reporter.query_1TNE1A.query_1TNE1A
+      summary: "History of an attribute of N entities of the same type."
+      description: "For example, query the pressure measurements of this
+      month in all the weather stations. Note in the response, the index and
+      values arrays are parallel. Also, when using aggrMethod, the aggregation
+      is done by-entity instance. In this case, the index array is just the
+      fromDate and toDate values user specified in the request (if any)."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityTypeInPath'
+        - $ref: '#/parameters/attrNameInPath'
+        # In Query...
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              entityType:
+                type: string
+              attrName:
+                type: string
+              entities:
+                type: array
+                items:
+                  $ref: '#/definitions/EntityIndexedValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "entityType": "Room",
+                  "attrName": "temperature",
+                  "entities": [
+                    {
+                      "entityId": "Kitchen1",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "values": [24.1, 25.3, 26.7]
+                    },
+                    {
+                      "entityId": "Room2",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "values": [21.01, 20.9, 21.02]
+                    }
+                  ]
+              }
+
+
+  /v2/types/{entityType}/attrs/{attrName}/value:
+    get:
+      operationId: reporter.query_1TNE1A.query_1TNE1A_value
+      summary: "History of an attribute (values only) of N entities of the
+      same type."
+      description: "For example, query the average pressure (values only,
+      no metadata) of this month in all the weather stations."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityTypeInPath'
+        - $ref: '#/parameters/attrNameInPath'
+        # In Query...
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              entities:
+                type: array
+                items:
+                  $ref: '#/definitions/EntityIndexedValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "values": [
+                    {
+                      "entityId": "Kitchen1",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "values": [24.1, 25.3, 26.7]
+                    },
+                    {
+                      "entityId": "Room2",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "values": [21.01, 20.9, 21.02]
+                    }
+                  ]
+              }
+
+
+  /v2/types/{entityType}:
+    get:
+      operationId: reporter.query_1TNENA.query_1TNENA
+      summary: "History of N attributes of N entities of
+      the same type."
+      description: "For example, query the average pressure, temperature and
+      humidity of this month in all the weather stations."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityTypeInPath'
+        # In Query...
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/attrs'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              entityType:
+                type: string
+              entities:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entityId:
+                      type: string
+                    index:
+                      $ref: '#/definitions/IndexArray'
+                    attributes:
+                      type: array
+                      items:
+                        $ref: '#/definitions/AttributeValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "entityType": "Room",
+                  "entities": [
+                    {
+                      "entityId": "Room1",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "attributes": [
+                        {
+                          # TODO: How about defining the attrs order once?
+                          "attrName": "temperature",
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "attrName": "pressure",
+                          "values": [1.1, 1.3, 0.7]
+                        }
+                      ]
+                    },
+                    {
+                      "entityId": "Room2",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "attributes": [
+                        {
+                          "attrName": "temperature",
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "attrName": "pressure",
+                          "values": [1.1, 1.3, 0.7]
+                        }
+                      ]
+                    }
+                  ]
+              }
+    delete:
+      operationId: reporter.delete.delete_entities
+      summary: "Delete historical data of all entities of a certain type."
+      description: "Given an entity type, delete all the historical records of
+      all entities of such type."
+      tags:
+        - input
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityTypeInPath'
+        # In Query...
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        204:
+          description: "Records successfully deleted."
+        # What if no entities were found?
+        # Shall we return number of deleted records?
+
+
+  /v2/types/{entityType}/value:
+    get:
+      operationId: reporter.query_1TNENA.query_1TNENA_value
+      summary: "History of N attributes (values only) of N
+      entities of the same type."
+      description: "For example, query the average pressure, temperature and
+      humidity (values only, no metadata) of this month in all the weather
+      stations."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/entityTypeInPath'
+        # In Query...
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/attrs'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              entityType:
+                type: string
+              entities:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entityId:
+                      type: string
+                    index:
+                      $ref: '#/definitions/IndexArray'
+                    attributes:
+                      type: array
+                      items:
+                        $ref: '#/definitions/AttributeValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "values": [
+                    {
+                      "entityId": "Room1",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "attributes": [
+                        {
+                          # TODO: How about defining the attrs order once?
+                          "attrName": "temperature",
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "attrName": "pressure",
+                          "values": [1.1, 1.3, 0.7]
+                        }
+                      ]
+                    },
+                    {
+                      "entityId": "Room2",
+                      "index": ["2018-01-05T15:44:34", "2018-01-06T15:44:59",
+                                "2018-01-07T15:44:59"],
+                      "attributes": [
+                        {
+                          "attrName": "temperature",
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "attrName": "pressure",
+                          "values": [1.1, 1.3, 0.7]
+                        }
+                      ]
+                    }
+                  ]
+              }
+
+
+  /v2/attrs/{attrName}:
+    get:
+      operationId: reporter.reporter.query_NTNE1A
+      summary: "(To Be Implemented) History of an attribute of N entities of N
+      types."
+      description: "For example, query the average temperature of this month
+      in all the devices capable of measuring temperature. In this case, you
+      are responsible for providing entity types which contain the attrName."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/attrNameInPath'
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        501:
+          description: "Not implemented!"
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              attrName:
+                type: string
+              types:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entityType:
+                      type: string
+                    entities:
+                      type: array
+                      items:
+                        $ref: '#/definitions/EntityIndexedValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "attrName": "temperature",
+                  "types": [
+                    {
+                      "entityType": "Room",
+                      "entities": [
+                        {
+                          "entityId": "Room1",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "entityId": "Room2",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [22.1, 23.3, 25.7]
+                        }
+                      ]
+                    },
+                    {
+                      "entityType": "Device",
+                      "entities": [
+                        {
+                          "entityId": "DeviceInRoom1",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "entityId": "DeviceInRoom2",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [22.1, 23.3, 25.7]
+                        }
+                      ]
+                    }
+                  ]
+              }
+
+  /v2/attrs/{attrName}/value:
+    get:
+      operationId: reporter.reporter.query_NTNE1A_value
+      summary: "(To Be Implemented) History of an attribute (values only) of N
+      entities of N types."
+      description: "For example, query the average temperature (values only, no
+      metadata) of this month in all the devices capable of measuring
+      temperature. In this case, you are reponsible for providing entity types
+      which contain the attrName."
+      tags:
+        - queries
+      parameters:
+        # In Path...
+        - $ref: '#/parameters/attrNameInPath'
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        501:
+          description: "Not implemented!"
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              attrName:
+                type: string
+              types:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entityType:
+                      type: string
+                    entities:
+                      type: array
+                      items:
+                        $ref: '#/definitions/EntityIndexedValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "values": [
+                    {
+                      "entityType": "Room",
+                      "entities": [
+                        {
+                          "entityId": "Room1",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "entityId": "Room2",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [22.1, 23.3, 25.7]
+                        }
+                      ]
+                    },
+                    {
+                      "entityType": "Device",
+                      "entities": [
+                        {
+                          "entityId": "DeviceInRoom1",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [24.1, 25.3, 26.7]
+                        },
+                        {
+                          "entityId": "DeviceInRoom2",
+                          "index": ["2018-01-05T15:44:34",
+                                    "2018-01-06T15:44:59",
+                                    "2018-01-07T15:44:59"],
+                          "values": [22.1, 23.3, 25.7]
+                        }
+                      ]
+                    }
+                  ]
+              }
+
+  /v2/attrs:
+    get:
+      operationId: reporter.reporter.query_NTNENA
+      summary: "(To Be Implemented) History of N attributes of N entities of N
+      types."
+      description: "This is sort of a query all. The response will likely not
+      fit into a single response so an efficient paging mechanism and sensible
+      defaults will be required."
+      tags:
+        - queries
+      parameters:
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/attrs'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        501:
+          description: "Not implemented!"
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              attrs:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    attrName:
+                      type: string
+                    types:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          entityType:
+                            type: string
+                          entities:
+                            type: array
+                            items:
+                              $ref: '#/definitions/EntityIndexedValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "attrs:": [
+                    {
+                      "attrName": "temperature",
+                      "types": [
+                        {
+                          "entityType": "Room",
+                          "entities": [
+                            {
+                              "entityId": "Room1",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [24.1, 25.3, 26.7]
+                            },
+                            {
+                              "entityId": "Room2",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [22.1, 23.3, 25.7]
+                            }
+                          ]
+                        },
+                        {
+                          "entityType": "Device",
+                          "entities": [
+                            {
+                              "entityId": "DeviceInRoom1",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [24.1, 25.3, 26.7]
+                            },
+                            {
+                              "entityId": "DeviceInRoom2",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [22.1, 23.3, 25.7]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+              }
+
+
+  /v2/attrs/value:
+    get:
+      operationId: reporter.reporter.query_NTNENA_value
+      summary: "(To Be Implemented) History of N attributes (values only) of N
+      entities of N types."
+      description: "This is sort of a query all. The response will likely not
+      fit into a single response so an efficient paging mechanism and sensible
+      defaults will be required."
+      tags:
+        - queries
+      parameters:
+        # In Query...
+        - $ref: '#/parameters/type'
+        - $ref: '#/parameters/id'
+        - $ref: '#/parameters/attrs'
+        - $ref: '#/parameters/aggrMethod'
+        - $ref: '#/parameters/aggrPeriod'
+        - $ref: '#/parameters/aggrScope'
+        - $ref: '#/parameters/options'
+        - $ref: '#/parameters/fromDate'
+        - $ref: '#/parameters/toDate'
+        - $ref: '#/parameters/lastN'
+        - $ref: '#/parameters/limit'
+        - $ref: '#/parameters/offset'
+        - $ref: '#/parameters/georel'
+        - $ref: '#/parameters/geometry'
+        - $ref: '#/parameters/coords'
+        # In Header...
+        - $ref: '#/parameters/fiware-Service'
+        - $ref: '#/parameters/fiware-ServicePath'
+      responses:
+        501:
+          description: "Not implemented!"
+        200:
+          description: OK
+          schema:
+            type: object
+            properties:
+              values:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    attrName:
+                      type: string
+                    types:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          entityType:
+                            type: string
+                          entities:
+                            type: array
+                            items:
+                              $ref: '#/definitions/EntityIndexedValues'
+          examples:
+            # TODO: Maybe for this 'query all' we cloud keep a per-type index.
+            application/json:
+              {
+                  "values:": [
+                    {
+                      "attrName": "temperature",
+                      "types": [
+                        {
+                          "entityType": "Room",
+                          "entities": [
+                            {
+                              "entityId": "Room1",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [24.1, 25.3, 26.7]
+                            },
+                            {
+                              "entityId": "Room2",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [22.1, 23.3, 25.7]
+                            }
+                          ]
+                        },
+                        {
+                          "entityType": "Device",
+                          "entities": [
+                            {
+                              "entityId": "DeviceInRoom1",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [24.1, 25.3, 26.7]
+                            },
+                            {
+                              "entityId": "DeviceInRoom2",
+                              "index": ["2018-01-05T15:44:34",
+                                        "2018-01-06T15:44:59",
+                                        "2018-01-07T15:44:59"],
+                              "values": [22.1, 23.3, 25.7]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+              }
