@@ -3563,11 +3563,8 @@
         }
       },
       "required": [
-        "description",
         "subject",
-        "notification",
-        "expires",
-        "throttling"
+        "notification"
       ]
     },
     "UpdateSubscriptionRequest": {
