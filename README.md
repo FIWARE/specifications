@@ -1,9 +1,7 @@
-![FIWARE Banner](https://fiware.github.io/specifications/img/fiware.png)
+# Open API Specifications<img src="https://fiware.github.io//catalogue/img/fiware-black.png" width="145" align="left"> 
 
 ![FIWARE Documentation](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/documentation.svg)
 [![License: MIT](https://img.shields.io/github/license/fiware/specifications.svg)](https://opensource.org/licenses/MIT)
-
-# Open API Specifications
 
 This repository contains the [Open API](https://www.openapis.org/) / [Swagger](https://swagger.io/) specifications for the following FIWARE Generic Enablers:
 
