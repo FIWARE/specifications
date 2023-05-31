@@ -257,11 +257,11 @@ Via: ngsi/v2 mycity.example.org:1026
 
 ![NGSI v2](https://img.shields.io/badge/NGSI-v2-blue.svg) Forwarded Response:
 
-```
+```text
 200 OK
 Content-Type: application/json
 Content-Length: 52
-```text
+```
 ```json
 [
    {
